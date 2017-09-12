@@ -30,7 +30,9 @@ char *CODES[] = {
   "STO",
   "RCL",
   "END",
-  "PRN"
+  "PRN",
+  "STL",
+  "RCE"
 };
 #else
 #  define D(X)
@@ -62,6 +64,8 @@ void destroi_maquina(Maquina *m) {
 #define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
+// Adicionando mais um macro para facilitar a leitura
+#define rbp (m->rbp)
 
 void exec_maquina(Maquina *m, int n) {
   int i;
@@ -168,6 +172,8 @@ void exec_maquina(Maquina *m, int n) {
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
+	// Casos adicionados 
+
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
@@ -175,3 +181,4 @@ void exec_maquina(Maquina *m, int n) {
 	ip++;
   }
 }
++
