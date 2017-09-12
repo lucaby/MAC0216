@@ -14,6 +14,10 @@ ip = 0
 
 tabsim = {}
 
+#Adiciona os includes necessarios
+print("#include <stdio.h>")
+print("#include \"maq.h\"")
+print()
 print("INSTR prog[] = {")
 while l:
     label = op = ""
@@ -39,10 +43,15 @@ while l:
         print()
     l = stdin.readline()
     ip += 1
-print("};")
+print("};\n")
     
-
-
+#Criacao da main
+print("int main(int ac, char **av) {")
+print("  Maquina *maq = cria_maquina(prog);")
+print("  Exec_maquinha(maq, {});".format(1000))
+print("  destroi_maquinha(maq);")
+print("  return 0;")
+print("}")
 
 
 # Local variables:
