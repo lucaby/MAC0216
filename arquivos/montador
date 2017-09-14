@@ -55,8 +55,8 @@ n = 1000
 #Criacao da main
 print("int main(int ac, char **av) {")
 print("  Maquina *maq = cria_maquina(prog);")
-print("  Exec_maquinha(maq, {});".format(n))
-print("  destroi_maquinha(maq);")
+print("  exec_maquina(maq, {});".format(n))
+print("  destroi_maquina(maq);")
 print("  return 0;")
 print("}")
 
