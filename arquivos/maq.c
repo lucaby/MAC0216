@@ -111,7 +111,7 @@ void exec_maquina(Maquina *m, int n) {
 	case JIT:
 	  if (desempilha(pil) != 0) {
 		ip = arg;
-		continue;
+		acontinue;
 	  }
 	  break;
 	case JIF:
@@ -125,6 +125,7 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(exec, rbp);
 	  empilha(exec, ip);
 	  ip = arg;
+	  rbp = exec->topo;
 	  continue;
 	case RET:
 	  ip = desempilha(exec);
