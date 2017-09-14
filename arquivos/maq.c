@@ -111,7 +111,7 @@ void exec_maquina(Maquina *m, int n) {
 	case JIT:
 	  if (desempilha(pil) != 0) {
 		ip = arg;
-		acontinue;
+		continue;
 	  }
 	  break;
 	case JIF:
