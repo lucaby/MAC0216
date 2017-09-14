@@ -172,12 +172,7 @@ void exec_maquina(Maquina *m, int n) {
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
-	// Casos adicionados 
-	case STL:
-	  tmp = desempilha(exec);
-	  m->Mem[rbp + arg] = tmp;
-	case RCE:
-	  empilha(exec, m->Mem[rbp + arg]);
+
 
 	}
 	D(imprime(pil,5));

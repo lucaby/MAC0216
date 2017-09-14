@@ -18,6 +18,8 @@ tabsim = {}
 print("#include <stdio.h>")
 print("#include \"maq.h\"")
 print()
+
+
 print("INSTR prog[] = {")
 while l:
     label = op = ""
@@ -45,10 +47,15 @@ while l:
     ip += 1
 print("};\n")
     
+
+
+# Numero de interacoes da maquina
+n = 1000
+
 #Criacao da main
 print("int main(int ac, char **av) {")
 print("  Maquina *maq = cria_maquina(prog);")
-print("  Exec_maquinha(maq, {});".format(1000))
+print("  Exec_maquinha(maq, {});".format(n))
 print("  destroi_maquinha(maq);")
 print("  return 0;")
 print("}")
