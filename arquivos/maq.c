@@ -38,6 +38,13 @@ char *CODES[] = {
 #  define D(X)
 #endif
 
+#define ip (m->ip)
+#define pil (&m->pil)
+#define exec (&m->exec)
+#define prg (m->prog)
+// Adicionando mais um macro para facilitar a leitura
+#define rbp (m->rbp)
+
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
 }
@@ -50,8 +57,9 @@ static void Fatal(char *msg, int cod) {
 Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
-  m->ip = 0;
-  m->prog = p;
+  ip = 0;
+  prg = p;
+  rbp = 0;
   return m;
 }
 
@@ -60,12 +68,6 @@ void destroi_maquina(Maquina *m) {
 }
 
 /* Alguns macros para facilitar a leitura do código */
-#define ip (m->ip)
-#define pil (&m->pil)
-#define exec (&m->exec)
-#define prg (m->prog)
-// Adicionando mais um macro para facilitar a leitura
-#define rbp (m->rbp)
 
 void exec_maquina(Maquina *m, int n) {
   int i;
@@ -118,12 +120,15 @@ void exec_maquina(Maquina *m, int n) {
 		continue;
 	  }
 	  break;
+	// Insiro o rbp na pilha de execução logo antes do ip
 	case CALL:
+	  empilha(exec, rbp);
 	  empilha(exec, ip);
 	  ip = arg;
 	  continue;
 	case RET:
 	  ip = desempilha(exec);
+	  rbp = desempilha(exec);
 	  break;
 	case EQ:
 	  if (desempilha(pil) == desempilha(pil))
@@ -173,7 +178,13 @@ void exec_maquina(Maquina *m, int n) {
 	  printf("%d\n", desempilha(pil));
 	  break;
 	// Casos adicionados 
-
+	case STL:
+	  tmp = desempilha(exec);
+	  m->Mem[arg + rbp] = tmp;
+	  break;
+	case RCE:
+	  empilha(exec, m->Mem[rbp + arg]);
+	  break;
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
@@ -181,4 +192,3 @@ void exec_maquina(Maquina *m, int n) {
 	ip++;
   }
 }
-+
