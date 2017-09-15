@@ -124,10 +124,11 @@ void exec_maquina(Maquina *m, int n) {
 	case CALL:
 	  empilha(exec, rbp);
 	  empilha(exec, ip);
-	  ip = arg;
 	  rbp = exec->topo;
+	  ip = arg;
 	  continue;
 	case RET:
+	// Usuário deve dar FRE antes de chamar RET neste caso
 	  ip = desempilha(exec);
 	  rbp = desempilha(exec);
 	  break;
@@ -180,11 +181,22 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	// Casos adicionados 
 	case STL:
-	  tmp = desempilha(exec);
-	  m->Mem[arg + rbp] = tmp;
+	  tmp = desempilha(pil);
+	  exec[rbp + arg] = tmp;
 	  break;
 	case RCE:
 	  empilha(exec, m->Mem[rbp + arg]);
+	  break;
+	case STO:
+	// This might change
+	// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
+      exec->topo += arg + 1;
+      empilha(exec, arg);
+	  break;
+	case FRE:
+	// Test implementation
+	  tamanho = desempilha(exec);
+	  exec->topo -= tamanho;
 	  break;
 	}
 	D(imprime(pil,5));
