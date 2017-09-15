@@ -57,5 +57,5 @@ int main(int ac, char **av) {
   return 0;
 }
 
-"Adicionar instruções para alocar memória apenas somando o número de variáveis locais ao exec->topo"
-"Instruções para salvar o rbp"
+//Adicionar instruções para alocar memória apenas somando o número de variáveis locais ao exec->topo"
+//Instruções para salvar o rbp'''
