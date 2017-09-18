@@ -56,3 +56,6 @@ int main(int ac, char **av) {
   destroi_maquina(maq2);
   return 0;
 }
+
+//Adicionar instruções para alocar memória apenas somando o número de variáveis locais ao exec->topo"
+//Instruções para salvar o rbp'''

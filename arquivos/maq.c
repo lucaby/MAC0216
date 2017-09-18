@@ -32,7 +32,9 @@ char *CODES[] = {
   "END",
   "PRN",
   "STL",
-  "RCE"
+  "RCE",
+  "ALC",
+  "FREE"
 };
 #else
 #  define D(X)
@@ -122,14 +124,15 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	// Insiro o rbp na pilha de execução logo antes do ip
 	case CALL:
-	  empilha(exec, rbp);
 	  empilha(exec, ip);
-	  ip = arg;
+	  empilha(exec, rbp);
 	  rbp = exec->topo;
+	  ip = arg;
 	  continue;
 	case RET:
-	  ip = desempilha(exec);
+	// Usuário deve dar FRE antes de chamar RET neste caso
 	  rbp = desempilha(exec);
+	  ip = desempilha(exec);
 	  break;
 	case EQ:
 	  if (desempilha(pil) == desempilha(pil))
@@ -180,11 +183,22 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	// Casos adicionados 
 	case STL:
-	  tmp = desempilha(exec);
-	  m->Mem[arg + rbp] = tmp;
+	  tmp = desempilha(pil);
+	  exec[rbp + arg] = tmp;
 	  break;
 	case RCE:
-	  empilha(exec, m->Mem[rbp + arg]);
+	  tmp = exec[rbp + arg];
+	  empilha(pil, tmp);
+	  break;
+	case ALC:
+	// This might change
+	// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
+      exec->topo += arg;
+      empilha(exec, arg);
+	  break;
+	case FREE:
+	// Test implementation
+	  exec->topo -= desempilha(exec);
 	  break;
 	}
 	D(imprime(pil,5));
