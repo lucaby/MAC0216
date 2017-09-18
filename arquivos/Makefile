@@ -1,5 +1,5 @@
-motor: maq.o pilha.o motor.o
+motor: maq.o pilha.o ay.o
 
 clean:
-	rm -f motor *.o
+	rm -f ay *.o
 
