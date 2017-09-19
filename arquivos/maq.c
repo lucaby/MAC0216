@@ -77,7 +77,7 @@ void exec_maquina(Maquina *m, int n) {
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
-  	printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg);
+  	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 

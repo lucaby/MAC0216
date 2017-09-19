@@ -1,5 +1,5 @@
-recursiveFactorial: maq.o pilha.o recursiveFactorial.o
+teste: maq.o pilha.o teste.o
 
 clean:
-	rm -f recursiveFactorial *.o
+	rm -f teste *.o
 
