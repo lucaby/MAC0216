@@ -1,5 +1,5 @@
-motor: maq.o pilha.o ay.o
+recursiveFactorial: maq.o pilha.o recursiveFactorial.o
 
 clean:
-	rm -f ay *.o
+	rm -f recursiveFactorial *.o
 

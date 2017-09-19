@@ -27,7 +27,7 @@ typedef enum {
   STL,
   RCE,
   ALC,
-  FREE
+  FRE
 } OpCode;
 
 /* Tipos dos operandos */

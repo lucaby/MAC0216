@@ -34,7 +34,7 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FREE"
+  "FRE"
 };
 #else
 #  define D(X)
@@ -77,6 +77,7 @@ void exec_maquina(Maquina *m, int n) {
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
+  	printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg);
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 
@@ -184,10 +185,10 @@ void exec_maquina(Maquina *m, int n) {
 	// Casos adicionados 
 	case STL:
 	  tmp = desempilha(pil);
-	  exec[rbp + arg] = tmp;
+	  exec->val[rbp + arg] = tmp;
 	  break;
 	case RCE:
-	  tmp = exec[rbp + arg];
+	  tmp = exec->val[rbp + arg];
 	  empilha(pil, tmp);
 	  break;
 	case ALC:
@@ -196,7 +197,7 @@ void exec_maquina(Maquina *m, int n) {
       exec->topo += arg;
       empilha(exec, arg);
 	  break;
-	case FREE:
+	case FRE:
 	// Test implementation
 	  exec->topo -= desempilha(exec);
 	  break;
