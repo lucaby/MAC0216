@@ -1,0 +1,23 @@
+          PUSH   1   
+          DUP    0   
+          STO    0       #  x
+          STO    1       #  y
+          PUSH  10   
+          STO    2       #  i
+LOOP:     RCL    0   
+          RCL    1       #  y 
+          DUP    0   
+          STO    0       #  x' = y
+          ADD    0       #  x+y
+          DUP    0   
+          STO    1       #  y = x+y
+          PRN    0       #  (x+y)
+          RCL    2       #  i
+          PUSH   1   
+          SUB    0   
+          DUP    0   
+          STO    2       # i = i - 1
+          PUSH   0   
+          EQ     0       # i == 0 ?
+          JIF    LOOP    # (LOOP)
+          END    0   
