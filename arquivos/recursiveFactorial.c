@@ -2,7 +2,7 @@
 #include "maq.h"
 
 INSTR prog[] = {
-  {PUSH, 5 },
+  {PUSH, 9 },
   {CALL, 4},
   {PRN, 0},
   {END, 0},

@@ -73,7 +73,8 @@ void destroi_maquina(Maquina *m) {
 
 void exec_maquina(Maquina *m, int n) {
   int i;
-
+  exec->topo = 0;
+  pil->topo = 0;
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
