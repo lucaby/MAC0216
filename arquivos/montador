@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 Lê, na entrada padrão, um programa na linguagem de montagem da máquina
 virtual e retorna um programa em C que executa este programa.
@@ -50,7 +49,7 @@ print("};\n")
 
 
 # Numero de interacoes da maquina
-n = 1000
+n = 10000
 
 #Criacao da main
 print("int main(int ac, char **av) {")
