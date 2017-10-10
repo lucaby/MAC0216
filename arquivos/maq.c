@@ -202,7 +202,12 @@ void exec_maquina(Maquina *m, int n) {
 	// Test implementation
 	  exec->topo -= desempilha(exec);
 	  break;
+	case ATR:
+		
 	}
+
+	
+
 	D(imprime(pil,5));
 	D(puts("\n"));
 

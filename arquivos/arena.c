@@ -7,18 +7,11 @@ void RemoveExercito(Arena *arena, Maquina *exercito) {
 	
 }	
 
-int partition( Maquina*[], int l, int r) {
-   int pivot, i, j, t;
-   pivot = a[l];
-   i = l; j = r+1;
-		
-   while( 1)
-   {
-   	do ++i; while( a[i] <= pivot && i <= r );
-   	do --j; while( a[j] > pivot );
-   	if( i >= j ) break;
-   	t = a[i]; a[i] = a[j]; a[j] = t;
+void Atualiza(Arena *arena, int ciclos) {
+   for(int i = 0; i < 100; ++i) {
+      exec_maquina(arena->exercitos[i], ciclos);
    }
-   t = a[l]; a[l] = a[j]; a[j] = t;
-   return j;
-} 
+   arena->tempo += 1;
+}
+
+

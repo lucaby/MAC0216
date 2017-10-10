@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 typedef struct {
-	int[100][100] matrix;
+	Grid grid;
 	int tempo;
 	Maquina*[100] exercitos;
 	int lastFree;

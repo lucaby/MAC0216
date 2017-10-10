@@ -1,13 +1,13 @@
 /* Códigos das instruções */
 typedef enum {
-  BLUE
+  BLUE,
   RED
 } Time;
 
-typedef enum {
-  FALSE,
-  TRUE;
-}
+typedef struct {
+  int[100][100] grid;
+} Grid;
+
 typedef enum {
   PUSH,
   POP,
@@ -36,7 +36,8 @@ typedef enum {
   STL,
   RCE,
   ALC,
-  FRE
+  FRE,
+  ATR
 } OpCode;
 
 typedef struct {
@@ -47,8 +48,7 @@ typedef struct {
   int busy;
 } Ocupacao;
 
-typedef struct 
-{
+typedef struct  {
   int isBase;
   Time team;
 } Base; 
@@ -58,7 +58,7 @@ typedef struct {
   Base b;
   Cristais c;
   Ocupacao o;
-}
+} Celula
 
 typedef enum {
   ESTRADA,
@@ -73,16 +73,9 @@ typedef enum {
   NUM,
   ACAO,
   VAR
+
 } Tipo;
 
-/* Operando */
-/* typedef struct { */
-/*   Tipo t; */
-/*   union { */
-/* 	int n; */
-/* 	int ac; */
-/* 	int v; */
-/*   }; */
 /* } OPERANDO; */
 typedef int OPERANDO;
 
