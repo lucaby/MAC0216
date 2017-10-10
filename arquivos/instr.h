@@ -1,5 +1,14 @@
 /* Códigos das instruções */
 typedef enum {
+  BLUE
+  RED
+} Time;
+
+typedef enum {
+  FALSE,
+  TRUE;
+}
+typedef enum {
   PUSH,
   POP,
   DUP,
@@ -30,6 +39,34 @@ typedef enum {
   FRE
 } OpCode;
 
+typedef struct {
+  int n;
+} Cristais;
+
+typedef struct {
+  int busy;
+} Ocupacao;
+
+typedef struct 
+{
+  int isBase;
+  Time team;
+} Base; 
+
+typedef struct {
+  Terreno t;
+  Base b;
+  Cristais c;
+  Ocupacao o;
+}
+
+typedef enum {
+  ESTRADA,
+  RIO,
+  MONTANHA,
+  LAMA,
+  CAMPO
+} Terreno;
 /* Tipos dos operandos */
 /* no momento, são todos inteiros */
 typedef enum {
