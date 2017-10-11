@@ -1,4 +1,4 @@
-test: test.o
+teste_inicializaGrid: teste_inicializaGrid.o arena.o instr.o structures.o
 clean:
-	rm -f test *.o
+	rm -f teste_inicializaGrid *.o
 

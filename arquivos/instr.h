@@ -1,4 +1,5 @@
 /* Códigos das instruções */
+<<<<<<< Updated upstream
 typedef enum {
   BLUE,
   RED
@@ -7,7 +8,11 @@ typedef enum {
 typedef struct {
   int[100][100] grid;
 } Grid;
+=======
+>>>>>>> Stashed changes
 
+#include "structures.h"
+//#include "maq.h"
 typedef enum {
   PUSH,
   POP,
@@ -79,6 +84,18 @@ typedef enum {
 /* } OPERANDO; */
 typedef int OPERANDO;
 
+<<<<<<< Updated upstream
+=======
+typedef struct {
+  Tipo t;
+  Maquina **chamador;
+  union {
+    int n;
+    int ac;
+    int v;
+  };
+}OPERANDO;
+>>>>>>> Stashed changes
 /* Instrução */
 typedef struct {
   OpCode instr;

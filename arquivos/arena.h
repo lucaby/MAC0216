@@ -5,7 +5,7 @@
 typedef struct {
 	Grid grid;
 	int tempo;
-	Maquina*[100] exercitos;
+	Maquina* exercitos;
 	int lastFree;
 } Arena;
 
@@ -17,4 +17,5 @@ void RemoveExercito(Arena *arena, Maquina *exercito);
 
 void Sistema(Arena *arena , Maquina* chamador, int op);
 
-int partition( Maquina*[], int l, int r);
+void inicializaGrid(Arena *arena, int nrows, int ncols);
+
