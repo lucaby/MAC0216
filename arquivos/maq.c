@@ -81,131 +81,141 @@ void exec_maquina(Maquina *m, int n) {
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
-
-	switch (opc) {
-	  OPERANDO tmp;
-	case PUSH:
-	  empilha(pil, arg);
-	  break;
-	case POP:
-	  desempilha(pil);
-	  break;
-	case DUP:
-	  tmp = desempilha(pil);
-	  empilha(pil, tmp);
-	  empilha(pil, tmp);
-	  break;
-	case ADD:
-	  empilha(pil, desempilha(pil)+desempilha(pil));
-	  break;
-	case SUB:
-	  tmp = desempilha(pil);
-	  empilha(pil, desempilha(pil)-tmp);
-	  break;
-	case MUL:
-	  empilha(pil, desempilha(pil)*desempilha(pil));
-	  break;
-	case DIV:
-	  tmp = desempilha(pil);
-	  empilha(pil, desempilha(pil)/tmp);
-	  break;
-	case JMP:
-	  ip = arg;
-	  continue;
-	case JIT:
-	  if (desempilha(pil) != 0) {
-		ip = arg;
-		continue;
-	  }
-	  break;
-	case JIF:
-	  if (desempilha(pil) == 0) {
-		ip = arg;
-		continue;
-	  }
-	  break;
-	// Insiro o rbp na pilha de execução logo antes do ip
-	case CALL:
-	  empilha(exec, ip);
-	  empilha(exec, rbp);
-	  rbp = exec->topo;
-	  ip = arg;
-	  continue;
-	case RET:
-	// Usuário deve dar FRE antes de chamar RET neste caso
-	  rbp = desempilha(exec);
-	  ip = desempilha(exec);
-	  break;
-	case EQ:
-	  if (desempilha(pil) == desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case GT:
-	  if (desempilha(pil) < desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case GE:
-	  if (desempilha(pil) <= desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case LT:
-	  if (desempilha(pil) > desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case LE:
-	  if (desempilha(pil) >= desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case NE:
-	  if (desempilha(pil) != desempilha(pil))
-		empilha(pil, 1);
-	  else
-		empilha(pil, 0);
-	  break;
-	case STO:
-	  m->Mem[arg] = desempilha(pil);
-	  break;
-	case RCL:
-	  empilha(pil,m->Mem[arg]);
-	  break;
-	case END:
-	  return;
-	case PRN:
-	  printf("%d\n", desempilha(pil));
-	  break;
-	// Casos adicionados 
-	case STL:
-	  tmp = desempilha(pil);
-	  exec->val[rbp + arg] = tmp;
-	  break;
-	case RCE:
-	  tmp = exec->val[rbp + arg];
-	  empilha(pil, tmp);
-	  break;
-	case ALC:
-	// This might change
-	// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
-      exec->topo += arg;
-      empilha(exec, arg);
-	  break;
-	case FRE:
-	// Test implementation
-	  exec->topo -= desempilha(exec);
-	  break;
-	case ATR:
+	switch(opc.t) {
 		
-	}
+		case NUM:
+			switch (opc) {
+			  OPERANDO tmp;
+			case PUSH:
+			  empilha(pil, arg);
+			  break;
+			case POP:
+			  desempilha(pil);
+			  break;
+			case DUP:
+			  tmp = desempilha(pil);
+			  empilha(pil, tmp);
+			  empilha(pil, tmp);
+			  break;
+			case ADD:
+			  empilha(pil, desempilha(pil)+desempilha(pil));
+			  break;
+			case SUB:
+			  tmp = desempilha(pil);
+			  empilha(pil, desempilha(pil)-tmp);
+			  break;
+			case MUL:
+			  empilha(pil, desempilha(pil)*desempilha(pil));
+			  break;
+			case DIV:
+			  tmp = desempilha(pil);
+			  empilha(pil, desempilha(pil)/tmp);
+			  break;
+			case JMP:
+			  ip = arg;
+			  continue;
+			case JIT:
+			  if (desempilha(pil) != 0) {
+				ip = arg;
+				continue;
+			  }
+			  break;
+			case JIF:
+			  if (desempilha(pil) == 0) {
+				ip = arg;
+				continue;
+			  }
+			  break;
+			// Insiro o rbp na pilha de execução logo antes do ip
+			case CALL:
+			  empilha(exec, ip);
+			  empilha(exec, rbp);
+			  rbp = exec->topo;
+			  ip = arg;
+			  continue;
+			case RET:
+			// Usuário deve dar FRE antes de chamar RET neste caso
+			  rbp = desempilha(exec);
+			  ip = desempilha(exec);
+			  break;
+			case EQ:
+			  if (desempilha(pil) == desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case GT:
+			  if (desempilha(pil) < desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case GE:
+			  if (desempilha(pil) <= desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case LT:
+			  if (desempilha(pil) > desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case LE:
+			  if (desempilha(pil) >= desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case NE:
+			  if (desempilha(pil) != desempilha(pil))
+				empilha(pil, 1);
+			  else
+				empilha(pil, 0);
+			  break;
+			case STO:
+			  m->Mem[arg] = desempilha(pil);
+			  break;
+			case RCL:
+			  empilha(pil,m->Mem[arg]);
+			  break;
+			case END:
+			  return;
+			case PRN:
+			  printf("%d\n", desempilha(pil));
+			  break;
+			// Casos adicionados 
+			case STL:
+			  tmp = desempilha(pil);
+			  exec->val[rbp + arg] = tmp;
+			  break;
+			case RCE:
+			  tmp = exec->val[rbp + arg];
+			  empilha(pil, tmp);
+			  break;
+			case ALC:
+			// This might change
+			// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
+		      exec->topo += arg;
+		      empilha(exec, arg);
+			  break;
+			case FRE:
+			// Test implementation
+			  exec->topo -= desempilha(exec);
+			  break;
+			case ATR:
+				
+			}
+			break;
+		case ACAO:
 
+			break;
+
+		case VAR:
+
+			break;
+	}
 	
 
 	D(imprime(pil,5));

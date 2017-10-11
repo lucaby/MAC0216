@@ -50,7 +50,7 @@ typdef struct {
     int n;
     int ac;
     int v;
-  }
+  }OPERANDO
 }
 /* Instrução */
 typedef struct {
