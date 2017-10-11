@@ -1,12 +1,5 @@
 /* Códigos das instruções */
-typedef enum {
-  BLUE,
-  RED
-} Time;
-
-typedef struct {
-  int[100][100] grid;
-} Grid;
+#include "structures.h"
 
 typedef enum {
   PUSH,
@@ -40,35 +33,6 @@ typedef enum {
   ATR
 } OpCode;
 
-typedef struct {
-  int n;
-} Cristais;
-
-typedef struct {
-  int busy;
-} Ocupacao;
-
-typedef struct  {
-  int isBase;
-  Time team;
-} Base; 
-
-typedef struct {
-  Terreno t;
-  Base b;
-  Cristais c;
-  Ocupacao o;
-} Celula
-
-typedef enum {
-  ESTRADA,
-  RIO,
-  MONTANHA,
-  LAMA,
-  CAMPO
-} Terreno;
-/* Tipos dos operandos */
-/* no momento, são todos inteiros */
 typedef enum {
   NUM,
   ACAO,
@@ -79,6 +43,15 @@ typedef enum {
 /* } OPERANDO; */
 typedef int OPERANDO;
 
+typdef struct {
+  Tipo t;
+  Maquina **chamador;
+  union {
+    int n;
+    int ac;
+    int v;
+  }
+}
 /* Instrução */
 typedef struct {
   OpCode instr;

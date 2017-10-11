@@ -2,8 +2,12 @@ void InsereExercito(Arena *arena, Maquina *exercito) {
 	arena->exercitos[(arena->lastFree)++] = exercito;
 }
 //Implement quicksort partition.
-void RemoveExercito(Arena *arena, Maquina *exercito) {
-
+void RemoveExercito(Arena *arena,Time t) {
+	for(int i = 99; i >=0; i--) {
+		if(arena->exercitos[i]->t == t) {
+			arena->exercitos[i] = NULL;
+		}
+	}
 	
 }	
 

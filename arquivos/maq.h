@@ -12,6 +12,7 @@ typedef struct {
   int x;
   int y;
   int morto;
+  Time t;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);
