@@ -11,7 +11,8 @@ typedef struct {
   int rbp;
   int x;
   int y;
-  int morto;
+  int cristais;
+  bool isDead;
   Time t;
 } Maquina;
 

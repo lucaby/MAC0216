@@ -3,7 +3,7 @@ typedef enum {
   true
 }bool;
 
-typedef enum {
+/*typedef enum {
   BLUE,
   RED
 } Team;
@@ -11,16 +11,16 @@ typedef enum {
 typedef struct {
   Team time;
   Maquina[] *exercito;
-}Time
+}Time*/
 
 typedef struct {
   int[100][100] grid;
 } Grid;
 
 
-typedef struct {
+/*typedef struct {
   int n;
-} Cristais;
+} Cristais;*/
 
 
 typedef struct  {

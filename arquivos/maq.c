@@ -44,8 +44,11 @@ char *CODES[] = {
 #define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
-// Adicionando mais um macro para facilitar a leitura
 #define rbp (m->rbp)
+#define x (m->x)
+#define y (m->y)
+#define crystals (m->crystals)
+#define grid (arena->grid->grid)
 
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -62,6 +65,9 @@ Maquina *cria_maquina(INSTR *p) {
   ip = 0;
   prg = p;
   rbp = 0;
+  x = 0;
+  y = 0;
+  crystals = 0;
   return m;
 }
 
@@ -77,13 +83,12 @@ void exec_maquina(Maquina *m, int n) {
   pil->topo = 0;
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
+	Tipo    tipo = prg[ip].t;
 	OPERANDO arg = prg[ip].op;
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
-	switch(opc.t) {
-		
-		case NUM:
+	
 			switch (opc) {
 			  OPERANDO tmp;
 			case PUSH:
@@ -203,18 +208,10 @@ void exec_maquina(Maquina *m, int n) {
 			case FRE:
 			// Test implementation
 			  exec->topo -= desempilha(exec);
-			  break;
-			case ATR:
-				
+			  break;	
 			}
-			break;
-		case ACAO:
 
-			break;
-
-		case VAR:
-
-			break;
+			
 	}
 	
 
@@ -223,4 +220,97 @@ void exec_maquina(Maquina *m, int n) {
 
 	ip++;
   }
+
+void sysCall(Maquina *m, Tipo t, OPERANDO op){
+	switch(t) {
+		case MOVE:
+			moveMachine(m, op);
+			break;
+		case GRAB:
+			grabCrystal(m, op);
+			break;
+		case DEPO:
+			depositCrystal(m, op);
+			break;
+		case ATTK:
+			attackMachine(m, op);
+			break;
+	}
+}
+
+void grabCrystal(Maquina *m, Directions d){
+	if(m->crystals != 0){
+		switch(d) {
+			case W:
+				grid[x+2][y]++;
+				break;
+			case NW:
+				grid[x-1][y-1]++;
+				break;
+			case NE:
+				grid[x+1][y-1]++;
+				break;
+			case E:
+				grid[x+2][y]++;
+				break;
+			case SE:
+				grid[x+1][y+1]++;
+				break;
+			case SW:
+				grid[x-1][y+1]++;
+				break;
+		}
+	}
+}
+
+void depositCrystal(Arena *A, Maquina *m, Directions d){
+	if(m->crystals != 0){
+		switch(d) {
+			case W:
+				grid[x+2][y]++;
+				break;
+			case NW:
+				grid[x-1][y-1]++;
+				break;
+			case NE:
+				grid[x+1][y-1]++;
+				break;
+			case E:
+				grid[x+2][y]++;
+				break;
+			case SE:
+				grid[x+1][y+1]++;
+				break;
+			case SW:
+				grid[x-1][y+1]++;
+				break;
+		}
+	}
+}
+
+void attackMachine(Maquina *m, Directions d){
+	switch(d) {
+		case W:
+			m->x -= 2;
+			break;
+		case NW:
+			m->x -= 1;
+			m->y -= 1;
+			break;
+		case NE:
+			m->x += 1;
+			m->y -= 1;
+			break;
+		case E:
+			m->x += 2;
+			break;
+		case SE:
+			m->x += 1;
+			m->y += 1;
+			break;
+		case SW:
+			m->x -= 1;
+			m->y += 1;
+			break;
+	}
 }

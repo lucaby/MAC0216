@@ -40,20 +40,45 @@ typedef enum {
 
 } Tipo;
 
-/* } OPERANDO; */
-typedef int OPERANDO;
+typedef enum {
+  PUNCH,
+  KICK,
+  THROW,
+  SLICE
+} Attack;
+
+typedef enum {
+  MOVE,
+  GRAB,
+  CHCK
+} Action;
+
+typedef enum {
+  W, // WEST
+  NW, //NORTH WEST
+  NE, //NORTH EAST
+  E, // EAST
+  SE, //SOUTH EAST
+  SW //SOUTH WEST
+
+} Directions;
+
+/* } OPERANDO;
+typedef int OPERANDO;*/
 
 typdef struct {
   Tipo t;
   Maquina **chamador;
   union {
-    int n;
-    int ac;
-    int v;
-  }OPERANDO
-}
+    int number;
+    int action;
+    int variable;
+  };
+} OPERANDO;
+
 /* Instrução */
 typedef struct {
   OpCode instr;
+  Tipo t;
   OPERANDO op;
 } INSTR;
