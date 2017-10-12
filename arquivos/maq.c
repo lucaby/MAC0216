@@ -200,7 +200,6 @@ void exec_maquina(Maquina *m, int n) {
 			  empilha(pil, tmp);
 			  break;
 			case ALC:
-			// This might change
 			// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
 		      exec->topo += arg;
 		      empilha(exec, arg);
@@ -208,7 +207,16 @@ void exec_maquina(Maquina *m, int n) {
 			case FRE:
 			// Test implementation
 			  exec->topo -= desempilha(exec);
-			  break;	
+			  break;
+
+			// A partir daqui implementamos as coisas para a Fase II
+			case SYS:
+
+			break;
+
+			case ATR:
+
+			break;
 			}
 
 			
@@ -235,6 +243,15 @@ void sysCall(Maquina *m, Tipo t, OPERANDO op){
 		case ATTK:
 			attackMachine(m, op);
 			break;
+	}
+}
+
+void moveMachine(Arena *A, Maquina *m, Directions d){
+	int i, j;
+	directionsSwitch(m, d, &i, &j);
+	if(notOcupied(grid, i, j)){
+		x += i;
+		y += j;
 	}
 }
 
@@ -265,9 +282,13 @@ bool hasCrystal(Grid g, int i, int j){
 }
 
 bool hasEnemy(Grid g, int i, int j, Team friendly){
-	if(grid[i][j].o.ocupado && grid[i][j].o.time != friendly)
+	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
 		return true;
 	return false;
+}
+
+bool notOcupied(Grid g,Grid g, int i, int j){
+	return !g[i][j].o.ocupado;
 }
 
 void directionsSwitch(Maquina *m, Directions d, int *i, int *j){
