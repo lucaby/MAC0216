@@ -238,79 +238,88 @@ void sysCall(Maquina *m, Tipo t, OPERANDO op){
 	}
 }
 
-void grabCrystal(Maquina *m, Directions d){
-	if(m->crystals != 0){
-		switch(d) {
-			case W:
-				grid[x+2][y]++;
-				break;
-			case NW:
-				grid[x-1][y-1]++;
-				break;
-			case NE:
-				grid[x+1][y-1]++;
-				break;
-			case E:
-				grid[x+2][y]++;
-				break;
-			case SE:
-				grid[x+1][y+1]++;
-				break;
-			case SW:
-				grid[x-1][y+1]++;
-				break;
-		}
+void grabCrystal(Arena *A, Maquina *m, Directions d){
+	int i, j;
+	directionsSwitch(m, d, &i, &j);
+	if(hasCrystal(grid, i, j)){
+		grid[i][j]--;
+		crytals++;
 	}
 }
 
-void depositCrystal(Arena *A, Maquina *m, Directions d){
-	if(m->crystals != 0){
-		switch(d) {
-			case W:
-				grid[x+2][y]++;
-				break;
-			case NW:
-				grid[x-1][y-1]++;
-				break;
-			case NE:
-				grid[x+1][y-1]++;
-				break;
-			case E:
-				grid[x+2][y]++;
-				break;
-			case SE:
-				grid[x+1][y+1]++;
-				break;
-			case SW:
-				grid[x-1][y+1]++;
-				break;
-		}
-	}
+void depositCrystal(Arena *A, Maquina *m, Directions d) {
+	int i, j;
+	directionsSwitch(m, d, &i, &j);
+	grid[i][j]++;
 }
 
-void attackMachine(Maquina *m, Directions d){
+void attackMachine(Arena *A, Maquina *m, Directions d){
+	int i, j;
+	directionsSwitch(m, d, &i, &j);
+	if(hasEnemy)
+		printf("Must attack you, filthy robot!");
+}
+
+bool hasCrystal(Grid g, int i, int j){
+	return (g[i][j].c > 0);
+}
+
+bool hasEnemy(Grid g, int i, int j, Team friendly){
+	if(grid[i][j].o.ocupado && grid[i][j].o.time != friendly)
+		return true;
+	return false;
+}
+
+void directionsSwitch(Maquina *m, Directions d, int *i, int *j){
 	switch(d) {
 		case W:
-			m->x -= 2;
+			*i = x - 2;
+			*j = y;
 			break;
 		case NW:
-			m->x -= 1;
-			m->y -= 1;
+			*i = x - 1;
+			*j = y - 1;
 			break;
 		case NE:
-			m->x += 1;
-			m->y -= 1;
+			*i = x + 1;
+			*j = y - 1;
 			break;
 		case E:
-			m->x += 2;
+			*i = x + 2;
+			*j = y;
 			break;
 		case SE:
-			m->x += 1;
-			m->y += 1;
+			*i = x + 1;
+			*j = y + 1;
 			break;
 		case SW:
-			m->x -= 1;
-			m->y += 1;
+			*i = x - 1;
+			*j = y + 1;
 			break;
 	}
 }
+
+/*void depositCrystal(Arena *A, Maquina *m, Directions d){
+	if(m->crystals != 0){
+		switch(d) {
+			case W:
+				grid[x+2][y]++;
+				break;
+			case NW:
+				grid[x-1][y-1]++;
+				break;
+			case NE:
+				grid[x+1][y-1]++;
+				break;
+			case E:
+				grid[x+2][y]++;
+				break;
+			case SE:
+				grid[x+1][y+1]++;
+				break;
+			case SW:
+				grid[x-1][y+1]++;
+				break;
+		}
+	}
+}*/
