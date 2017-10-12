@@ -1,6 +1,10 @@
 /* Códigos das instruções */
+
 #include "structures.h"
 
+
+#include "structures.h"
+//#include "maq.h"
 typedef enum {
   PUSH,
   POP,
@@ -77,6 +81,16 @@ typdef struct {
   };*/
 } OPERANDO;
 
+
+/*typedef struct {
+  Tipo t;
+  Maquina **chamador;
+  union {
+    int n;
+    int ac;
+    int v;
+  };
+}OPERANDO;*/
 
 /* Instrução */
 typedef struct {

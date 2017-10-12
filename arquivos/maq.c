@@ -89,7 +89,7 @@ void exec_maquina(Maquina *m, int n) {
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
-	
+
 			switch (opc) {
 			  OPERANDO tmp;
 			case PUSH:
@@ -218,7 +218,7 @@ void exec_maquina(Maquina *m, int n) {
 				tmp = desempilha(ip);
 				empilha(tmp.arg, ip);
 				break;
-			}
+			
 
 			
 	}

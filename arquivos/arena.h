@@ -5,7 +5,7 @@
 typedef struct {
 	Grid grid;
 	int tempo;
-	Maquina*[100] exercitos;
+	Maquina* exercitos;
 	int lastFree;
 } Arena;
 
@@ -17,6 +17,7 @@ void RemoveExercito(Arena *arena, Maquina *exercito);
 
 void Sistema(Arena *arena , Maquina* chamador, int op);
 
+
 void RemoveMortos(Arena *arena, Time t);
 
 bool hasCrystal(Grid g, int i, int j);
@@ -24,3 +25,6 @@ bool hasCrystal(Grid g, int i, int j);
 bool hasEnemy(Grid g, int i, int j, Team friendly);
 
 bool notOcupied(Grid g,Grid g, int i, int j);
+
+void inicializaGrid(Arena *arena, int nrows, int ncols);
+
