@@ -211,12 +211,12 @@ void exec_maquina(Maquina *m, int n) {
 
 			// A partir daqui implementamos as coisas para a Fase II
 			case SYS:
-
-			break;
-
+				sysCall(m, t, opc);
+				break;
 			case ATR:
-
-			break;
+				tmp = desempilha(ip);
+				empilha(tmp.arg, ip);
+				break;
 			}
 
 			

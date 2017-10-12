@@ -16,5 +16,3 @@ void InsereExercito(Arena *arena, Maquina *exercito);
 void RemoveExercito(Arena *arena, Maquina *exercito);
 
 void Sistema(Arena *arena , Maquina* chamador, int op);
-
-int partition( Maquina*[], int l, int r);
