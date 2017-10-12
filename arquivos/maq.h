@@ -1,4 +1,6 @@
 #include "pilha.h"
+#include "structures.h"
+#include "arena.h"
 
 #define MAXMEM 100
 
@@ -11,7 +13,9 @@ typedef struct {
   int rbp;
   int x;
   int y;
-  int morto;
+  int cristais;
+  bool isDead;
+  Time t;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);
@@ -19,3 +23,21 @@ Maquina *cria_maquina(INSTR *p);
 void destroi_maquina(Maquina *m);
 
 void exec_maquina(Maquina *m, int n);
+
+void sysCall(Maquina *m, Tipo t, OPERANDO op);
+
+void moveMachine(Arena *A, Maquina *m, Directions d);
+
+void grabCrystal(Arena *A, Maquina *m, Directions d);
+
+void depositCrystal(Arena *A, Maquina *m, Directions d);
+
+void attackMachine(Arena *A, Maquina *m, Directions d);
+
+bool hasCrystal(Grid g, int i, int j);
+
+bool hasEnemy(Grid g, int i, int j, Team friendly);
+
+bool notOcupied(Grid g,Grid g, int i, int j);
+
+void directionsSwitch(Maquina *m, Directions d, int *i, int *j);

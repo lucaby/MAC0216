@@ -1,15 +1,7 @@
 /* Códigos das instruções */
-<<<<<<< Updated upstream
-typedef enum {
-  BLUE,
-  RED
-} Time;
 
-typedef struct {
-  int[100][100] grid;
-} Grid;
-=======
->>>>>>> Stashed changes
+#include "structures.h"
+
 
 #include "structures.h"
 //#include "maq.h"
@@ -42,51 +34,55 @@ typedef enum {
   RCE,
   ALC,
   FRE,
+  SYS,
   ATR
 } OpCode;
 
-typedef struct {
-  int n;
-} Cristais;
-
-typedef struct {
-  int busy;
-} Ocupacao;
-
-typedef struct  {
-  int isBase;
-  Time team;
-} Base; 
-
-typedef struct {
-  Terreno t;
-  Base b;
-  Cristais c;
-  Ocupacao o;
-} Celula
-
 typedef enum {
-  ESTRADA,
-  RIO,
-  MONTANHA,
-  LAMA,
-  CAMPO
-} Terreno;
-/* Tipos dos operandos */
-/* no momento, são todos inteiros */
-typedef enum {
+  NUM,
+  MOVE,
+  GRAB,
+  DEPO,
+  ATTK
+} Tipo;
+
+/*typedef enum {
   NUM,
   ACAO,
   VAR
 
 } Tipo;
 
-/* } OPERANDO; */
-typedef int OPERANDO;
+typedef enum {
+  PUNCH,
+  KICK,
+  THROW,
+  SLICE
+} Attack;
+*/
 
-<<<<<<< Updated upstream
-=======
-typedef struct {
+/* } OPERANDO;
+typedef int OPERANDO;*/
+
+typdef struct {
+    typedef enum {
+    W, // WEST
+    NW, //NORTH WEST
+    NE, //NORTH EAST
+    E, // EAST
+    SE, //SOUTH EAST
+    SW //SOUTH WEST
+
+  } direction;
+  /*union {
+    int number;
+    int action;
+    int variable;
+  };*/
+} OPERANDO;
+
+
+/*typedef struct {
   Tipo t;
   Maquina **chamador;
   union {
@@ -94,10 +90,11 @@ typedef struct {
     int ac;
     int v;
   };
-}OPERANDO;
->>>>>>> Stashed changes
+}OPERANDO;*/
+
 /* Instrução */
 typedef struct {
   OpCode instr;
+  Tipo t;
   OPERANDO op;
 } INSTR;

@@ -8,10 +8,11 @@ typedef enum {
   RED
 } Team;
 
-typedef struct {
+
+/*typedef struct {
   Team time;
   Maquina[] *exercito;
-}Time;
+}Time;*/
 
 typedef Celula** Grid;
 
@@ -19,6 +20,7 @@ typedef Celula** Grid;
 typedef struct {
   int n;
 } Cristais;
+
 
 
 typedef struct  {
@@ -30,9 +32,9 @@ typedef struct {
   Terreno t;
   Base b;
   Cristais c;
-  int n;
-  bool o;
+  Ocupacao o;
 } Celula;
+
 typedef enum {
   ESTRADA,
   RIO,
@@ -40,5 +42,11 @@ typedef enum {
   LAMA,
   CAMPO
 } Terreno;
+
+typedef struct {
+  bool ocupado;
+  Team time;
+} Ocupacao;
+
 /* Tipos dos operandos */
 /* no momento, são todos inteiros */
