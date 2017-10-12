@@ -3,11 +3,11 @@ typedef enum {
   true
 }bool;
 
-/*typedef enum {
+typedef enum {
   BLUE,
   RED
 } Team;
-
+/*
 typedef struct {
   Team time;
   Maquina[] *exercito;
@@ -42,5 +42,10 @@ typedef enum {
   LAMA,
   CAMPO
 } Terreno;
+
+typedef struct {
+  bool ocupado;
+  Team time;
+} Ocupacao;
 /* Tipos dos operandos */
 /* no momento, são todos inteiros */

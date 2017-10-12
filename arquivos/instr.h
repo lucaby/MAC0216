@@ -30,10 +30,19 @@ typedef enum {
   RCE,
   ALC,
   FRE,
+  SYS,
   ATR
 } OpCode;
 
 typedef enum {
+  NUM,
+  MOVE,
+  GRAB,
+  DEPO,
+  ATTK
+} Tipo;
+
+/*typedef enum {
   NUM,
   ACAO,
   VAR
@@ -46,35 +55,28 @@ typedef enum {
   THROW,
   SLICE
 } Attack;
-
-typedef enum {
-  MOVE,
-  GRAB,
-  CHCK
-} Action;
-
-typedef enum {
-  W, // WEST
-  NW, //NORTH WEST
-  NE, //NORTH EAST
-  E, // EAST
-  SE, //SOUTH EAST
-  SW //SOUTH WEST
-
-} Directions;
+*/
 
 /* } OPERANDO;
 typedef int OPERANDO;*/
 
 typdef struct {
-  Tipo t;
-  Maquina **chamador;
-  union {
+    typedef enum {
+    W, // WEST
+    NW, //NORTH WEST
+    NE, //NORTH EAST
+    E, // EAST
+    SE, //SOUTH EAST
+    SW //SOUTH WEST
+
+  } direction;
+  /*union {
     int number;
     int action;
     int variable;
-  };
+  };*/
 } OPERANDO;
+
 
 /* Instrução */
 typedef struct {

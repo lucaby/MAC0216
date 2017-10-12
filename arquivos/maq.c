@@ -49,6 +49,7 @@ char *CODES[] = {
 #define y (m->y)
 #define crystals (m->crystals)
 #define grid (arena->grid->grid)
+#define Direction (OPERANDO.direction)
 
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -211,7 +212,7 @@ void exec_maquina(Maquina *m, int n) {
 
 			// A partir daqui implementamos as coisas para a Fase II
 			case SYS:
-				sysCall(m, t, opc);
+				sysCall(m, t, opc.direction);
 				break;
 			case ATR:
 				tmp = desempilha(ip);
@@ -229,7 +230,7 @@ void exec_maquina(Maquina *m, int n) {
 	ip++;
   }
 
-void sysCall(Maquina *m, Tipo t, OPERANDO op){
+void sysCall(Maquina *m, Tipo t, direction op){
 	switch(t) {
 		case MOVE:
 			moveMachine(m, op);
@@ -246,7 +247,7 @@ void sysCall(Maquina *m, Tipo t, OPERANDO op){
 	}
 }
 
-void moveMachine(Arena *A, Maquina *m, Directions d){
+void moveMachine(Arena *A, Maquina *m, DIrection d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
 	if(notOcupied(grid, i, j)){
@@ -255,7 +256,7 @@ void moveMachine(Arena *A, Maquina *m, Directions d){
 	}
 }
 
-void grabCrystal(Arena *A, Maquina *m, Directions d){
+void grabCrystal(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
 	if(hasCrystal(grid, i, j)){
@@ -264,34 +265,20 @@ void grabCrystal(Arena *A, Maquina *m, Directions d){
 	}
 }
 
-void depositCrystal(Arena *A, Maquina *m, Directions d) {
+void depositCrystal(Arena *A, Maquina *m, Direction d) {
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
 	grid[i][j]++;
 }
 
-void attackMachine(Arena *A, Maquina *m, Directions d){
+void attackMachine(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
 	if(hasEnemy)
 		printf("Must attack you, filthy robot!");
 }
 
-bool hasCrystal(Grid g, int i, int j){
-	return (g[i][j].c > 0);
-}
-
-bool hasEnemy(Grid g, int i, int j, Team friendly){
-	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
-		return true;
-	return false;
-}
-
-bool notOcupied(Grid g,Grid g, int i, int j){
-	return !g[i][j].o.ocupado;
-}
-
-void directionsSwitch(Maquina *m, Directions d, int *i, int *j){
+void directionsSwitch(Maquina *m, Direction d, int *i, int *j){
 	switch(d) {
 		case W:
 			*i = x - 2;

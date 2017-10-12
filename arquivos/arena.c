@@ -1,4 +1,6 @@
 #include "structures.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
 	
@@ -38,3 +40,16 @@ void RemoveMortos(Arena *arena, Time t){
 	}
 }
 
+bool hasCrystal(Grid g, int i, int j){
+	return (g[i][j].c > 0);
+}
+
+bool hasEnemy(Grid g, int i, int j, Team friendly){
+	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
+		return true;
+	return false;
+}
+
+bool notOcupied(Grid g,Grid g, int i, int j){
+	return !g[i][j].o.ocupado;
+}
