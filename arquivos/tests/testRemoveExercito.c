@@ -2,26 +2,29 @@
 #include "maq.h"
 
 INSTR prog[] = {
+MOVE ACAO EAST
 
-  {ACAO, MOVE,  EAST}
-  {ACAO, MOVE,  NEAST}
-  {ACAO, GRAB,  WEST}
-  {ACAO, ATTK,  EAST}
-  {ACAO, DEPO,  WEST}
-  {ACAO, GRAB,  WEST}
-  {VAR, PUSH, VAR,  WEST}
-  {NUM, ATR,  3}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR,  2}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR,  1}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR, 0}
-  {NUM, PRN, 0}
-
+  {NUM, PUSH, 9},
+  {NUM, CALL, 4},
+  {NUM, PRN, 0},
+  {NUM, END, 0},
+  {NUM, ALC, 1},
+  {NUM, DUP, 0},
+  {NUM, STL, 0},
+  {NUM, PUSH, 1},
+  {NUM, EQ, 0},
+  {NUM, JIF, 13},
+  {NUM, PUSH, 1},
+  {NUM, FRE, 1},
+  {NUM, RET, 0},
+  {NUM, RCE, 0},
+  {NUM, PUSH, 1},
+  {NUM, SUB, 0},
+  {NUM, CALL, 4},
+  {NUM, RCE, 0},	
+  {NUM, MUL, 0},
+  {NUM, FRE, 1},
+  {NUM, RET, 0},
 };
 
 int main(){
