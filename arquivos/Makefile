@@ -1,4 +1,4 @@
-rFact: maq.o pilha.o rFact.o
+testAtualiza: maq.o pilha.o testAtualiza.o
 clean:
-	rm -f  rFact *.o
+	rm -f  testAtualiza *.o
 
