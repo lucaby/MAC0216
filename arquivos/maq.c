@@ -400,22 +400,18 @@ void inicializaGrid(Arena *arena, int nrows, int ncols) {
 	arena->grid = malloc(nrows * sizeof(Celula *));
 	for(int i = 0; i < nrows; i++) {
 	    arena->grid[i] = (Celula *) malloc(ncols * sizeof(Celula));
-	    if(arena->exercitos[i] == NULL) {
-	        fprintf(stderr, "out of memory\n");
-	        return;
-	    }
 	}
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = False;
+				arena->grid[i][j].o.ocupado = True;
 			}			
 		}
 
 		
 		else {
 			for(int i = 0; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = False;
+				arena->grid[i][j].o.ocupado = True;
 				
 				//TODO: inicializar as outras coisas
 				//arena->exercitos[i][j].base
