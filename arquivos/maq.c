@@ -344,7 +344,6 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 }
 
   void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
-	
 	for(int i = arena->lastFree; i < 100; i++){
 		Maquina *robo;
 		robo = cria_maquina(p);
@@ -398,9 +397,9 @@ Bool notOcupied(Grid g, int i, int j) {
 }
 
 void inicializaGrid(Arena *arena, int nrows, int ncols) {
-	arena->grid = malloc(nrows * sizeof(Grid *));
+	arena->grid = malloc(nrows * sizeof(Celula *));
 	for(int i = 0; i < nrows; i++) {
-	    arena->grid[i] = malloc(ncols * sizeof(Grid));
+	    arena->grid[i] = (Celula *) malloc(ncols * sizeof(Celula));
 	    if(arena->exercitos[i] == NULL) {
 	        fprintf(stderr, "out of memory\n");
 	        return;
@@ -426,4 +425,20 @@ void inicializaGrid(Arena *arena, int nrows, int ncols) {
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

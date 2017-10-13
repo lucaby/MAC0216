@@ -1,4 +1,4 @@
-testAtualiza: maq.o pilha.o testAtualiza.o
+testeInicializaGrid:  maq.o pilha.o testeInicializaGrid.o
+	
 clean:
-	rm -f  testAtualiza *.o
-
+	rm -f  testeInicializaGrid *.o
