@@ -11,9 +11,9 @@ typedef enum {
 } Terreno;
 
 typedef enum {
-  false = 0,
-  true
-}bool;
+  False = 0,
+  True
+}Bool;
 
 typedef enum {
   BLUE = 0,
@@ -29,7 +29,7 @@ typedef struct  {
 } Base; 
 
 typedef struct {
-  bool ocupado;
+  Bool ocupado;
   Team time;
 } Ocupacao;
 

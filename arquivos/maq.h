@@ -1,10 +1,13 @@
-#include "pilha.h"
-#include "structures.h"
 
 #ifndef MAQ_H
 #define MAQ_H
 
 #define MAXMEM 100
+
+#include "pilha.h"
+#include "structures.h"
+#include "instr.h"
+
 
 typedef struct {
   Pilha pil;
@@ -16,7 +19,7 @@ typedef struct {
   int x;
   int y;
   Cristais crystals;
-  bool isDead;
+  Bool isDead;
   Team t;
 } Maquina;
 
@@ -42,11 +45,11 @@ void Sistema(Arena *arena , Maquina* chamador, int op);
 
 void RemoveMortos(Arena *arena, Team t);
 
-bool hasCrystal(Grid g, int i, int j);
+Bool hasCrystal(Grid g, int i, int j);
 
-bool hasEnemy(Grid g, int i, int j, Team friendly);
+Bool hasEnemy(Grid g, int i, int j, Team friendly);
 
-bool notOcupied(Grid g, int i, int j);
+Bool notOcupied(Grid g, int i, int j);
 
 void inicializaGrid(Arena *arena, int nrows, int ncols);
 
@@ -68,11 +71,11 @@ void depositCrystal(Arena *A, Maquina *m, Direction d);
 
 void attackMachine(Arena *A, Maquina *m, Direction d);
 
-bool hasCrystal(Grid g, int i, int j);
+Bool hasCrystal(Grid g, int i, int j);
 
-bool hasEnemy(Grid g, int i, int j, Team friendly);
+Bool hasEnemy(Grid g, int i, int j, Team friendly);
 
-bool notOcupied(Grid g, int i, int j);
+Bool notOcupied(Grid g, int i, int j);
 
 void directionsSwitch(Maquina *m, Direction d, int *i, int *j);
 

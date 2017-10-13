@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "maq.h"
 
-
 /* #define DEBUG */
 
 #ifdef DEBUG
@@ -77,7 +76,7 @@ void destroi_maquina(Maquina *m) {
 
 /* Novas funções para as chamadas de sistema */
 
-void directionsSwitch(Maquina *m, Direction d, int *i, int *j){
+void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
 	switch(d) {
 		case WEST:
 			*i = x - 2;
@@ -118,9 +117,9 @@ void moveMachine(Arena *A, Maquina *m, Direction d){
 void grabCrystal(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
-	if(hasCrystal(A->grid, i, j)){
+	if(hasCrystal(A->grid, i, j)) {
 		A->grid[i][j].c--;
-		m->crytals++;
+		m->crystals++;
 	}
 }
 
@@ -130,7 +129,7 @@ void depositCrystal(Arena *A, Maquina *m, Direction d) {
 	A->grid[i][j].c++;
 }
 
-void attackMachine(Arena *A, Maquina *m, Direction d){
+void attackMachine(Arena *A, Maquina *m, Direction d) {
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
 	if(hasEnemy)
@@ -170,7 +169,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 
 			case NUM:
 				switch (opc) {
-					  int tmp;
+					  OPERANDO tmp;
 					case PUSH:
 					  empilha(pil, arg.n);
 					  break;
@@ -207,7 +206,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 					  break;
 					case JIF:
 					  if (desempilha(pil).n == 0) {
-						ip = ar.n;
+						ip = arg.n;
 						continue;
 					  }
 					  break;
@@ -292,7 +291,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 					// A partir daqui implementamos as coisas para a Fase II
 					case ATR:
 						tmp = desempilha(pil).n;
-						empilha(pil, tmp.arg.n);
+						empilha(pil, tmp);
 						break;
 				}
 				break;
@@ -351,18 +350,18 @@ void RemoveMortos(Arena *arena, Team t){
 	}
 }
 
-bool hasCrystal(Grid g, int i, int j){
+Bool hasCrystal(Grid g, int i, int j){
 	return (g[i][j].c > 0);
 }
 
-bool hasEnemy(Grid g, int i, int j, Team friendly){
+Bool hasEnemy(Grid g, int i, int j, Team friendly){
 	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
-		return true;
-	return false;
+		return True;
+	return False;
 }
 
 
-bool notOcupied(Grid g, int i, int j){
+Bool notOcupied(Grid g, int i, int j){
 	return !g[i][j].o.ocupado;
 }
 
@@ -378,13 +377,13 @@ void inicializaGrid(Arena *arena, int nrows, int ncols) {
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
-				arena->grid[i][j].o = false;
+				arena->grid[i][j].o = False;
 				arena->grid[i][j].n = i+j;
 			}
 		}
 		else {
 			for(int i = 0; i < ncols; i += 2) {
-				arena->grid[i][j].o = false;
+				arena->grid[i][j].o = False;
 				arena->grid[i][j].n = i+j;
 				
 				//TODO: inicializar as outras coisas
