@@ -367,7 +367,7 @@ void RemoveExercito(Arena *arena,Time t) {
 }	
 
 void Atualiza(Arena *arena, int ciclos) {
-   for(int i = 0; i < 100; ++i) {
+   for(int i = 0; i < arena->lastFree; ++i) {
       exec_maquina(arena, arena->exercitos[i], ciclos);
    }
    arena->tempo += 1;
