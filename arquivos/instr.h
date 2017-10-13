@@ -3,6 +3,7 @@
 #define INSTR_H
 //#include "structures.h"
 //#include "maq.h"
+#define MAXMEM 100
 
 typedef enum {
   PUSH = 0,

@@ -1,4 +1,4 @@
-testAtualiza:  maq.o pilha.o testAtualiza.o
+testAtualiza:  maq.o arena.o pilha.o testAtualiza.o
 
 all: testAtualiza
 

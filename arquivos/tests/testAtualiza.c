@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "maq.h"
+#include "../maq.h"
 
 INSTR prog[] = {
 
@@ -29,15 +29,20 @@ INSTR prog[] = {
 
 int main(){
   Arena* battlefield;
+
   printf("Arena feita.\n");
-  inicializaGrid(battlefield, 50, 50); 
+  inicializaArena(battlefield, 10, 10); 
   printf("Grid Inicializado.\n");
   InsereExercito(battlefield, 10, prog, BLUE);
   printf("Blue team off to work.\n");
   InsereExercito(battlefield, 10, prog, RED);
+  
   printf("Red team off to work.\n");
-  for(int i = 0; i < 100; i++)
+  printf("%d", 5);
+  for(int i = 0; i < battlefield->lastFree; i++) {
+      
       Atualiza(battlefield, 100);
+    }
 
   return 0;
   
