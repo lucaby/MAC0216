@@ -357,6 +357,10 @@ void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
 		Maquina *robo;
 		robo = cria_maquina(p);
 		robo->t = time;
+		robo->x = 0;
+		robo->y = 1;
+		arena->grid[0][1].o.ocupado = true;
+		arena->grid[0][1].o.time = time;
 		arena->exercitos[i] = robo;
 		arena->lastFree++;
 		i++;
