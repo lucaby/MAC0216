@@ -29,7 +29,7 @@ typedef struct {
 typedef struct {
   Grid grid;
   int tempo;
-  Maquina* exercitos;
+  Maquina* exercitos[MAXMEM];
   int lastFree;
 } Arena;
 
