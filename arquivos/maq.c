@@ -310,6 +310,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 
 	ip++;
   }
+}
 
   void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
 	
@@ -342,7 +343,7 @@ void Atualiza(Arena *arena, int ciclos) {
    arena->tempo += 1;
 }
 
-void RemoveMortos(Arena *arena, Team t){
+void RemoveMortos(Arena *arena, Time t){
 	for(int i = 99; i >=0; i--) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
 			arena->exercitos[i] = NULL;
@@ -354,7 +355,7 @@ Bool hasCrystal(Grid g, int i, int j){
 	return (g[i][j].c > 0);
 }
 
-Bool hasEnemy(Grid g, int i, int j, Team friendly){
+Bool hasEnemy(Grid g, int i, int j, Time friendly){
 	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
 		return True;
 	return False;

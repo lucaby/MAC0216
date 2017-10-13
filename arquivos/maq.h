@@ -20,7 +20,7 @@ typedef struct {
   int y;
   Cristais crystals;
   Bool isDead;
-  Team t;
+  Time t;
 } Maquina;
 
 // Por conta de uma dependência circular entre os headers,
@@ -43,11 +43,11 @@ void RemoveExercito(Arena *arena, Maquina *exercito);
 
 void Sistema(Arena *arena , Maquina* chamador, int op);
 
-void RemoveMortos(Arena *arena, Team t);
+void RemoveMortos(Arena *arena, Time t);
 
 Bool hasCrystal(Grid g, int i, int j);
 
-Bool hasEnemy(Grid g, int i, int j, Team friendly);
+Bool hasEnemy(Grid g, int i, int j, Time friendly);
 
 Bool notOcupied(Grid g, int i, int j);
 
@@ -73,7 +73,7 @@ void attackMachine(Arena *A, Maquina *m, Direction d);
 
 Bool hasCrystal(Grid g, int i, int j);
 
-Bool hasEnemy(Grid g, int i, int j, Team friendly);
+Bool hasEnemy(Grid g, int i, int j, Time friendly);
 
 Bool notOcupied(Grid g, int i, int j);
 
