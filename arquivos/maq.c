@@ -170,29 +170,33 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 				switch (opc) {
 					  OPERANDO tmp;
 					case PUSH:
-					  empilha(pil, arg.n);
+					  empilha(pil, arg);
 					  break;
 					case POP:
 					  desempilha(pil).n;
 					  break;
 					case DUP:
-					  tmp = desempilha(pil).n;
+					  tmp = desempilha(pil);
 					  empilha(pil, tmp);
 					  empilha(pil, tmp);
 					  break;
 					case ADD:
-					  empilha(pil, desempilha(pil).n + desempilha(pil).n);
+						tmp.n = desempilha(pil).n + desempilha(pil).n;
+					  	empilha(pil, tmp);
 					  break;
 					case SUB:
-					  tmp = desempilha(pil).n;
-					  empilha(pil, desempilha(pil).n - tmp);
+					  tmp.n = desempilha(pil).n;
+					  tmp.n = desempilha(pil).n - tmp.n;
+					  empilha(pil, tmp);
 					  break;
 					case MUL:
-					  empilha(pil, (desempilha(pil).n)*(desempilha(pil).n));
+					  tmp.n = (desempilha(pil).n)*(desempilha(pil).n);
+					  empilha(pil, tmp);
 					  break;
 					case DIV:
-					  tmp = desempilha(pil).n;
-					  empilha(pil, (desempilha(pil).n)/tmp);
+					  tmp.n = desempilha(pil).n;
+					  tmp.n = desempilha(pil).n/tmp.n;
+					  empilha(pil, tmp);
 					  break;
 					case JMP:
 					  ip = arg.n;
@@ -211,54 +215,81 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 					  break;
 					// Insiro o rbp na pilha de execução logo antes do ip
 					case CALL:
-					  empilha(exec, ip);
-					  empilha(exec, rbp);
-					  rbp = exec->topo;
-					  ip = arg.n;
+						tmp.n = ip;
+					  	empilha(exec, tmp);
+					  	tmp.n = rbp;
+					  	empilha(exec, tmp);
+					  	rbp = exec->topo;
+					  	ip = arg.n;
 					  continue;
 					case RET:
 					// Usuário deve dar FRE antes de chamar RET neste caso
-					  rbp = desempilha(exec);
-					  ip = desempilha(exec);
+					  rbp = desempilha(exec).n;
+					  ip = desempilha(exec).n;
 					  break;
 					case EQ:
-					  if (desempilha(pil).n == desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n == desempilha(pil).n) {
+					  		tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					  	else {
+					  		tmp.n = 0;
+							empilha(pil, tmp);
+						}
 					  break;
 					case GT:
-					  if (desempilha(pil).n < desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n < desempilha(pil).n) {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					  else {
+					  		tmp.n = 0;
+							empilha(pil, tmp);
+						}
 					  break;
 					case GE:
-					  if (desempilha(pil).n <= desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n <= desempilha(pil).n) {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					 	else {
+							tmp.n = 0;
+							empilha(pil, tmp);
+						}
 					  break;
 					case LT:
-					  if (desempilha(pil).n > desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n > desempilha(pil).n) {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					  else {
+					  	tmp.n = 0;
+						empilha(pil, tmp);
+					}
 					  break;
 					case LE:
-					  if (desempilha(pil).n >= desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n >= desempilha(pil).n) {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					  	else {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
 					  break;
 					case NE:
-					  if (desempilha(pil).n != desempilha(pil).n)
-						empilha(pil, 1);
-					  else
-						empilha(pil, 0);
+					  	if (desempilha(pil).n != desempilha(pil).n) {
+							tmp.n = 1;
+							empilha(pil, tmp);
+						}
+					  	else {
+						  	tmp.n = 0;
+							empilha(pil, tmp);
+						}
 					  break;
 					case STO:
-					  m->Mem[arg.n] = desempilha(pil).n;
+
+					  m->Mem[arg.n] = desempilha(pil);
 					  break;
 					case RCL:
 					  empilha(pil,m->Mem[arg.n]);
@@ -270,7 +301,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 					  break;
 					// Casos adicionados 
 					case STL:
-					  tmp = desempilha(pil).n;
+					  tmp.n = desempilha(pil).n;
 					  exec->val[rbp + arg.n] = tmp;
 					  break;
 					case RCE:
@@ -280,16 +311,16 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 					case ALC:
 					// Salvar o valor da memória que foi armazenada para que ela seja liberada depois
 				      exec->topo += arg.n;
-				      empilha(exec, arg.n);
+				      empilha(exec, arg);
 					  break;
 					case FRE:
 					// Test implementation
-					  exec->topo -= desempilha(exec);
+					  exec->topo -= desempilha(exec).n;
 					  break;
 
 					// A partir daqui implementamos as coisas para a Fase II
 					case ATR:
-						tmp = desempilha(pil).n;
+						tmp = desempilha(pil);
 						empilha(pil, tmp);
 						break;
 				}
