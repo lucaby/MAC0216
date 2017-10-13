@@ -34,7 +34,12 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FRE"
+  "FRE",
+  "ATR",
+  "MOVE",
+  "GRAB",
+  "DEPO",
+  "ATTK"
 };
 #else
 #  define D(X)
@@ -343,14 +348,18 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
   }
 }
 
-  void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
-	printf("Dalek built!: %d", arena->lastFree);	
-	for(int i = arena->lastFree; i < 100; i++){
+
+void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
+	printf("Dalek built!: %d", arena->lastFree);
+	int i = arena->lastFree;
+	int n = i + size;
+	while(n < 100 && i < n){
 		Maquina *robo;
-		
 		robo = cria_maquina(p);
 		robo->t = time;
 		arena->exercitos[i] = robo;
+		arena->lastFree++;
+		i++;
 	}
 
 	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
@@ -370,7 +379,8 @@ void RemoveExercito(Arena *arena,Time t) {
 
 void Atualiza(Arena *arena, int ciclos) {
    for(int i = 0; i < arena->lastFree; ++i) {
-      exec_maquina(arena, arena->exercitos[i], ciclos);
+   		if(arena->exercitos[i] != NULL)
+    		exec_maquina(arena, arena->exercitos[i], ciclos);
    }
    arena->tempo += 1;
 }

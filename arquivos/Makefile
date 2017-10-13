@@ -1,6 +1,6 @@
-testAtualiza:  maq.o pilha.o testAtualiza.o
+test:  maq.o pilha.o test.o
 
-all: testAtualiza
+all: test
 
 clean:
-	rm -f  testAtualiza *.o
+	rm -f  test *.o
