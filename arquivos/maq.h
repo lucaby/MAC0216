@@ -1,11 +1,10 @@
-#ifndef MAQ_H
-#define MAQ_H
-
-
 #include "pilha.h"
 #include "structures.h"
 #include "arena.h"
 #include "instr.h"
+
+#ifndef MAQ_H
+#define MAQ_H
 
 #define MAXMEM 100
 
@@ -18,7 +17,7 @@ typedef struct {
   int rbp;
   int x;
   int y;
-  int cristais;
+  int crystals;
   bool isDead;
   Time t;
 } Maquina;
