@@ -22,6 +22,7 @@ void RemoveExercito(Arena *arena,Time t) {
 			arena->exercitos[i] = NULL;
 		}
 	}
+
 	
 }	
 

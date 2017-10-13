@@ -1,12 +1,11 @@
 /* Códigos das instruções */
-
-#include "structures.h"
-
-
+#ifndef INSTR_H
+#define INSTR_H
 #include "structures.h"
 //#include "maq.h"
+
 typedef enum {
-  PUSH,
+  PUSH = 0,
   POP,
   DUP,
   ADD,
@@ -35,62 +34,32 @@ typedef enum {
   ALC,
   FRE,
   SYS,
-  ATR
-} OpCode;
-
-typedef enum {
-  NUM,
+  ATR,
   MOVE,
   GRAB,
   DEPO,
   ATTK
-} Tipo;
+} OpCode;
 
-/*typedef enum {
-  NUM,
+typedef enum {
+  NUM = 0,
   ACAO,
   VAR
-
 } Tipo;
 
 typedef enum {
-  PUNCH,
-  KICK,
-  THROW,
-  SLICE
-} Attack;
-*/
+  WEST = 0, // WEST
+  NWEST, //NORTH WEST
+  NEAST, //NORTH EAST
+  EAST, // EAST
+  SEAST, //SOUTH EAST
+  SWEST //SOUTH WEST
+} direction;
 
-/* } OPERANDO;
-typedef int OPERANDO;*/
-
-typdef struct {
-    typedef enum {
-    W, // WEST
-    NW, //NORTH WEST
-    NE, //NORTH EAST
-    E, // EAST
-    SE, //SOUTH EAST
-    SW //SOUTH WEST
-
-  } direction;
-  /*union {
-    int number;
-    int action;
-    int variable;
-  };*/
-} OPERANDO;
-
-
-/*typedef struct {
-  Tipo t;
-  Maquina **chamador;
-  union {
-    int n;
-    int ac;
-    int v;
-  };
-}OPERANDO;*/
+typedef union {
+  int n;
+  direction d;
+}OPERANDO;
 
 /* Instrução */
 typedef struct {
@@ -98,3 +67,5 @@ typedef struct {
   Tipo t;
   OPERANDO op;
 } INSTR;
+
+#endif

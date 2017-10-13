@@ -1,3 +1,6 @@
+#ifdef PILHA_H
+#define PILHA_H
+
 #include "instr.h"
 
 #define PILMAX 99
@@ -12,3 +15,6 @@ void destroi_pilha(Pilha *p);
 void empilha(Pilha *p, OPERANDO op);
 OPERANDO desempilha(Pilha *p);
 void imprime(Pilha *p, int n);
+
+
+#endif

@@ -1,6 +1,11 @@
+#ifndef MAQ_H
+#define MAQ_H
+
+
 #include "pilha.h"
 #include "structures.h"
 #include "arena.h"
+#include "instr.h"
 
 #define MAXMEM 100
 
@@ -38,6 +43,8 @@ bool hasCrystal(Grid g, int i, int j);
 
 bool hasEnemy(Grid g, int i, int j, Team friendly);
 
-bool notOcupied(Grid g,Grid g, int i, int j);
+bool notOcupied(Grid g, int i, int j);
 
 void directionsSwitch(Maquina *m, Directions d, int *i, int *j);
+
+#endif

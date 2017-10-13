@@ -1,26 +1,28 @@
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
+
+
 typedef enum {
-  false,
+  ESTRADA = 0,
+  RIO,
+  MONTANHA,
+  LAMA,
+  CAMPO
+} Terreno;
+
+typedef enum {
+  false = 0,
   true
 }bool;
 
 typedef enum {
-  BLUE,
+  BLUE = 0,
   RED
-} Team;
-
-
-/*typedef struct {
-  Team time;
-  Maquina[] *exercito;
-}Time;*/
-
-typedef Celula** Grid;
-
+} Time;
 
 typedef struct {
   int n;
 } Cristais;
-
 
 
 typedef struct  {
@@ -29,24 +31,31 @@ typedef struct  {
 } Base; 
 
 typedef struct {
+  bool ocupado;
+  Time time;
+} Ocupacao;
+
+
+
+typedef struct {
   Terreno t;
   Base b;
   Cristais c;
   Ocupacao o;
 } Celula;
 
-typedef enum {
-  ESTRADA,
-  RIO,
-  MONTANHA,
-  LAMA,
-  CAMPO
-} Terreno;
+typedef Celula** Grid;
 
-typedef struct {
-  bool ocupado;
-  Team time;
-} Ocupacao;
+
+
+
+
+
+
+
+
+#endif
+
 
 /* Tipos dos operandos */
 /* no momento, são todos inteiros */

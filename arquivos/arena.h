@@ -1,4 +1,8 @@
+#ifndef STRUCTURES_H
+#define STRUCTURES_H
+
 #include "maq.h"
+#include "structures.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -28,3 +32,5 @@ bool notOcupied(Grid g,Grid g, int i, int j);
 
 void inicializaGrid(Arena *arena, int nrows, int ncols);
 
+
+#endif
