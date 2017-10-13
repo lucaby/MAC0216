@@ -47,7 +47,6 @@ char *CODES[] = {
 #define rbp (m->rbp)
 #define x (m->x)
 #define y (m->y)
-#define crystals (m->crystals)
 
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -66,7 +65,7 @@ Maquina *cria_maquina(INSTR *p) {
   rbp = 0;
   x = 0;
   y = 0;
-  crystals = 0;
+  m->crystals = 0;
   return m;
 }
 
@@ -119,7 +118,7 @@ void grabCrystal(Arena *A, Maquina *m, Direction d){
 	directionsSwitch(m, d, &i, &j);
 	if(hasCrystal(A->grid, i, j)) {
 		A->grid[i][j].c--;
-		m->crystals++;
+		(m->crystals)++;
 	}
 }
 
@@ -315,10 +314,10 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
   void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
 	
 	for(int i = arena->lastFree; i < 100; i++){
-		Maquina robo;
+		Maquina *robo;
 		robo = cria_maquina(p);
 		robo->t = time;
-		arena->exercitos[i] = robo;
+		arena->exercitos[i] = *robo;
 	}
 
 	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
@@ -338,12 +337,12 @@ void RemoveExercito(Arena *arena,Time t) {
 
 void Atualiza(Arena *arena, int ciclos) {
    for(int i = 0; i < 100; ++i) {
-      exec_maquina(arena->exercitos[i], ciclos);
+      exec_maquina(arena, &arena->exercitos[i], ciclos);
    }
    arena->tempo += 1;
 }
 
-void RemoveMortos(Arena *arena, Time t){
+void RemoveMortos(Arena *arena, Time t) {
 	for(int i = 99; i >=0; i--) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
 			arena->exercitos[i] = NULL;
@@ -351,41 +350,41 @@ void RemoveMortos(Arena *arena, Time t){
 	}
 }
 
-Bool hasCrystal(Grid g, int i, int j){
+Bool hasCrystal(Grid g, int i, int j) {
 	return (g[i][j].c > 0);
 }
 
-Bool hasEnemy(Grid g, int i, int j, Time friendly){
+Bool hasEnemy(Grid g, int i, int j, Time friendly) {
 	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
 		return True;
 	return False;
 }
 
 
-Bool notOcupied(Grid g, int i, int j){
+Bool notOcupied(Grid g, int i, int j) {
 	return !g[i][j].o.ocupado;
 }
 
 void inicializaGrid(Arena *arena, int nrows, int ncols) {
 	arena->grid = malloc(nrows * sizeof(Grid *));
 	for(int i = 0; i < nrows; i++) {
-	    arena->grid[i] = malloc(ncolumns * sizeof(Grid));
+	    arena->grid[i] = malloc(ncols * sizeof(Grid));
 	    if(arena->exercitos[i] == NULL) {
 	        fprintf(stderr, "out of memory\n");
-	        exit or return
+	        return;
 	    }
 	}
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
-				arena->grid[i][j].o = False;
-				arena->grid[i][j].n = i+j;
-			}
+				arena->grid[i][j].o.ocupado = False;
+			}			
 		}
+
+		
 		else {
 			for(int i = 0; i < ncols; i += 2) {
-				arena->grid[i][j].o = False;
-				arena->grid[i][j].n = i+j;
+				arena->grid[i][j].o.ocupado = False;
 				
 				//TODO: inicializar as outras coisas
 				//arena->exercitos[i][j].base
@@ -395,3 +394,4 @@ void inicializaGrid(Arena *arena, int nrows, int ncols) {
 		}
 	}
 }
+

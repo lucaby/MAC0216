@@ -37,9 +37,9 @@ typedef struct {
 
 void Atualiza(Arena *arena, int ciclos);
 
-void InsereExercito(Arena *arena, Maquina *exercito);
+void InsereExercito(Arena *arena, int size, INSTR *p, int time);
 
-void RemoveExercito(Arena *arena, Maquina *exercito);
+void RemoveExercito(Arena *arena, Time t);
 
 void Sistema(Arena *arena , Maquina* chamador, int op);
 
