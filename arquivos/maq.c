@@ -34,7 +34,12 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FRE"
+  "FRE",
+  "ATR",
+  "MOVE",
+  "GRAB",
+  "DEPO",
+  "ATTK"
 };
 #else
 #  define D(X)
@@ -342,10 +347,6 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 	ip++;
   }
 }
-
-
-
-
 
 
 
