@@ -1,7 +1,7 @@
 /* Códigos das instruções */
 #ifndef INSTR_H
 #define INSTR_H
-#include "structures.h"
+//#include "structures.h"
 //#include "maq.h"
 
 typedef enum {
@@ -54,12 +54,13 @@ typedef enum {
   EAST, // EAST
   SEAST, //SOUTH EAST
   SWEST //SOUTH WEST
-} direction;
+} Direction;
 
 typedef union {
   int n;
-  direction d;
+  Direction d;
 }OPERANDO;
+
 
 /* Instrução */
 typedef struct {

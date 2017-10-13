@@ -1,4 +1,4 @@
-maq: teste_inicializaGrid.o instr.o structures.o pilha.o arena.o maq.o
+maq: teste_inicializaGrid.o instr.o structures.o pilha.o maq.o
 clean:
 	rm -f  maq *.o
 

@@ -1,7 +1,5 @@
 #include "pilha.h"
 #include "structures.h"
-#include "arena.h"
-#include "instr.h"
 
 #ifndef MAQ_H
 #define MAQ_H
@@ -17,26 +15,32 @@ typedef struct {
   int rbp;
   int x;
   int y;
-  int crystals;
+  Cristais crystals;
   bool isDead;
-  Time t;
+  Team t;
 } Maquina;
 
-Maquina *cria_maquina(INSTR *p);
+// Por conta de uma dependência circular entre os headers,
+// resolvemos colocar ambas as structs no mesmo header
 
-void destroi_maquina(Maquina *m);
+typedef struct {
+  Grid grid;
+  int tempo;
+  Maquina* exercitos;
+  int lastFree;
+} Arena;
 
-void exec_maquina(Maquina *m, int n);
+// Funções da struct Arena
 
-void sysCall(Maquina *m, Tipo t, OPERANDO op);
+void Atualiza(Arena *arena, int ciclos);
 
-void moveMachine(Arena *A, Maquina *m, Directions d);
+void InsereExercito(Arena *arena, Maquina *exercito);
 
-void grabCrystal(Arena *A, Maquina *m, Directions d);
+void RemoveExercito(Arena *arena, Maquina *exercito);
 
-void depositCrystal(Arena *A, Maquina *m, Directions d);
+void Sistema(Arena *arena , Maquina* chamador, int op);
 
-void attackMachine(Arena *A, Maquina *m, Directions d);
+void RemoveMortos(Arena *arena, Team t);
 
 bool hasCrystal(Grid g, int i, int j);
 
@@ -44,6 +48,32 @@ bool hasEnemy(Grid g, int i, int j, Team friendly);
 
 bool notOcupied(Grid g, int i, int j);
 
-void directionsSwitch(Maquina *m, Directions d, int *i, int *j);
+void inicializaGrid(Arena *arena, int nrows, int ncols);
+
+// Funções da struct Maquina
+
+Maquina *cria_maquina(INSTR *p);
+
+void destroi_maquina(Maquina *m);
+
+void exec_maquina(Arena *A, Maquina *m, int n);
+
+void sysCall(Arena *A, Maquina *m, OpCode t, Direction op);
+
+void moveMachine(Arena *A, Maquina *m, Direction d);
+
+void grabCrystal(Arena *A, Maquina *m, Direction d);
+
+void depositCrystal(Arena *A, Maquina *m, Direction d);
+
+void attackMachine(Arena *A, Maquina *m, Direction d);
+
+bool hasCrystal(Grid g, int i, int j);
+
+bool hasEnemy(Grid g, int i, int j, Team friendly);
+
+bool notOcupied(Grid g, int i, int j);
+
+void directionsSwitch(Maquina *m, Direction d, int *i, int *j);
 
 #endif

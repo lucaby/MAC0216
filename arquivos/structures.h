@@ -18,21 +18,19 @@ typedef enum {
 typedef enum {
   BLUE = 0,
   RED
-} Time;
+} Team;
 
-typedef struct {
-  int n;
-} Cristais;
+typedef int Cristais;
 
 
 typedef struct  {
   int isBase;
-  Time team;
+  Team team;
 } Base; 
 
 typedef struct {
   bool ocupado;
-  Time time;
+  Team time;
 } Ocupacao;
 
 

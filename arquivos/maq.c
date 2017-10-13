@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "structures.h"
-#include "pilha.h"
 #include "maq.h"
-#include "instr.h"
-#include "arena.h"
+
 
 /* #define DEBUG */
 
@@ -52,8 +49,6 @@ char *CODES[] = {
 #define x (m->x)
 #define y (m->y)
 #define crystals (m->crystals)
-#define Grid (Arena->grid)
-#define Direction (OPERANDO.direction)
 
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -84,37 +79,37 @@ void destroi_maquina(Maquina *m) {
 
 void directionsSwitch(Maquina *m, Direction d, int *i, int *j){
 	switch(d) {
-		case W:
+		case WEST:
 			*i = x - 2;
 			*j = y;
 			break;
-		case NW:
+		case NWEST:
 			*i = x - 1;
 			*j = y - 1;
 			break;
-		case NE:
+		case NEAST:
 			*i = x + 1;
 			*j = y - 1;
 			break;
-		case E:
+		case EAST:
 			*i = x + 2;
 			*j = y;
 			break;
-		case SE:
+		case SEAST:
 			*i = x + 1;
 			*j = y + 1;
 			break;
-		case SW:
+		case SWEST:
 			*i = x - 1;
 			*j = y + 1;
 			break;
 	}
 }
 
-void moveMachine(Arena *A, Maquina *m, DIrection d){
+void moveMachine(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
-	if(notOcupied(grid, i, j)){
+	if(notOcupied(A->grid, i, j)){
 		x += i;
 		y += j;
 	}
@@ -123,8 +118,8 @@ void moveMachine(Arena *A, Maquina *m, DIrection d){
 void grabCrystal(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
-	if(hasCrystal(grid, i, j)){
-		grid[i][j]--;
+	if(hasCrystal(A->grid, i, j)){
+		A->grid[i][j].c--;
 		m->crytals++;
 	}
 }
@@ -132,7 +127,7 @@ void grabCrystal(Arena *A, Maquina *m, Direction d){
 void depositCrystal(Arena *A, Maquina *m, Direction d) {
 	int i, j;
 	directionsSwitch(m, d, &i, &j);
-	grid[i][j]++;
+	A->grid[i][j].c++;
 }
 
 void attackMachine(Arena *A, Maquina *m, Direction d){
@@ -143,24 +138,24 @@ void attackMachine(Arena *A, Maquina *m, Direction d){
 }
 
 
-void sysCall(Maquina *m, OpCode t, direction op){
+void sysCall(Arena *A, Maquina *m, OpCode t, Direction op){
 	switch(t) {
 		case MOVE:
-			moveMachine(m, op);
+			moveMachine(A, m, op);
 			break;
 		case GRAB:
-			grabCrystal(m, op);
+			grabCrystal(A, m, op);
 			break;
 		case DEPO:
-			depositCrystal(m, op);
+			depositCrystal(A, m, op);
 			break;
 		case ATTK:
-			attackMachine(m, op);
+			attackMachine(A, m, op);
 			break;
 	}
 }
 
-void exec_maquina(Maquina *m, int n) {
+void exec_maquina(Arena *A, Maquina *m, int n) {
   int i;
   exec->topo = 0;
   pil->topo = 0;
@@ -303,7 +298,7 @@ void exec_maquina(Maquina *m, int n) {
 				break;
 			case ACAO:
 
-				sysCall(m, opc, arg.d);
+				sysCall(A, m, opc, arg.d);
 				break;
 			
 			case VAR:
@@ -316,3 +311,87 @@ void exec_maquina(Maquina *m, int n) {
 
 	ip++;
   }
+
+  void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
+	
+	for(int i = arena->lastFree; i < 100; i++){
+		Maquina robo;
+		robo = cria_maquina(p);
+		robo->t = time;
+		arena->exercitos[i] = robo;
+	}
+
+	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
+}
+
+
+//Implement quicksort partition. Assim nao precisamos nos preocupar em retirar os robos
+void RemoveExercito(Arena *arena,Time t) {
+	for(int i = 99; i >=0; i--) {
+		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
+			arena->exercitos[i] = NULL;
+		}
+	}
+
+	
+}	
+
+void Atualiza(Arena *arena, int ciclos) {
+   for(int i = 0; i < 100; ++i) {
+      exec_maquina(arena->exercitos[i], ciclos);
+   }
+   arena->tempo += 1;
+}
+
+void RemoveMortos(Arena *arena, Team t){
+	for(int i = 99; i >=0; i--) {
+		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
+			arena->exercitos[i] = NULL;
+		}
+	}
+}
+
+bool hasCrystal(Grid g, int i, int j){
+	return (g[i][j].c > 0);
+}
+
+bool hasEnemy(Grid g, int i, int j, Team friendly){
+	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
+		return true;
+	return false;
+}
+
+
+bool notOcupied(Grid g, int i, int j){
+	return !g[i][j].o.ocupado;
+}
+
+void inicializaGrid(Arena *arena, int nrows, int ncols) {
+	arena->grid = malloc(nrows * sizeof(Grid *));
+	for(int i = 0; i < nrows; i++) {
+	    arena->grid[i] = malloc(ncolumns * sizeof(Grid));
+	    if(arena->exercitos[i] == NULL) {
+	        fprintf(stderr, "out of memory\n");
+	        exit or return
+	    }
+	}
+	for(int j = 0; j < nrows; j++) {
+		if (j % 2 == 0) {
+			for(int i = 1; i < ncols; i += 2) {
+				arena->grid[i][j].o = false;
+				arena->grid[i][j].n = i+j;
+			}
+		}
+		else {
+			for(int i = 0; i < ncols; i += 2) {
+				arena->grid[i][j].o = false;
+				arena->grid[i][j].n = i+j;
+				
+				//TODO: inicializar as outras coisas
+				//arena->exercitos[i][j].base
+				//arena->exercitos[i][j].
+
+			}
+		}
+	}
+}
