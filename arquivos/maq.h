@@ -71,12 +71,6 @@ void depositCrystal(Arena *A, Maquina *m, Direction d);
 
 void attackMachine(Arena *A, Maquina *m, Direction d);
 
-Bool hasCrystal(Grid g, int i, int j);
-
-Bool hasEnemy(Grid g, int i, int j, Time friendly);
-
-Bool notOcupied(Grid g, int i, int j);
-
 void directionsSwitch(Maquina *m, Direction d, int *i, int *j);
 
 #endif
