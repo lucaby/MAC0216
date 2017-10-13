@@ -344,8 +344,10 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 }
 
   void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
+	printf("Dalek built!: %d", arena->lastFree);	
 	for(int i = arena->lastFree; i < 100; i++){
 		Maquina *robo;
+		
 		robo = cria_maquina(p);
 		robo->t = time;
 		arena->exercitos[i] = robo;
@@ -396,7 +398,10 @@ Bool notOcupied(Grid g, int i, int j) {
 	return !g[i][j].o.ocupado;
 }
 
-void inicializaGrid(Arena *arena, int nrows, int ncols) {
+void inicializaArena(Arena *arena, int nrows, int ncols) {
+	arena->tempo = 0;
+	arena->lastFree = 0;
+	
 	arena->grid = malloc(nrows * sizeof(Celula *));
 	for(int i = 0; i < nrows; i++) {
 	    arena->grid[i] = (Celula *) malloc(ncols * sizeof(Celula));

@@ -2,7 +2,7 @@
 
 int main() {
 	Arena *a;
-	inicializaGrid(a, 10, 10);
+	inicializaArena(a, 10, 10);
 	int nrows = 10;
 	int ncols = 10;
 

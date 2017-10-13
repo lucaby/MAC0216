@@ -51,7 +51,7 @@ Bool hasEnemy(Grid g, int i, int j, Time friendly);
 
 Bool notOcupied(Grid g, int i, int j);
 
-void inicializaGrid(Arena *arena, int nrows, int ncols);
+void inicializaArena(Arena *arena, int nrows, int ncols);
 
 // Funções da struct Maquina
 
