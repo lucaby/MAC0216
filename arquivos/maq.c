@@ -69,8 +69,9 @@ Maquina *cria_maquina(INSTR *p) {
   return m;
 }
 
-void destroi_maquina(Maquina *m) {
+void destroi_maquina(Maquina *m, Arena *A) {
   free(m);
+  free(A);
 }
 
 /* Novas funções para as chamadas de sistema */
@@ -158,8 +159,8 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
   exec->topo = 0;
   pil->topo = 0;
   for (i = 0; i < n; i++) {
-	OpCode   opc = prg[ip].instr;
 	Tipo    tipo = prg[ip].t;
+	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
 

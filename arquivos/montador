@@ -32,15 +32,15 @@ while l:
         tabsim[label]=ip
         keys.pop(0)
     if len(keys) > 0:
-        op = keys.pop(0)
-    if len(keys) > 0:
         tipo = keys.pop(0)
+    if len(keys) > 0:
+        op = keys.pop(0)
     if len(keys) > 0:
         arg = keys.pop(0)
         if arg in tabsim:
             arg = tabsim[arg]
     if op != "":
-        print("  {%s, %s, %s},"%(op,tipo,arg))
+        print("  {%s, %s, %s},"%(tipo, op,arg))
     else:
         print()
     l = stdin.readline()
@@ -54,9 +54,10 @@ n = 10000
 
 #Criacao da main
 print("int main(int ac, char **av) {")
+print("  Arena *a;")
 print("  Maquina *maq = cria_maquina(prog);")
-print("  exec_maquina(maq, {});".format(n))
-print("  destroi_maquina(maq);")
+print("  exec_maquina(a, maq, {});".format(n))
+print("  destroi_maquina(maq, a);")
 print("  return 0;")
 print("}")
 

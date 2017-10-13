@@ -1,5 +1,4 @@
-maq: instr.h maq.h structures.h pilha.h maq.c pilha.c
-	cc    -c   maq.c pilha.c
+rFact: maq.o pilha.o rFact.o
 clean:
-	rm -f  maq *.o
+	rm -f  rFact *.o
 

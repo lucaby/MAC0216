@@ -64,8 +64,8 @@ typedef union {
 
 /* Instrução */
 typedef struct {
-  OpCode instr;
   Tipo t;
+  OpCode instr;
   OPERANDO op;
 } INSTR;
 

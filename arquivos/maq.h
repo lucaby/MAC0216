@@ -57,7 +57,7 @@ void inicializaGrid(Arena *arena, int nrows, int ncols);
 
 Maquina *cria_maquina(INSTR *p);
 
-void destroi_maquina(Maquina *m);
+void destroi_maquina(Maquina *m, Arena *A);
 
 void exec_maquina(Arena *A, Maquina *m, int n);
 
