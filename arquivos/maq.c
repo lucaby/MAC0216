@@ -317,7 +317,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 		Maquina *robo;
 		robo = cria_maquina(p);
 		robo->t = time;
-		arena->exercitos[i] = *robo;
+		arena->exercitos[i] = robo;
 	}
 
 	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
@@ -337,7 +337,7 @@ void RemoveExercito(Arena *arena,Time t) {
 
 void Atualiza(Arena *arena, int ciclos) {
    for(int i = 0; i < 100; ++i) {
-      exec_maquina(arena, &arena->exercitos[i], ciclos);
+      exec_maquina(arena, arena->exercitos[i], ciclos);
    }
    arena->tempo += 1;
 }
