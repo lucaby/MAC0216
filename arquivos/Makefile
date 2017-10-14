@@ -1,6 +1,6 @@
-testeInicializaGrid:  maq.o arena.o pilha.o testeInicializaGrid.o
+test:  maq.o arena.o pilha.o test.o
 
-all: testeInicializaGrid
+all: test
 
 clean:
-	rm -f  testeInicializaGrid *.o
+	rm -f  test *.o

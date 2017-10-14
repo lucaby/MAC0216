@@ -105,53 +105,76 @@ void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
 	}
 }
 
-void moveMachine(Arena *A, Maquina *m, Direction d){
+OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
 	int i, j;
+	OPERANDO result;
+	result.n = False;
 	directionsSwitch(m, d, &i, &j);
 	if(notOcupied(A->grid, i, j)){
 		x += i;
 		y += j;
+		result.n = True;
 	}
+	return result;
 }
 
-void grabCrystal(Arena *A, Maquina *m, Direction d){
+OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d){
 	int i, j;
+	OPERANDO result;
+	result.n = False;
 	directionsSwitch(m, d, &i, &j);
 	if(hasCrystal(A->grid, i, j)) {
 		A->grid[i][j].c--;
 		(m->crystals)++;
+		result.n = True;
 	}
+	return result;
 }
 
-void depositCrystal(Arena *A, Maquina *m, Direction d) {
+OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d) {
 	int i, j;
+	OPERANDO result;
+	result.n = False;
 	directionsSwitch(m, d, &i, &j);
-	A->grid[i][j].c++;
+	if(m->crystals > 0){
+		A->grid[i][j].c++;
+		m->crystals--;
+		result.n = True;
+	}
+	return result;
 }
 
-void attackMachine(Arena *A, Maquina *m, Direction d) {
+OPERANDO attackMachine(Arena *A, Maquina *m, Direction d) {
 	int i, j;
+	OPERANDO result;
+	result.n = False;
 	directionsSwitch(m, d, &i, &j);
-	if(hasEnemy(A->grid, i, j,m->t))
+	if(hasEnemy(A->grid, i, j,m->t)){
 		printf("EXTERMINATE!");
+		result.n = True;
+	}
+	return result;
+
 }
 
 
-void sysCall(Arena *A, Maquina *m, OpCode t, Direction op){
+OPERANDO sysCall(Arena *A, Maquina *m, OpCode t, Direction op){
+	OPERANDO result;
 	switch(t) {
 		case MOVE:
-			moveMachine(A, m, op);
+			result = moveMachine(A, m, op);
 			break;
 		case GRAB:
-			grabCrystal(A, m, op);
+			result = grabCrystal(A, m, op);
 			break;
 		case DEPO:
-			depositCrystal(A, m, op);
+			result = depositCrystal(A, m, op);
 			break;
 		case ATTK:
-			attackMachine(A, m, op);
+			result = attackMachine(A, m, op);
 			break;
 	}
+	return result;
 }
 
 void exec_maquina(Arena *A, Maquina *m, int n) {
@@ -328,7 +351,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 				break;
 			case ACAO:
 
-				sysCall(A, m, opc, arg.d);
+				empilha(pil, sysCall(A, m, opc, arg.d));
 				break;
 			
 			case VAR:

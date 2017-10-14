@@ -1,6 +1,7 @@
 #include "arena.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->lastFree = 0;
@@ -25,12 +26,11 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	}
 }
 
-  void InsereExercito(Arena *arena, int size, INSTR *p, int time) {	
+  void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {	
 	for(int i = arena->lastFree; i < 100; i++){
 		Maquina *robo;
-		
 		robo = cria_maquina(p);
-		robo->t = time;
+		robo->t = team;
 		arena->exercitos[i] = robo;
 	}
 
@@ -69,7 +69,7 @@ Bool hasCrystal(Grid g, int i, int j) {
 }
 
 Bool hasEnemy(Grid g, int i, int j, Time friendly) {
-	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
+	if(g[i][j].o.ocupado && g[i][j].o.team != friendly)
 		return True;
 	return False;
 }

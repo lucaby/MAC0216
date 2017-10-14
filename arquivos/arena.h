@@ -30,7 +30,7 @@ typedef struct {
 
 void Atualiza(Arena *arena, int ciclos);
 
-void InsereExercito(Arena *arena, int size, INSTR *p, int time);
+void InsereExercito(Arena *arena, int size, INSTR *p, Time team);
 
 void RemoveExercito(Arena *arena, Time t);
 
@@ -54,15 +54,15 @@ void destroi_maquina(Maquina *m, Arena *A);
 
 void exec_maquina(Arena *A, Maquina *m, int n);
 
-void sysCall(Arena *A, Maquina *m, OpCode t, Direction op);
+OPERANDO sysCall(Arena *A, Maquina *m, OpCode t, Direction op);
 
-void moveMachine(Arena *A, Maquina *m, Direction d);
+OPERANDO moveMachine(Arena *A, Maquina *m, Direction d);
 
-void grabCrystal(Arena *A, Maquina *m, Direction d);
+OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d);
 
-void depositCrystal(Arena *A, Maquina *m, Direction d);
+OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d);
 
-void attackMachine(Arena *A, Maquina *m, Direction d);
+OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
 
 void directionsSwitch(Maquina *m, Direction d, int *i, int *j);
 

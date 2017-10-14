@@ -25,12 +25,12 @@ typedef int Cristais;
 
 typedef struct  {
   int isBase;
-  Time time;
+  Time team;
 } Base; 
 
 typedef struct {
   Bool ocupado;
-  Time time;
+  Time team;
 } Ocupacao;
 
 
