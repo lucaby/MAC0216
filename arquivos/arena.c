@@ -13,7 +13,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
-				
+				//arena->grid[i][j].o
 			}			
 		}
 
