@@ -40,10 +40,10 @@ int main(){
     for(int j = 0; j < 100; j++){
       printf("Terreno: %d", battlefield->grid[i][j].t);
       printf("Base Y/N: %d", battlefield->grid[i][j].b.isBase);
-      printf("Base WHOM: %d", battlefield->grid[i][j].b.time);
+      printf("Base WHOM: %d", battlefield->grid[i][j].b.team);
       printf("Cristais: %d", battlefield->grid[i][j].c);
       printf("Ocupado Y/N: %d", battlefield->grid[i][j].o.ocupado);
-      printf("Ocupado WHO: %d", battlefield->grid[i][j].o.time);
+      printf("Ocupado WHO: %d", battlefield->grid[i][j].o.team);
 
 
       printf();

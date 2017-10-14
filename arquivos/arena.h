@@ -4,6 +4,8 @@
 #include "pilha.h"
 #include "structures.h"
 #include "instr.h"
+#include <stdlib.h>
+#include <time.h>
 //#include "maq.h"
 
 typedef struct {
@@ -21,16 +23,15 @@ typedef struct {
 } Maquina;
 
 typedef struct {
-  Celula** grid;
+  Grid grid;
   int tempo;
   Maquina* exercitos[MAXMEM];
   int lastFree;
 } Arena;
 
-
 void Atualiza(Arena *arena, int ciclos);
 
-void InsereExercito(Arena *arena, int size, INSTR *p, int time);
+void InsereExercito(Arena *arena, int size, INSTR *p, int team);
 
 void RemoveExercito(Arena *arena, Time t);
 
