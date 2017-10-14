@@ -15,6 +15,7 @@ typedef enum {
   True
 }Bool;
 
+// Os tipos a seguir são referentes aos componentes de uma célula do Grid hexagonal
 typedef enum {
   BLUE = 0,
   RED
@@ -34,7 +35,7 @@ typedef struct {
 } Ocupacao;
 
 
-
+// Uma célula, ou um hexagono do nosso grid, possui os seguintes componentes:
 typedef struct {
   Terreno t;
   Base b;

@@ -2,7 +2,7 @@
 #include <stdio.h>
 int main() {
 
-	Arena *a = malloc(sizeof(Arena));;
+	Arena *a = malloc(sizeof(Arena));
 	inicializaArena(a, 10, 10);
 	int nrows = 10;
 	int ncols = 10;

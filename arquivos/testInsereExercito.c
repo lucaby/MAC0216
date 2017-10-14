@@ -28,7 +28,7 @@ INSTR prog[] = {
 };
 
 int main(){
-  Arena* battlefield;
+  Arena* battlefield = malloc(sizeof(Arena));
   printf("Arena feita.\n");
 
   inicializaArena(battlefield, 50, 50); 

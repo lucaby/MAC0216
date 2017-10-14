@@ -3,6 +3,12 @@
 #include <stdlib.h>
 
 void inicializaArena(Arena *arena, int nrows, int ncols) {
+	/*(arena, #linhas, #coluna) -> void
+	Aloca dinamicamente uma matrix de células de tamanho nrowsxncols.
+	Para fins de simplicidade incializamos "aleatoriamente" algumas
+	células com cristais. Além disso, colocamos bases dos times, além de
+	indicar que as células estão desocupadas. Esta função deve sempre ser
+	chamada no início do jogo.*/
 	arena->tempo = 0;
 	arena->lastFree = 0;
 	srand(time(NULL));
@@ -58,7 +64,9 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 }
 
 
-  void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {	
+  void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
+  	/*(arena, size, instruções, time) -> void
+  	Insere no vetor de máquinas da Arena uma quantidade size de robôs de um time team*/
 	for(int i = arena->lastFree; i < 100; i++){
 		Maquina *robo;
 		robo = cria_maquina(p);
@@ -71,7 +79,10 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 
 
 //Implement quicksort partition. Assim nao precisamos nos preocupar em retirar os robos
-void RemoveExercito(Arena *arena,Time t) {
+void RemoveExercito(Arena *arena, Time t) {
+	/*(arena, time) -> 
+	Dado um time t, descarta todos os robôs daquele time no vetor de máquinas da arena.
+	Depois reoganiza os robôs para liberar espaço no vetor de robôs.*/
 	for(int i = 99; i >=0; i--) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
 			arena->exercitos[i] = NULL;
@@ -82,19 +93,28 @@ void RemoveExercito(Arena *arena,Time t) {
 }	
 
 void Atualiza(Arena *arena, int ciclos) {
-   for(int i = 0; i < arena->lastFree; ++i) {
+	/*(arena, ciclos) -> 
+	Executa, dado um time t, um número ciclos de vezes o vetor de instruções dos
+	robôs daquele time.*/
+    for(int i = 0; i < arena->lastFree; ++i) {
       exec_maquina(arena, arena->exercitos[i], ciclos);
-   }
-   arena->tempo += 1;
+    }
+    arena->tempo += 1;
 }
 
 void RemoveMortos(Arena *arena, Time t) {
+	/*(arena, time) -> 
+	Remove, dado um time t, do vetor de máquinas da arena, apenas aqueles que
+	estão mortos. Ou seja, sua variável isDead == true.*/
 	for(int i = 99; i >=0; i--) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
 			arena->exercitos[i] = NULL;
 		}
 	}
 }
+
+// Funções simples para uma leitura melhor de funções anteriores
+// Em especial as chamadas de sistema
 
 Bool hasCrystal(Grid g, int i, int j) {
 	return (g[i][j].c > 0);

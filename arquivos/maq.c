@@ -77,6 +77,10 @@ void destroi_maquina(Maquina *m, Arena *A) {
 /* Novas funções para as chamadas de sistema */
 
 void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
+	/* (maquina, direção, i, j) -> null
+	Dada uma Maquina m na posição (x,y), inserimos em i e j a 
+	posição correspondente a direção que o usuário chamou o sistema
+	para efetuar a ação. */
 	switch(d) {
 		case WEST:
 			*i = x - 2;
@@ -106,6 +110,11 @@ void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
 }
 
 OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
+	/*(arena, maquina, direção) -> operando (true or false)
+	Quando o usuário chama o sistema para efetuar um movimento
+	esta função verifica se a posição requerida está livre para a ação
+	e muda a posição do robô em caso afirmativo. Devolve um operando 
+	tal qual sua parte inteira indica se a ação conseguiu ser realizada ou não.*/
 	int i, j;
 	OPERANDO result;
 	result.n = False;
@@ -119,6 +128,12 @@ OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
 }
 
 OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d){
+	/*(arena, maquina, direção) -> operando (true or false)
+	Quando o usuário chama o sistema para pegar um cristal que está na
+	posição referente a direção d, esta função verifica se há cristais
+	na posição e atualiza a quantidade de cristais do robô e do local caso
+	afirmativo. Devolve um operando que tem a  parte inteira indicando
+	se a ação conseguiu ser realizada ou não.*/
 	int i, j;
 	OPERANDO result;
 	result.n = False;
@@ -132,6 +147,11 @@ OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d){
 }
 
 OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d) {
+	/*(arena, maquina, direção) -> operando (true or false)
+	Neste caso, dada a chamada de sistema para depositar um cristal numa 
+	direção d, é verificado se o robô possui algum cristal. Caso tenha, atualizamos
+	a quantidade de cristais do robô e da posição do grid onde foi depositado.
+	Devolvemos um OPERANDO indicando se a operação foi bem sucedida.*/
 	int i, j;
 	OPERANDO result;
 	result.n = False;
@@ -145,6 +165,10 @@ OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d) {
 }
 
 OPERANDO attackMachine(Arena *A, Maquina *m, Direction d) {
+	/*(arena, maquina, direção) -> operando (true or false)
+	Por simplicidade quanto ao sistema de hit points dos robôs, seus respectivos
+	pontos de ataque e defesa, apenas imprimimos uma mensagem na saída padrão
+	indicando que o ataque foi realizado. Devolvemos também a indicação desse resultado.*/
 	int i, j;
 	OPERANDO result;
 	result.n = False;
@@ -159,6 +183,9 @@ OPERANDO attackMachine(Arena *A, Maquina *m, Direction d) {
 
 
 OPERANDO sysCall(Arena *A, Maquina *m, OpCode t, Direction op){
+	/*(arena, maquina, ação, direção) -> operando (true or false)
+	Apenas delega, dependendo da ação (OpCode t) qual das funções
+	devem ser chamadas e retorna o resultado.*/
 	OPERANDO result;
 	switch(t) {
 		case MOVE:
@@ -338,19 +365,24 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 				      empilha(exec, arg);
 					  break;
 					case FRE:
-					// Test implementation
 					  exec->topo -= desempilha(exec).n;
 					  break;
 
 					// A partir daqui implementamos as coisas para a Fase II
 					case ATR:
+					/*Pega o OPERANDO do topo da pilha e empilha um OPERANDO com
+					o atributo de número arg desse OPERANDO.*/
 						tmp = desempilha(pil);
+					// Dependendo do argumento (0, 1, 2, 3) devemos empilhar operandos
+					// de maneiras diferentes. Da mesma forma, o PRN deve mudar
+					// para se adequar ao print de operandos.
 						empilha(pil, tmp);
 						break;
 				}
 				break;
 			case ACAO:
-
+				/*Chama a função sysCall, que delega uma determinada ação opc,
+				e empilha o resultado desta ação (se foi realizada ou não).*/
 				empilha(pil, sysCall(A, m, opc, arg.d));
 				break;
 			
