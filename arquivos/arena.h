@@ -21,7 +21,7 @@ typedef struct {
 } Maquina;
 
 typedef struct {
-  Grid grid;
+  Celula** grid;
   int tempo;
   Maquina* exercitos[MAXMEM];
   int lastFree;

@@ -1,6 +1,6 @@
-testRemoveMortos:  maq.o arena.o pilha.o testRemoveMortos.o
+testeInicializaGrid:  maq.o arena.o pilha.o testeInicializaGrid.o
 
-all: testRemoveMortos
+all: testeInicializaGrid
 
 clean:
-	rm -f  testRemoveMortos *.o
+	rm -f  testeInicializaGrid *.o

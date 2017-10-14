@@ -5,9 +5,10 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->lastFree = 0;
 	
-	arena->grid = malloc(nrows * sizeof(Celula *));
-	for(int i = 0; i < nrows; i++) {
-	    arena->grid[i] = (Celula *) malloc(ncols * sizeof(Celula));
+	arena->grid = (Celula **) malloc(sizeof(Celula *) * ncols);
+	int i;
+	for(i = 0; i < ncols; i++) {
+	    arena->grid[i] = (Celula *) malloc(sizeof(Celula) * nrows);
 	}
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
@@ -16,8 +17,6 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 				//arena->grid[i][j].o
 			}			
 		}
-
-		
 		else {
 			for(int i = 0; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
