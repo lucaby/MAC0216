@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "maq.h"
-
+#include "arena.h"
 INSTR prog[] = {
 
 
@@ -31,7 +31,7 @@ int main(){
   Arena* battlefield;
   printf("Arena feita.\n");
 
-  inicializaGrid(battlefield, 50, 50); 
+  inicializaArena(battlefield, 50, 50); 
   printf("Grid Inicializado.\n");
 
   InsereExercito(battlefield, 10, prog, BLUE);
@@ -43,13 +43,13 @@ int main(){
   for(int i = 0; i < 100; i++)
       Atualiza(battlefield, 100);
 
-  for(int i = 0; i < 20; i + 2)
-      battlefield->exercitos[i]->isDead = true;
+  for(int i = 0; i < 20; i += 2)
+      battlefield->exercitos[i]->isDead = True;
 
   RemoveMortos(battlefield, BLUE);
   RemoveMortos(battlefield, RED);
 
-  for(int i = 0; i < 20; i + 2){
+  for(int i = 0; i < 20; i += 2){
       if(battlefield->exercitos[i] == NULL)
         printf("Sucesso, bixo.\n");
       else

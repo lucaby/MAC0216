@@ -1,5 +1,6 @@
 #include "arena.h"
 #include <stdio.h>
+#include <stdlib.h>
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->lastFree = 0;
@@ -12,6 +13,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
+				
 			}			
 		}
 
@@ -19,11 +21,6 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 		else {
 			for(int i = 0; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
-				
-				//TODO: inicializar as outras coisas
-				//arena->exercitos[i][j].base
-				//arena->exercitos[i][j].
-
 			}
 		}
 	}

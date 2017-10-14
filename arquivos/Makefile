@@ -1,6 +1,6 @@
-testAtualiza:  maq.o arena.o pilha.o testAtualiza.o
+testRemoveMortos:  maq.o arena.o pilha.o testRemoveMortos.o
 
-all: testAtualiza
+all: testRemoveMortos
 
 clean:
-	rm -f  testAtualiza *.o
+	rm -f  testRemoveMortos *.o

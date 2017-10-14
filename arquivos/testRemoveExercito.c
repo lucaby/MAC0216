@@ -31,7 +31,7 @@ int main(){
   Arena* battlefield;
   printf("Arena feita.\n");
 
-  inicializaGrid(battlefield, 50, 50); 
+  inicializaArena(battlefield, 50, 50); 
   printf("Grid Inicializado.\n");
 
   InsereExercito(battlefield, 10, prog, BLUE);
