@@ -5,26 +5,58 @@
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->lastFree = 0;
-	
+	srand(time(NULL));
+	int r;
 	arena->grid = (Celula **) malloc(sizeof(Celula *) * ncols);
 	int i;
 	for(i = 0; i < ncols; i++) {
 	    arena->grid[i] = (Celula *) malloc(sizeof(Celula) * nrows);
 	}
+
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
-				//arena->grid[i][j].o
+				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
+				arena->grid[i][j].t = rand() % 6;
+				arena->grid[i][j].b.isBase = False;
+				arena->grid[i][j].c = False;
+				//Sets the bases
+				if (j < 2) {
+					arena->grid[i][j].b.isBase = True;
+					arena->grid[i][j].b.team = BLUE;	
+				}
+				if (j >= nrows-2) {
+					arena->grid[i][j].b.isBase = True;
+					arena->grid[i][j].b.team = RED;	
+				}
 			}			
 		}
 		else {
 			for(int i = 0; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
+				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
+				arena->grid[i][j].t = rand() % 6;
+				arena->grid[i][j].b.isBase = False;
+				arena->grid[i][j].c = False;
+				//Sets the bases
+				if (j < 2) {
+					arena->grid[i][j].b.isBase = True;
+					arena->grid[i][j].b.team = BLUE;	
+				}
+				if (j >= nrows-2) {
+					arena->grid[i][j].b.isBase = True;
+					arena->grid[i][j].b.team = RED;	
+				}
 			}
 		}
+
+	}
+	for(int i = 0; i <= ncols; i++) {
+		arena->grid[rand() % ncols ][rand() % (nrows)].c = True;
 	}
 }
+
 
   void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {	
 	for(int i = arena->lastFree; i < 100; i++){

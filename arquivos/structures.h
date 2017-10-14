@@ -20,11 +20,11 @@ typedef enum {
   RED
 } Time;
 
-typedef int Cristais;
+typedef Bool Cristais;
 
 
 typedef struct  {
-  int isBase;
+  Bool isBase;
   Time team;
 } Base; 
 
