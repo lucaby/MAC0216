@@ -45,7 +45,7 @@ typedef enum {
 typedef enum {
   NUM = 0,
   ACAO,
-  VAR
+  INTER
 } Tipo;
 
 // Tipos de direções permitidas num grid hexagonal da maneira que implementamos
@@ -65,7 +65,7 @@ typedef enum {
 // Até o momento, toda instrução que o usuário faz se resume a dois tipos:
 // um inteiro ou uma direção onde a ação será realizada.
 // Nesse sentido, optamos por declarar o OPERANDO dessa maneira:
-typedef union {
+typedef struct {
   int n;
   Direction d;
 }OPERANDO;

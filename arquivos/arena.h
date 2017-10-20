@@ -18,7 +18,7 @@ typedef struct {
   int x;
   int y;
   Cristais crystals;
-  Bool isDead;
+  Bool alive;
   Time t;
 } Maquina;
 
@@ -31,6 +31,7 @@ typedef struct {
 
 void Atualiza(Arena *arena, int ciclos);
 
+int tapaBuraco(Maquina* m[],int lastFree);
 
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team);
 

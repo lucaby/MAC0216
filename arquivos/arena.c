@@ -12,7 +12,6 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->lastFree = 0;
 	srand(time(NULL));
-	int r;
 	arena->grid = (Celula **) malloc(sizeof(Celula *) * ncols);
 	int i;
 	for(i = 0; i < ncols; i++) {
@@ -64,7 +63,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 }
 
 
-  void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
+void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
   	/*(arena, size, instruções, time) -> void
   	Insere no vetor de máquinas da Arena uma quantidade size de robôs de um time team*/
 	for(int i = arena->lastFree; i < 100; i++){
@@ -78,19 +77,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 }
 
 
-//Implement quicksort partition. Assim nao precisamos nos preocupar em retirar os robos
-void RemoveExercito(Arena *arena, Time t) {
-	/*(arena, time) -> 
-	Dado um time t, descarta todos os robôs daquele time no vetor de máquinas da arena.
-	Depois reoganiza os robôs para liberar espaço no vetor de robôs.*/
-	for(int i = 99; i >=0; i--) {
-		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
-			arena->exercitos[i] = NULL;
-		}
-	}
 
-	
-}	
 
 void Atualiza(Arena *arena, int ciclos) {
 	/*(arena, ciclos) -> 
@@ -102,16 +89,47 @@ void Atualiza(Arena *arena, int ciclos) {
     arena->tempo += 1;
 }
 
+int tapaBuraco(Maquina* m[],int lastFree) {
+	int i = 0, j = lastFree;
+	while(1) {
+		
+		while(m[i++] != NULL);
+		if(i > j) break;
+		while(m[j--] == NULL);
+		Maquina* tmp = m[i];
+		m[i] = m[j];
+		m[j] = tmp;
+	}
+	return j;
+}
+
 void RemoveMortos(Arena *arena, Time t) {
 	/*(arena, time) -> 
 	Remove, dado um time t, do vetor de máquinas da arena, apenas aqueles que
-	estão mortos. Ou seja, sua variável isDead == true.*/
+	estão mortos. Ou seja, sua variável alive == true.*/
+	
 	for(int i = 99; i >=0; i--) {
-		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
+		if(arena->exercitos[i] != NULL && !arena->exercitos[i]->alive) {
 			arena->exercitos[i] = NULL;
 		}
 	}
+	arena->lastFree = tapaBuraco(arena->exercitos, arena->lastFree);
 }
+
+void RemoveExercito(Arena *arena, Time t) {
+	/*(arena, time) -> void
+	Dado um time t, descarta todos os robôs daquele time no vetor de máquinas da arena.
+	Depois reoganiza os robôs para liberar espaço no vetor de robôs.*/
+
+	for(int i = 99; i >=0; i--) {
+		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
+			arena->exercitos[i] = NULL;
+		}
+	}
+	arena->lastFree = tapaBuraco(arena->exercitos, arena->lastFree);
+
+	
+}	
 
 // Funções simples para uma leitura melhor de funções anteriores
 // Em especial as chamadas de sistema

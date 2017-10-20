@@ -66,6 +66,7 @@ Maquina *cria_maquina(INSTR *p) {
   x = 0;
   y = 0;
   m->crystals = 0;
+  m->alive = True;
   return m;
 }
 
@@ -218,8 +219,10 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 		switch(tipo) {
 
 			case NUM:
+
 				switch (opc) {
-					  OPERANDO tmp;
+
+					OPERANDO tmp;
 					case PUSH:
 					  empilha(pil, arg);
 					  break;
@@ -370,13 +373,35 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 
 					// A partir daqui implementamos as coisas para a Fase II
 					case ATR:
-					/*Pega o OPERANDO do topo da pilha e empilha um OPERANDO com
-					o atributo de número arg desse OPERANDO.*/
+						/*Pega o OPERANDO do topo da pilha e empilha um OPERANDO com
+						o atributo de número arg desse OPERANDO.*/
 						tmp = desempilha(pil);
-					// Dependendo do argumento (0, 1, 2, 3) devemos empilhar operandos
-					// de maneiras diferentes. Da mesma forma, o PRN deve mudar
-					// para se adequar ao print de operandos.
-						empilha(pil, tmp);
+						int i, j;
+						directionsSwitch(m, tmp.d, &i, &j);
+						switch(arg.n){
+							case 0:
+								tmp.n = (int)(A->grid[i][j].t);
+								empilha(pil, tmp);
+								break;
+							case 1:
+								tmp.n = (int)(A->grid[i][j].b.isBase);
+								empilha(pil, tmp);
+								break;
+							case 2:
+								tmp.n = (int)(A->grid[i][j].c);
+								empilha(pil, tmp);
+
+								break;
+							case 3:
+								tmp.n = (int)(A->grid[i][j].o.ocupado);
+								empilha(pil, tmp);
+								break;
+						}
+
+						// Dependendo do argumento (0, 1, 2, 3) devemos empilhar operandos
+						// de maneiras diferentes. Da mesma forma, o PRN deve mudar
+						// para se adequar ao print de operandos.
+							
 						break;
 				}
 				break;
@@ -385,8 +410,13 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 				e empilha o resultado desta ação (se foi realizada ou não).*/
 				empilha(pil, sysCall(A, m, opc, arg.d));
 				break;
+
 			
-			case VAR:
+			case INTER:
+				switch(opc) {
+					case PUSH:
+						empilha(pil, arg);
+				}
 
 				break;
 				

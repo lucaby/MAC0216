@@ -1,6 +1,6 @@
-test:  maq.o arena.o pilha.o test.o
+rfact:  maq.o arena.o pilha.o rfact.c
 
-all: test
+all: rfact
 
 clean:
-	rm -f  test *.o
+	rm -f  rfact *.o

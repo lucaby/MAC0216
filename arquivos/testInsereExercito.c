@@ -40,9 +40,7 @@ int main(){
   for(int i = 0; i < 10; i++){
       if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i].t == BLUE)
         printf("Sucesso, bixo.\n");
-      else
-        printf("fug\n");
-  }
+      }
 
   InsereExercito(battlefield, 10, prog, RED);
   printf("Red team off to work.\n");
@@ -50,8 +48,7 @@ int main(){
   for(int i = 10; i < 20; i++){
       if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i].t == RED)
         printf("Sucesso, bixo.\n");
-      else
-        printf("fug\n");
+
   }
 
 

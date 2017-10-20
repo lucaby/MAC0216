@@ -44,7 +44,7 @@ int main(){
       Atualiza(battlefield, 100);
 
   for(int i = 0; i < 20; i += 2)
-      battlefield->exercitos[i]->isDead = True;
+      battlefield->exercitos[i]->alive = False;
 
   RemoveMortos(battlefield, BLUE);
   RemoveMortos(battlefield, RED);
