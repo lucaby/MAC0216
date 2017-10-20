@@ -26,12 +26,12 @@ typedef struct {
   Grid grid;
   int tempo;
   Maquina* exercitos[MAXMEM];
-  int lastFree;
+  int firstFree;
 } Arena;
 
 void Atualiza(Arena *arena, int ciclos);
 
-int tapaBuraco(Maquina* m[],int lastFree);
+int tapaBuraco(Maquina* m[],int firstFree);
 
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team);
 

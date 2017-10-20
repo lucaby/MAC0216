@@ -1,6 +1,7 @@
-rfact:  maq.o arena.o pilha.o rfact.c
+testeRemoveMortos:  maq.o arena.o pilha.o testeRemoveMortos.c
 
-all: rfact
+all: testeRemoveMortos
+
 
 clean:
-	rm -f  rfact *.o
+	rm -f  testeRemoveMortos *.o

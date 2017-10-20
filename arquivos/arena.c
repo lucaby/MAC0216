@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	/*(arena, #linhas, #coluna) -> void
 	Aloca dinamicamente uma matrix de células de tamanho nrowsxncols.
@@ -10,7 +11,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	indicar que as células estão desocupadas. Esta função deve sempre ser
 	chamada no início do jogo.*/
 	arena->tempo = 0;
-	arena->lastFree = 0;
+	arena->firstFree = 0;
 	srand(time(NULL));
 	arena->grid = (Celula **) malloc(sizeof(Celula *) * ncols);
 	int i;
@@ -23,7 +24,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 			for(int i = 1; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
 				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
-				arena->grid[i][j].t = rand() % 6;
+				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
 				//Sets the bases
@@ -41,7 +42,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 			for(int i = 0; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = True;
 				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
-				arena->grid[i][j].t = rand() % 6;
+				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
 				//Sets the bases
@@ -66,14 +67,25 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
   	/*(arena, size, instruções, time) -> void
   	Insere no vetor de máquinas da Arena uma quantidade size de robôs de um time team*/
-	for(int i = arena->lastFree; i < 100; i++){
+  	if(size > 100-arena->firstFree) {
+  		printf("The Arena is full.\n");
+  		return;
+  	}
+  	
+	for(int i = arena->firstFree; i < size + arena->firstFree; i++){
 		Maquina *robo;
 		robo = cria_maquina(p);
+		
 		robo->t = team;
 		arena->exercitos[i] = robo;
+		robo->crystals = 0;
+		robo->alive = True;
+		
 	}
+	arena->firstFree += size;
+	printf("%d", arena->firstFree);
 
-	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
+	
 }
 
 
@@ -83,22 +95,24 @@ void Atualiza(Arena *arena, int ciclos) {
 	/*(arena, ciclos) -> 
 	Executa, dado um time t, um número ciclos de vezes o vetor de instruções dos
 	robôs daquele time.*/
-    for(int i = 0; i < arena->lastFree; ++i) {
+    
+    for(int i = 0; i < arena->firstFree; ++i) {
+
       exec_maquina(arena, arena->exercitos[i], ciclos);
     }
     arena->tempo += 1;
 }
 
-int tapaBuraco(Maquina* m[],int lastFree) {
-	int i = 0, j = lastFree;
+int tapaBuraco(Maquina* m[],int firstFree) {
+	int i = 0, j = firstFree;
 	while(1) {
 		
 		while(m[i++] != NULL);
 		if(i > j) break;
 		while(m[j--] == NULL);
 		Maquina* tmp = m[i];
-		m[i] = m[j];
-		m[j] = tmp;
+		m[i++] = m[j];
+		m[j--] = tmp;
 	}
 	return j;
 }
@@ -113,7 +127,7 @@ void RemoveMortos(Arena *arena, Time t) {
 			arena->exercitos[i] = NULL;
 		}
 	}
-	arena->lastFree = tapaBuraco(arena->exercitos, arena->lastFree);
+	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 }
 
 void RemoveExercito(Arena *arena, Time t) {
@@ -126,7 +140,7 @@ void RemoveExercito(Arena *arena, Time t) {
 			arena->exercitos[i] = NULL;
 		}
 	}
-	arena->lastFree = tapaBuraco(arena->exercitos, arena->lastFree);
+	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 
 	
 }	

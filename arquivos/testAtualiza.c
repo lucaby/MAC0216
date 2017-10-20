@@ -39,7 +39,7 @@ int main(){
   
   printf("Red team off to work.\n");
   printf("%d", 5);
-  for(int i = 0; i < battlefield->lastFree; i++) {
+  for(int i = 0; i < battlefield->firstFree; i++) {
       
       Atualiza(battlefield, 100);
     }

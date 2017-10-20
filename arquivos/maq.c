@@ -41,7 +41,6 @@ char *CODES[] = {
 #endif
 
 #define ip (m->ip)
-#define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
 #define rbp (m->rbp)
@@ -59,7 +58,9 @@ static void Fatal(char *msg, int cod) {
 
 Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
+
   if (!m) Fatal("Memória insuficiente",4);
+  m->pil = *cria_pilha();
   ip = 0;
   prg = p;
   rbp = 0;
@@ -69,6 +70,8 @@ Maquina *cria_maquina(INSTR *p) {
   m->alive = True;
   return m;
 }
+
+#define pil (&m->pil)
 
 void destroi_maquina(Maquina *m, Arena *A) {
   free(m);

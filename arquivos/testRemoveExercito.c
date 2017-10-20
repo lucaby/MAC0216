@@ -2,7 +2,6 @@
 #include "maq.h"
 
 INSTR prog[] = {
-MOVE ACAO EAST
 
   {NUM, PUSH, 9},
   {NUM, CALL, 4},
@@ -27,7 +26,7 @@ MOVE ACAO EAST
   {NUM, RET, 0},
 };
 
-int main(){
+int main() {
   Arena* battlefield = malloc(sizeof(Arena));
   printf("Arena feita.\n");
 
@@ -45,17 +44,14 @@ int main(){
 
   RemoveExercito(battlefield, BLUE);
   for(int i = 0; i < 10; i++){
-      if(battlefield->exercitos[i] == NULL)
+      if(battlefield->exercitos[i] != NULL)
         printf("Sucesso, bixo.\n");
-      else
-        printf("fug\n");
   }
   RemoveExercito(battlefield, RED);
+
   for(int i = 10; i < 20; i++){
-      if(battlefield->exercitos[i] == NULL)
+      if(battlefield->exercitos[i] != NULL)
         printf("Sucesso, bixo.\n");
-      else
-        printf("fug\n");
   }
 
   return 0;
