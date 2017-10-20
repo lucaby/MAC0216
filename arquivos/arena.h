@@ -45,7 +45,7 @@ Bool hasCrystal(Grid g, int i, int j);
 
 Bool hasEnemy(Grid g, int i, int j, Time friendly);
 
-Bool notOcupied(Grid g, int i, int j);
+Bool occupied(Grid g, int i, int j);
 
 void inicializaArena(Arena *arena, int nrows, int ncols);
 

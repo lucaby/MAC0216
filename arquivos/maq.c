@@ -123,11 +123,13 @@ OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
 	OPERANDO result;
 	result.n = False;
 	getPosition(m, d, &i, &j);
-	printf("\n%d\n", notOcupied(A->grid, i, j));
+	if(!occupied(A->grid, i, j)) {
+		A->grid[i][j].o.ocupado = True;	
 		x = i;
 		y = j;
 		result.n = True;
-	
+	}
+	A->grid[i][j].o.ocupado = True;
 	return result;
 }
 
@@ -217,7 +219,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
-	printf("topo %d\n", pil->topo);
+	//printf("topo %d\n", pil->topo);
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg.n));
 		switch(tipo) {
 

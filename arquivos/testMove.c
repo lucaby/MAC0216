@@ -4,7 +4,6 @@
 INSTR prog[] = {
 
   {ACAO, MOVE,  {0,SEAST}},
-  {NUM, PRN ,{0, NEAST}},
   {NUM, END, {0, NEAST}},
 
 };
@@ -23,5 +22,5 @@ int main() {
   printf("Red team off to work.\n");
   printf("%d %d ", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
   exec_maquina(battlefield, battlefield->exercitos[0], 1000);
-  printf("%d %d ", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
+  printf("\n%d %d \n", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
 }

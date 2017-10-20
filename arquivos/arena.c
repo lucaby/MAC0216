@@ -22,7 +22,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	for(int j = 0; j < nrows; j++) {
 		if (j % 2 == 0) {
 			for(int i = 1; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = True;
+				arena->grid[i][j].o.ocupado = False;
 				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
 				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
@@ -40,7 +40,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 		}
 		else {
 			for(int i = 0; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = True;
+				arena->grid[i][j].o.ocupado = False;
 				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
 				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
@@ -158,7 +158,7 @@ Bool hasEnemy(Grid g, int i, int j, Time friendly) {
 }
 
 
-Bool notOcupied(Grid g, int i, int j) {
+Bool occupied(Grid g, int i, int j) {
 	return g[i][j].o.ocupado;
 }
 
