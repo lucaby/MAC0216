@@ -83,7 +83,7 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 		
 	}
 	arena->firstFree += size;
-	printf("%d", arena->firstFree);
+	
 
 	
 }
@@ -97,24 +97,23 @@ void Atualiza(Arena *arena, int ciclos) {
 	robôs daquele time.*/
     
     for(int i = 0; i < arena->firstFree; ++i) {
-
       exec_maquina(arena, arena->exercitos[i], ciclos);
     }
     arena->tempo += 1;
 }
 
 int tapaBuraco(Maquina* m[],int firstFree) {
-	int i = 0, j = firstFree;
+	int i = -1, j = firstFree+1;
 	while(1) {
-		
-		while(m[i++] != NULL);
-		if(i > j) break;
-		while(m[j--] == NULL);
+		while(m[++i] != NULL);
+		while(m[--j] == NULL);
+		if(j < i ) break;
 		Maquina* tmp = m[i];
-		m[i++] = m[j];
-		m[j--] = tmp;
+		m[i] = m[j];
+		m[j] = tmp;
 	}
-	return j;
+
+	return j++;
 }
 
 void RemoveMortos(Arena *arena, Time t) {
@@ -130,19 +129,19 @@ void RemoveMortos(Arena *arena, Time t) {
 	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 }
 
-void RemoveExercito(Arena *arena, Time t) {
+void removeExercito(Arena *arena, Time t) {
 	/*(arena, time) -> void
 	Dado um time t, descarta todos os robôs daquele time no vetor de máquinas da arena.
 	Depois reoganiza os robôs para liberar espaço no vetor de robôs.*/
 
-	for(int i = 99; i >=0; i--) {
+	for(int i = 0; i < arena->firstFree; i++) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
 			arena->exercitos[i] = NULL;
 		}
 	}
-	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 
-	
+
+	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 }	
 
 // Funções simples para uma leitura melhor de funções anteriores

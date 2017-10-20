@@ -21,5 +21,3 @@ recursiveFactorial:
   NUM MUL 0
   NUM FRE 1
   NUM RET 0
-  ACAO ATTK NE
-  INTER PUSH NWEST

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "maq.h"
-#include "arena.h"
 
 INSTR prog[] = {
 
@@ -29,7 +28,7 @@ INSTR prog[] = {
 
 };
 
-int main(){
+int main() {
   Arena* battlefield = malloc(sizeof(Arena));
   printf("Arena feita.\n");
 
@@ -41,32 +40,37 @@ int main(){
 
   InsereExercito(battlefield, 10, prog, RED);
   printf("Red team off to work.\n");
-  
+
   Atualiza(battlefield, 1000);
-  
-  for(int i = 0; i < 20; i += 2)
-      battlefield->exercitos[i]->alive = False;
-  
-  for(int i = 0; i < 20; i++) {
-    printf("%d", (int)battlefield->exercitos[i]->alive);
+  for(int i = 0; i < battlefield->firstFree; i++) {
+    if(battlefield->exercitos[i]->t == BLUE) printf("B ");
+    else printf("R ");
   }
 
+  removeExercito(battlefield, BLUE);
   printf("\n");
 
-  RemoveMortos(battlefield, BLUE);
-  RemoveMortos(battlefield, RED);
-  
-
+  for(int i = 0; i < battlefield->firstFree; i++) {
+    if(battlefield->exercitos[i]== NULL) printf("B ");
+    else printf("R ");
+  }
   printf("\n");
-  for(int i = 0; i < 20; i++) {
-
-      if(m[i] != NULL)
-        printf("1");
+  for(int i = 0; i < battlefield->firstFree; i++){
+      if(battlefield->exercitos[i] != NULL)
+        printf("Sucesso, bixo.\n");
       else
-        printf("0");
+        printf("Po, bixo\n");
   }
+  removeExercito(battlefield, RED);
 
-  printf("\n");
+  for(int i = 10; i < battlefield->firstFree; i++){
+      if(battlefield->exercitos[i] != NULL)
+        printf("Sucesso, bixo.\n");
+  }
+  for(int i = 0; i < battlefield->firstFree; i++) {
+    if(battlefield->exercitos[i]== NULL) printf("B ");
+    else printf("R ");
+  }
   return 0;
   
 }

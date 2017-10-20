@@ -1,7 +1,7 @@
-testeRemoveMortos:  maq.o arena.o pilha.o testeRemoveMortos.c
+testBoolArenaFunctions:  maq.o arena.o pilha.o testBoolArenaFunctions.c
 
-all: testeRemoveMortos
+all: testBoolArenaFunctions
 
 
 clean:
-	rm -f  testeRemoveMortos *.o
+	rm -f  testBoolArenaFunctions *.o

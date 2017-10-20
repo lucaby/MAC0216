@@ -3,27 +3,27 @@
 
 INSTR prog[] = {
 
-  {ACAO, MOVE,  EAST}
-  {ACAO, MOVE,  NEAST}
-  {ACAO, GRAB,  WEST}
-  {ACAO, ATTK,  EAST}
-  {ACAO, DEPO,  WEST}
-  {ACAO, GRAB,  WEST}
-  {VAR, PUSH, VAR,  WEST}
-  {NUM, ATR,  3}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR,  2}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR,  1}
-  {NUM, PRN, 0}
-  {VAR, PUSH,  WEST}
-  {NUM, ATR, 0}
-  {NUM, PRN, 0}
+  {ACAO, MOVE,  {0,EAST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, GRAB,  {0,WEST}},
+  {ACAO, ATTK,  {0,EAST}},
+  {ACAO, DEPO,  {0,WEST}},
+  {ACAO, GRAB,  {0,WEST}},
+  {INTER, PUSH, {0, WEST}},
+  {NUM, ATR,  {3, NEAST}},
+  {NUM, PRN, {0,NEAST}},
+  {INTER, PUSH,  {0,WEST}},
+  {NUM, ATR,  {2, NEAST}},
+  {NUM, PRN, {0, NEAST}},
+  {INTER, PUSH,  {0,WEST}},
+  {NUM, ATR,  {1, NEAST}},
+  {NUM, PRN, {0, NEAST}},
+  {INTER, PUSH,  {0,WEST}},
+  {NUM, ATR, {0,NEAST}},
+  {NUM, PRN, {0,NEAST}},
 };
 
-int main(){
+int main() {
   Arena* battlefield = malloc(sizeof(Arena));
   printf("Arena feita.\n");
 
@@ -36,31 +36,5 @@ int main(){
   InsereExercito(battlefield, 10, prog, RED);
   printf("Red team off to work.\n");
 
-  for(int i = 0; i < 100; i++){
-    for(int j = 0; j < 100; j++){
-      printf("Terreno: %d", battlefield->grid[i][j].t);
-      printf("Base Y/N: %d", battlefield->grid[i][j].b.isBase);
-      printf("Base WHOM: %d", battlefield->grid[i][j].b.team);
-      printf("Cristais: %d", battlefield->grid[i][j].c);
-      printf("Ocupado Y/N: %d", battlefield->grid[i][j].o.ocupado);
-      printf("Ocupado WHO: %d", battlefield->grid[i][j].o.team);
-
-
-      printf();
-      if(battlefield->grid[i][j].c && hasCrystal(battlefield.grid, i, j))
-        printf("Sucesso, bixo.\n");
-      else
-        printf("fug\n");
-      printf();
-
-
-    }
-  }
-  return 0;
-  
+  exec_maquina(battlefield, battlefield->exercitos[0], 1000);
 }
-Bool hasCrystal(Grid g, int i, int j);
-
-Bool hasEnemy(Grid g, int i, int j, Time friendly);
-
-Bool notOcupied(Grid g, int i, int j);

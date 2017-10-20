@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "maq.h"
-#include "arena.h"
 
 INSTR prog[] = {
 
@@ -26,47 +25,29 @@ INSTR prog[] = {
   {NUM, MUL, { 0, WEST }},
   {NUM, FRE, { 1, WEST }},
   {NUM, RET, { 0, WEST }},
-
+  {ACAO, ATTK, { 0, NEAST }},
+  {INTER, PUSH, { 0, NWEST }},
 };
-
 int main(){
   Arena* battlefield = malloc(sizeof(Arena));
+
   printf("Arena feita.\n");
-
-  inicializaArena(battlefield, 50, 50); 
+  inicializaArena(battlefield, 10, 10); 
   printf("Grid Inicializado.\n");
-
   InsereExercito(battlefield, 10, prog, BLUE);
   printf("Blue team off to work.\n");
-
   InsereExercito(battlefield, 10, prog, RED);
-  printf("Red team off to work.\n");
   
+  printf("Red team off to work.\n");
+  Atualiza(battlefield, 1000);
+  printf("ola\n");
+  Atualiza(battlefield, 1000);
+  Atualiza(battlefield, 1000);
+  Atualiza(battlefield, 1000);
+  Atualiza(battlefield, 1000);
   Atualiza(battlefield, 1000);
   
-  for(int i = 0; i < 20; i += 2)
-      battlefield->exercitos[i]->alive = False;
-  
-  for(int i = 0; i < 20; i++) {
-    printf("%d", (int)battlefield->exercitos[i]->alive);
-  }
 
-  printf("\n");
-
-  RemoveMortos(battlefield, BLUE);
-  RemoveMortos(battlefield, RED);
-  
-
-  printf("\n");
-  for(int i = 0; i < 20; i++) {
-
-      if(m[i] != NULL)
-        printf("1");
-      else
-        printf("0");
-  }
-
-  printf("\n");
   return 0;
   
 }

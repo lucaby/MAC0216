@@ -28,17 +28,17 @@ typedef struct {
   Maquina* exercitos[MAXMEM];
   int firstFree;
 } Arena;
-
+//TEST DONE
 void Atualiza(Arena *arena, int ciclos);
 
 int tapaBuraco(Maquina* m[],int firstFree);
 
+//TEST DONE
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team);
+//TEST DONE
+void removeExercito(Arena *arena, Time t);
 
-void RemoveExercito(Arena *arena, Time t);
-
-void Sistema(Arena *arena , Maquina* chamador, int op);
-
+//TEST DONE
 void RemoveMortos(Arena *arena, Time t);
 
 Bool hasCrystal(Grid g, int i, int j);
@@ -67,6 +67,6 @@ OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d);
 
 OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
 
-void directionsSwitch(Maquina *m, Direction d, int *i, int *j);
+void getPosition(Maquina *m, Direction d, int *i, int *j);
 
 #endif

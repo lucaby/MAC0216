@@ -80,7 +80,7 @@ void destroi_maquina(Maquina *m, Arena *A) {
 
 /* Novas funções para as chamadas de sistema */
 
-void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
+void getPosition(Maquina *m, Direction d, int *i, int *j) {
 	/* (maquina, direção, i, j) -> null
 	Dada uma Maquina m na posição (x,y), inserimos em i e j a 
 	posição correspondente a direção que o usuário chamou o sistema
@@ -122,7 +122,7 @@ OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	OPERANDO result;
 	result.n = False;
-	directionsSwitch(m, d, &i, &j);
+	getPosition(m, d, &i, &j);
 	if(notOcupied(A->grid, i, j)){
 		x += i;
 		y += j;
@@ -141,7 +141,7 @@ OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d){
 	int i, j;
 	OPERANDO result;
 	result.n = False;
-	directionsSwitch(m, d, &i, &j);
+	getPosition(m, d, &i, &j);
 	if(hasCrystal(A->grid, i, j)) {
 		A->grid[i][j].c--;
 		(m->crystals)++;
@@ -159,7 +159,7 @@ OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d) {
 	int i, j;
 	OPERANDO result;
 	result.n = False;
-	directionsSwitch(m, d, &i, &j);
+	getPosition(m, d, &i, &j);
 	if(m->crystals > 0){
 		A->grid[i][j].c++;
 		m->crystals--;
@@ -176,7 +176,7 @@ OPERANDO attackMachine(Arena *A, Maquina *m, Direction d) {
 	int i, j;
 	OPERANDO result;
 	result.n = False;
-	directionsSwitch(m, d, &i, &j);
+	getPosition(m, d, &i, &j);
 	if(hasEnemy(A->grid, i, j,m->t)){
 		printf("EXTERMINATE!");
 		result.n = True;
@@ -380,7 +380,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 						o atributo de número arg desse OPERANDO.*/
 						tmp = desempilha(pil);
 						int i, j;
-						directionsSwitch(m, tmp.d, &i, &j);
+						getPosition(m, tmp.d, &i, &j);
 						switch(arg.n){
 							case 0:
 								tmp.n = (int)(A->grid[i][j].t);
@@ -411,7 +411,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 			case ACAO:
 				/*Chama a função sysCall, que delega uma determinada ação opc,
 				e empilha o resultado desta ação (se foi realizada ou não).*/
-				empilha(pil, sysCall(A, m, opc, arg.d));
+				sysCall(A, m, opc, arg.d);
 				break;
 
 			
