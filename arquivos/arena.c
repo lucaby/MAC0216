@@ -80,11 +80,11 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 		arena->exercitos[i] = robo;
 		robo->crystals = 0;
 		robo->alive = True;
+		robo->x = 1;
+		robo->y = 0;
 		
 	}
 	arena->firstFree += size;
-	
-
 	
 }
 
@@ -159,7 +159,7 @@ Bool hasEnemy(Grid g, int i, int j, Time friendly) {
 
 
 Bool notOcupied(Grid g, int i, int j) {
-	return !g[i][j].o.ocupado;
+	return g[i][j].o.ocupado;
 }
 
 

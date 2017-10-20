@@ -123,11 +123,11 @@ OPERANDO moveMachine(Arena *A, Maquina *m, Direction d){
 	OPERANDO result;
 	result.n = False;
 	getPosition(m, d, &i, &j);
-	if(notOcupied(A->grid, i, j)){
-		x += i;
-		y += j;
+	printf("\n%d\n", notOcupied(A->grid, i, j));
+		x = i;
+		y = j;
 		result.n = True;
-	}
+	
 	return result;
 }
 
@@ -217,7 +217,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
-
+	printf("topo %d\n", pil->topo);
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg.n));
 		switch(tipo) {
 
@@ -411,7 +411,7 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 			case ACAO:
 				/*Chama a função sysCall, que delega uma determinada ação opc,
 				e empilha o resultado desta ação (se foi realizada ou não).*/
-				sysCall(A, m, opc, arg.d);
+				empilha(pil,sysCall(A, m, opc, arg.d));
 				break;
 
 			

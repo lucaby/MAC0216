@@ -3,24 +3,10 @@
 
 INSTR prog[] = {
 
-  {ACAO, MOVE,  {0,EAST}},
-  {ACAO, MOVE,  {0,NEAST}},
-  {ACAO, GRAB,  {0,WEST}},
-  {ACAO, ATTK,  {0,EAST}},
-  {ACAO, DEPO,  {0,WEST}},
-  {ACAO, GRAB,  {0,WEST}},
-  {INTER, PUSH, {0, WEST}},
-  {NUM, ATR,  {3, NEAST}},
-  {NUM, PRN, {0,NEAST}},
-  {INTER, PUSH,  {0,WEST}},
-  {NUM, ATR,  {2, NEAST}},
-  {NUM, PRN, {0, NEAST}},
-  {INTER, PUSH,  {0,WEST}},
-  {NUM, ATR,  {1, NEAST}},
-  {NUM, PRN, {0, NEAST}},
-  {INTER, PUSH,  {0,WEST}},
-  {NUM, ATR, {0,NEAST}},
-  {NUM, PRN, {0,NEAST}},
+  {ACAO, MOVE,  {0,SEAST}},
+  {NUM, PRN ,{0, NEAST}},
+  {NUM, END, {0, NEAST}},
+
 };
 
 int main() {
@@ -35,6 +21,7 @@ int main() {
 
   InsereExercito(battlefield, 10, prog, RED);
   printf("Red team off to work.\n");
-
+  printf("%d %d ", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
   exec_maquina(battlefield, battlefield->exercitos[0], 1000);
+  printf("%d %d ", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
 }
