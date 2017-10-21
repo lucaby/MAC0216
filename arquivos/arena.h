@@ -8,7 +8,7 @@
 #include <time.h>
 //#include "maq.h"
 
-typedef struct {
+typedef struct {  
   Pilha pil;
   Pilha exec;
   OPERANDO Mem[MAXMEM];
@@ -24,29 +24,38 @@ typedef struct {
 
 typedef struct {
   Grid grid;
+  int rows;
+  int cols;
   int tempo;
   Maquina* exercitos[MAXMEM];
   int firstFree;
 } Arena;
+
 //TEST DONE
 void Atualiza(Arena *arena, int ciclos);
 
+//TEST DONE
 int tapaBuraco(Maquina* m[],int firstFree);
 
 //TEST DONE
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team);
+
 //TEST DONE
 void removeExercito(Arena *arena, Time t);
 
 //TEST DONE
 void RemoveMortos(Arena *arena, Time t);
 
+//TEST DONE
 Bool hasCrystal(Grid g, int i, int j);
 
+//TEST NEEDED
 Bool hasEnemy(Grid g, int i, int j, Time friendly);
 
+//TEST NEEDED
 Bool occupied(Grid g, int i, int j);
 
+//TEST DONE
 void inicializaArena(Arena *arena, int nrows, int ncols);
 
 // Funções da struct Maquina
@@ -57,16 +66,22 @@ void destroi_maquina(Maquina *m, Arena *A);
 
 void exec_maquina(Arena *A, Maquina *m, int n);
 
+//TEST DONE
 OPERANDO sysCall(Arena *A, Maquina *m, OpCode t, Direction op);
 
+// TEST DONE
 OPERANDO moveMachine(Arena *A, Maquina *m, Direction d);
 
+//TEST DONE
 OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d);
 
+//TEST DONE
 OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d);
 
+//TEST DONE
 OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
 
-void getPosition(Maquina *m, Direction d, int *i, int *j);
+//TEST IN PROCESS
+void  getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols);
 
 #endif

@@ -10,6 +10,8 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	células com cristais. Além disso, colocamos bases dos times, além de
 	indicar que as células estão desocupadas. Esta função deve sempre ser
 	chamada no início do jogo.*/
+	arena->rows = nrows;
+	arena->cols = ncols;
 	arena->tempo = 0;
 	arena->firstFree = 0;
 	srand(time(NULL));
@@ -102,7 +104,7 @@ void Atualiza(Arena *arena, int ciclos) {
     arena->tempo += 1;
 }
 
-int tapaBuraco(Maquina* m[],int firstFree) {
+int tapaBuraco(Maquina* m[], int firstFree) {
 	int i = -1, j = firstFree+1;
 	while(1) {
 		while(m[++i] != NULL);
@@ -112,8 +114,11 @@ int tapaBuraco(Maquina* m[],int firstFree) {
 		m[i] = m[j];
 		m[j] = tmp;
 	}
-
-	return j++;
+	if(j < 0)
+		j = 0;
+	else
+		j++;
+	return j;
 }
 
 void RemoveMortos(Arena *arena, Time t) {
