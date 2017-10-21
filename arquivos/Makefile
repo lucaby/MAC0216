@@ -3,7 +3,7 @@ CC = gcc
 EXECS = testAttackMachine testAtualiza testDepositCrystal testGetPosition testGrabCrystal testHasCrystal testInicializaGrid testInsereExercito testRemoveExercito testRemoveMortos testSysCall testTapaBuraco testMove
 OBJ = testAttackMachine.o testAtualiza.o testDepositCrystal.o testGetPosition.o testGrabCrystal.o testHasCrystal.o testInicializaGrid.o testInsereExercito.o testRemoveExercito.o testRemoveMortos.o testSysCall.o testTapaBuraco.o testMove.o
 HEADERS = maq.h arena.h structures.h instr.h pilha.h
-DEPENDS = maq.o arena.o pilha.o
+DEPENDS = maq.c arena.c pilha.c
 
 
 
