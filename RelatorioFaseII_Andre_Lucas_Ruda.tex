@@ -28,18 +28,18 @@
 
 \begin{document}
 
-\title{Relat\'orio Fase II}
-\author{Andr\'e Camargo Perello - 9912403\\Lucas Henrique Bahr Yau - 9763832\\Rud\'a Lima da Floresta - 9912410}
+\title{Relatório Fase II}
+\author{André Camargo Perello - 9912403\\Lucas Henrique Bahr Yau - 9763832\\Rudá Lima da Floresta  9912410}
 \date{}
 
 \maketitle
 \newpage
 \begin{itemize}
-    \item \textbf{Introdu\c c\~ao} \\
-    Nesta fase do projeto devemos, utilizando o c\'odigo que interpreta c'odigo de cada rob\^o fornecido pelo usu\'ario, inserir novos comandos e criar estruturas para que a base do jogo esteja formada. Dentre elas est\~ao os tipos de \textbf{terreno}, o \textbf{Grid Hexagonal}, uma matriz onde o jogo se passar\'a, \textbf{chamadas de sistema}, onde o rob\^o pede ao sistema para realizar uma a\c c\~ao, \textbf{cria\c c\~ao e destrui\c c\~ao de ex\'ercitos} de rob\^os e um atualizador do jogo, ou \textbf{game loop}.
+    \item \textbf{Introdução} \\
+    Nesta fase do projeto devemos, utilizando o código que interpreta código de cada robô fornecido pelo usuário, inserir novos comandos e criar estruturas para que a base do jogo esteja formada. Dentre elas estão os tipos de \textbf{terreno}, o \textbf{Grid Hexagonal}, uma matriz onde o jogo se passar\'a, \textbf{chamadas de sistema}, onde o robô pede ao sistema para realizar uma ação, \textbf{criação e destruição de exércitos} de robôs e um atualizador do jogo, ou \textbf{game loop}.
     
     \item \textbf{Arena} \\
-    A Arena \'e onde o jogo ocorre. Sua implementa\c \~ao envolve uma \textit{struct} que cont\'em o Grid Hexagonal, representando o tabuleiro, um vetor que armazena os ex\'ercitos assim como dois inteiros, um representando a \'ultima posi\c c\~ao livre do vetor de ex\'ercitos e outro representando o tempo decorrido de jogo.
+    A Arena é onde o jogo ocorre. Sua implementação envolve uma \textit{struct} que contém o Grid Hexagonal, representando o tabuleiro, um vetor que armazena os exército assim como dois inteiros, um representando a última posição livre do vetor de exército e outro representando o tempo decorrido de jogo.
     \begin{lstlisting}
         // Arena
         typedef struct {
@@ -52,8 +52,8 @@
         } Arena;
 
     \end{lstlisting}
-    \item \textbf{C\'elula} \\
-    Uma C\'elula \'e uma struct da forma:
+    \item \textbf{Célula} \\
+    Uma Célula é uma struct da forma:
     \begin{lstlisting}
         // Celula
         typedef struct {
@@ -64,22 +64,22 @@
         } Celula;
     
     \end{lstlisting}
-    Com esses dados, listamos o que cada c\'elula do Grid necessita para que o jogo funcione bem. Assim como \'e dedut\'ivel, o \textit{Terreno t} indica que tipo de terreno a c\'elula possui. A \textit{Base b} determina se a c\'elula configura uma base e se \'e amiga ou inimiga. \textit{Cristais c} \'e um inteiro que possui o n\'umero de cristais contidos na c\'elula. Por \'ultimo, a \textit{Ocupa\c \~ao o} diz se a c\'elula est\'a ocupada e se quem a ocupa \'e amigo ou inimigo.
+    Com esses dados, listamos o que cada célula do Grid necessita para que o jogo funcione bem. Assim como é dedutível, o \textit{Terreno t} indica que tipo de terreno a célula possui. A \textit{Base b} determina se a célula configura uma base e se é amiga ou inimiga. \textit{Cristais c} é um inteiro que possui o número de cristais contidos na célula. Por último, a \textit{Ocupação o} diz se a célula está ocupada e se quem a ocupa é amigo ou inimigo.
     
     \item \textbf{Grid Hexagonal} \\
-    O Grid Hexagonal \'e apenas uma matriz de c\'elulas onde o jogo ser\'a realizado. Ele est\'a definido da forma:
+    O Grid Hexagonal é apenas uma matriz de células onde o jogo ser\'a realizado. Ele está definido da forma:
     \begin{lstlisting}
         typedef struct Celula** Grid;
     
     \end{lstlisting}
-    Ele \'e inicializado da forma:
+    Ele é inicializado da forma:
     \begin{lstlisting}
     arena->grid = malloc(nrows * sizeof(Grid *));
 	for(int i = 0; i < nrows; i++) {
 	    arena->grid[i] = malloc(ncolumns * sizeof(Grid));
 	\end{lstlisting}
 	
-	Al\'em disso inicializamos o tipo do terreno e a quantidade de cristais aleatortiamente para toda c\'elula do grid. Por simplicidade, as bases de cada time comeÃ§am nos cantos superior esquerdo e inferior direito, sendo os \'unicos lugares onde h\'a ocupa\c c\~ao.\\
+	Além disso inicializamos o tipo do terreno e a quantidade de cristais aleatoriamente para toda célula do grid. Por simplicidade, as bases de cada time começam nos cantos superior esquerdo e inferior direito, sendo os únicos lugares onde há ocupação.\\
 	Optamos por utilizar o grid como na imagem abaixo:\\
 	\begin{tikzpicture} [hexa/.style= {shape=regular polygon,regular polygon sides=6,minimum size=1cm, draw,inner sep=0,anchor=south,fill=white,rotate=30}]
     \foreach \j in {0,...,5}{%
@@ -96,84 +96,84 @@
    \foreach \k in {0,...,10}  {\node [circle,blue,minimum size=1cm] at (h1;\k) {1;\k};}   
 \end{tikzpicture}
 
-    Isso facilitou a implementa\c cao de movimentos e o acesso \`as celulas vizinhas.
+    Isso facilitou a implementa\c cao de movimentos e o acesso às celulas vizinhas.
     \item \textbf{Game Loop} \\
-    Esta \'e fun\c \~ao respons\'avel pela atualiza\c c\~ao do jogo do tempo $t$ para o tempo $t+1$:
+    Esta é fun\c \~ao respons\'avel pela atualização do jogo do tempo $t$ para o tempo $t+1$:
     \begin{lstlisting}
     void atualiza(Arena *arena, int ciclos);
     
     \end{lstlisting}
-    Nada mais que um \textit{loop} que percorre o vetor de rob\^os da Arena e executa as instru\c c\~oes fornecidas ao rob\^o um n\'umero \textit{ciclos} de vezes, aumentando o tempo de jogo em 1 a cada atualiza\c c\~ao.\\
-    Dessa forma, o \textit{game loop} \'e formado por uma s\'erie de chamadas desta fun\c c\~ao, utilizadas at\'e que um dos times saia vencedor.
+    Nada mais que um \textit{loop} que percorre o vetor de robô da Arena e executa as instruções fornecidas ao robô um número \textit{ciclos} de vezes, aumentando o tempo de jogo em 1 a cada atualização.\\
+    Dessa forma, o \textit{game loop} é formado por uma série de chamadas desta função, utilizadas até que um dos times saia vencedor.
     
     \item \textbf{O tipo OPERANDO} \\
-    Antes de falarmos sobre as chamadas de sistema e o m\'etodo ATR, pe\c cas vitais para o funcionamento do programa nesta fase, devemos nos ater \`as escolhas que foram feitas para a implementa\c c\~ao do tipo \textbf{OPERANDO}. \\
-    A \textbf{struct OPERANDO} \'e da forma: 
+    Antes de falarmos sobre as chamadas de sistema e o método ATR, peças vitais para o funcionamento do programa nesta fase, devemos nos ater às escolhas que foram feitas para a implementação do tipo \textbf{OPERANDO}. \\
+    A \textbf{struct OPERANDO} é da forma: 
     \begin{lstlisting}
     typedef struct {
         int n;
         Direction d;
     } OPERANDO;
     \end{lstlisting}
-    Esta escolha de implementa\c c\~ao se baseou nos variados tipos de programas que um rob\^o pode ter. Sejam calcular fatoriais, obter informa\c c\~oes sobre uma c\'elula do grid ou mover-se e atacar, as instru\c c\~oes precisam apenas de dois tipos de informa\c c\~ao, um inteiro ou uma dire\c c\~ao. Para ilustrar isso, considere o seguinte programa:
+    Esta escolha de implementação se baseou nos variados tipos de programas que um robô pode ter. Sejam calcular fatoriais, obter informações sobre uma célula do grid ou mover-se e atacar, as instruções precisam apenas de dois tipos de informações, um inteiro ou uma direção. Para ilustrar isso, considere o seguinte programa:
     \begin{lstlisting}
         ACAO  MOVE WEST
         ACAO  ATTK SWEST
         INTER PUSH NEAST
         NUM   ATR  0
     \end{lstlisting}
-    Embora estes comandos n\~ao tenham sido explicados at\'e o momento, \'e facil ver que ele consiste em:
+    Embora estes comandos não tenham sido explicados até o momento, é fácil ver que ele consiste em:
     \begin{itemize}
-        \item Mover-se na dire\c c\~ao oeste
-        \item Atacar na dire\c c\~ao sudeste
-        \item Inserir na pilha a c\'elula na dire\c c\~ao nordeste
-        \item Empilhar o primeiro atributo da c\'elula inserida na pilha
+        \item Mover-se na direção oeste
+        \item Atacar na direção sudeste
+        \item Inserir na pilha a célula na direção nordeste
+        \item Empilhar o primeiro atributo da célula inserida na pilha
     \end{itemize}
-    Como a pilha que executa o rob\^o consiste em uma pilha de tipo OPERANDO, essa implementa\c \~ao facilitou uma s\'erie de problemas que encontramos, e poder\'iamos encontrar, devido a outras implementa\c c\~oes que se baseavam em tornar o OPERANDO um tipo de c\'elula do grid. Deste modo, lidamos apenas com inteiros e uma enumera\c c\~ao das dire\c c\~oes poss\'iveis do grid hexagonal.
+    Como a pilha que executa o robô consiste em uma pilha de tipo OPERANDO, essa implementação facilitou uma série de problemas que encontramos, e poderíamos encontrar, devido a outras implementações que se baseavam em tornar o OPERANDO um tipo de célula do grid. Deste modo, lidamos apenas com inteiros e uma enumeração das direções possíveis do grid hexagonal.
     
     \item \textbf{System Calls} \\
-    As chamadas de sistema s\~ao um conjunto de fun\c c\~oes que, dados \textit{a\c c\~ao} e \textit{dire\c c\~ao}, verifica se \'e uma a\c c\~ao v\'alida e executa no rob\^o que a pediu Elas retornam um OPERANDO que possui na sua parcela inteira um indicativo do sucesso ou fracasso da chamada. Este OPERANDO \'e empilhado para que o rob\^o possa fazer verifica\c c\~oes e estruturas mais complexas de decis\~ao. Dentre as a\c c\~oes poss\'iveis est\~ao: \textit{mover, pegar, atacar, depositar}. Logo, o usu\'ario faz uma chamada da forma:
+    As chamadas de sistema são um conjunto de funções que, dados \textit{ação} e \textit{direção}, verifica se é uma ação válida e executa no robô que a pediu Elas retornam um OPERANDO que possui na sua parcela inteira um indicativo do sucesso ou fracasso da chamada. Este OPERANDO é empilhado para que o robô possa fazer verificações e estruturas mais complexas de decisão. Dentre as ações possíveis estão: \textit{mover, pegar, atacar, depositar}. Logo, o usuário faz uma chamada da forma:
     \begin{lstlisting}
         ACAO <ACTION> <DIRECTION>
     \end{lstlisting}
-    Temos as a\c c\~oes:
+    Temos as ações:
     \begin{enumerate}
         \item MOVE
         \begin{lstlisting}
         OPERANDO moveMachine(Arena *A, Maquina *m, Direction d);
         \end{lstlisting}
-        Esta fun\c c\~ao apenas "olha" se a posi\c c\~ao correspondente a dire\c c\~ao \textit{d} est\'a ocupada e atualiza a posi\c c\~ao atual do rob\^o caso contr\'ario.
+        Esta função apenas "olha" se a posição correspondente a direção \textit{d} está ocupada e atualiza a posição atual do robô caso contrário.
         
         \item GRAB
         \begin{lstlisting}
         OPERANDO grabCrystal(Arena *A, Maquina *m, Direction d);
         \end{lstlisting}
-        Esta fun\c c\~ao apenas verifica se a posi\c c\~ao correspondente a dire\c c\~ao \textit{d} possui cristais e diminui a quantidade de cristais da c\'elula em uma unidade, aumentando a do rob\^o na mesma propor\c c\~ao.
+        Esta função apenas verifica se a posição correspondente a direção \textit{d} possui cristais e diminui a quantidade de cristais da célula em uma unidade, aumentando a do robô na mesma proporção.
         
         \item DEPO
         \begin{lstlisting}
         OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d);
         \end{lstlisting}
-        Esta fun\c c\~ao retira cristal do rob\^o e aumenta a da c\'elula, amos em uma unidade.
+        Esta função retira cristal do robô e aumenta a da célula, amos em uma unidade.
         \item ATTK
         \begin{lstlisting}
         OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
         \end{lstlisting}
-        Esta fun\c c\~ao apenas verifica se h\'a um rob\^o do time inimigo na posi\c c\~ao correspondente e, por enquanto, se houver, imprime uma mensagem na sa\'ida padr\~ao. Futuramente pretendemos implementar um sistema de pontos de vida nos rob\^os, al\'em de pontos de ataque e defesa para que esta fun\c c\~ao se mostre \'util.
+        Esta função apenas verifica se há um robô do time inimigo na posição correspondente e, por enquanto, se houver, imprime uma mensagem na saída padrão. Futuramente pretendemos implementar um sistema de pontos de vida nos robôs, além de pontos de ataque e defesa para que esta função se mostre útil.
     \end{enumerate}
     
-    \item \textbf{O m\'etodo ATR} \\
-    Antes de chegarmos ao m\'etodo ATR, vale a pena explicar como funciona para o usu\'ario empilhar uma c\'elula para que ele possa acessar um de seus atributos. \\
-    Criamos um tipo novo de instru\c c\~ao que possui aepenas uma chamada espec\'ifica:
+    \item \textbf{O método ATR} \\
+    Antes de chegarmos ao método ATR, vale a pena explicar como funciona para o usuário empilhar uma célula para que ele possa acessar um de seus atributos. \\
+    Criamos um tipo novo de instrução que possui apenas uma chamada específica:
     \begin{lstlisting}
         INTER PUSH <DIRECTION>
     \end{lstlisting}
-    De nome \textbf{intera\c c\~ao}, esta instru\c c\~ao empilha um OPERANDO com a dire\c c\~ao especificada para que esta dire\c c\~ao possa ser utilizada pelo m\'etodo ATR atrav\'es da fun\c c\~ao:
+    De nome \textbf{interação}, esta instrução empilha um OPERANDO com a direção especificada para que esta direção possa ser utilizada pelo método ATR através da função:
     \begin{lstlisting}
         getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols);
     \end{lstlisting}
-    Esta fun\c c\~ao rececbe a dire\c c\~ao especificada e coloca nos ponteiros i e j a posi\c c\~ao correspondente no grid.
-    Assim como especificado, quando o usu\'ario chama ATR, a seguinte parcela de c\'odigo \'e executada:
+    Esta função recebe a direção especificada e coloca nos ponteiros i e j a posição correspondente no grid.
+    Assim como especificado, quando o usuário chama ATR, a seguinte parcela de código é executada:
     \begin{lstlisting}
         case ATR:
 			tmp = desempilha(pil);
@@ -202,10 +202,10 @@
 			else
 				printf("Celula invalida.\n");
     \end{lstlisting}
-    Ou seja, pegamos o atributo de n\'umero arg.n, especificado pelo usu\'ario, e empilhamos. Um detalhe vital para a simplifica\c c\~ao da implementa\c c\~ao consiste nos atributos \textit{Base} e \textit{Ocupacao}. Ambas as structs possuem duas informa\c c\~oes, por\'em optamos por indicar ao usu\'ario apenas se a c\'elula correspondente \'e base ou se est\'a ocupada.\\
+    Ou seja, pegamos o atributo de número arg.n, especificado pelo usuário, e empilhamos. Um detalhe vital para a simplificação da implementação consiste nos atributos \textit{Base} e \textit{Ocupacao}. Ambas as structs possuem duas informações, porém optamos por indicar ao usuário apenas se a célula correspondente é base ou se está ocupada.\\
     
-    \item \textbf{Cria\c c\~ao e destrui\c \~ao de ex\'ercitos} \\
-    Essas fun\c c\~oes s\~ao simples varreduras pelo vetor de rob\^os da arena. Para fins de simplifica\c c\~ao, limitamos a quantidade de rob\^os da arena em 100, o que explica as constantes nas fun\c c\~oes. No momento inserimos uma quantidade size de rob\^os de um determinado time e colocamos sua posi\c c\~ao inicial na primeira posi\c c\~ao v\'alida do grid. Isto mudar\'a nas fases futuras, pois estamos colocando todos os rob\^os, de times diferentes, na mesma localiza\c c\~ao.
+    \item \textbf{Criação e destruição de exércitos} \\
+    Essas funções são simples varreduras pelo vetor de robôs da arena. Para fins de simplificação, limitamos a quantidade de robôs da arena em 100, o que explica as constantes nas funções. No momento inserimos uma quantidade size de robôs de um determinado time e colocamos sua posição inicial na primeira posição válida do grid. Isto mudar\'a nas fases futuras, pois estamos colocando todos os robôs, de times diferentes, na mesma localização.
     \begin{lstlisting}
         void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 
@@ -231,7 +231,7 @@
         }
     \end{lstlisting}
     
-    Decidimos por destruir um grupo de rob\^os utilizando o time que ele pertence.
+    Decidimos por destruir um grupo de robôs utilizando o time que ele pertence.
     \begin{lstlisting}
     void removeExercito(Arena *arena, Time t) {
     
@@ -245,10 +245,10 @@
     	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
     }	
     \end{lstlisting}
-    A fun\c c\~ao \textit{tapaBuraco} foi essencial para a solu\c c\~ao de bugs e para a atualiza\c c\~ao da primeia posi\c c\~ao livre do vetor de m\'aquinas. Ela funciona similarmente \`a fun\c c\~ao \textit{partition} do \textit{quicksort} que, dado um piv\^o, separa todos os elementos do vetor em maiores que o piv\^o e menores que ele. Neste caso, separamos todos os ponteiros \textbf{NULL} pra m\'aquina daqueles que n\~ao o s\~ao
+    A função \textit{tapaBuraco} foi essencial para a solução de bugs e para a atualização da primeira posição livre do vetor de máquinas. Ela funciona similarmente à função \textit{partition} do \textit{quicksort} que, dado um pivô, separa todos os elementos do vetor em maiores que o pivô e menores que ele. Neste caso, separamos todos os ponteiros \textbf{NULL} pra máquina daqueles que não o são
     
     \item \textbf{O montador} \\
-    O programa em python do montador simplesmente gera um arquivo em C a partir de um programa feito para um rob\^o como no exemplo:
+    O programa em python do montador simplesmente gera um arquivo em C a partir de um programa feito para um robô como no exemplo:
     \begin{lstlisting}
     recursiveFactorial:
     
@@ -275,7 +275,7 @@
       NUM RET 0
     \end{lstlisting}
     
-    A diferen\c ca principal do c\'odigo da fase anterior est\'a no vetor de instru\c c\~oes prog gerado pelo montador. Como adaptamos o tipo operando, o montador agora verifica de que tipo \'e o comando da linha especificada e acrescenta uma dire\c c\~ao \textit{default} ou um inteiro \textit{default}:
+    A diferença principal do código da fase anterior está no vetor de instruções, prog, gerado pelo montador. Como adaptamos o tipo operando, o montador agora verifica de que tipo é o comando da linha especificada e acrescenta uma direção \textit{default} ou um inteiro \textit{default}:
     
     \begin{lstlisting}
     INSTR prog[] = {
@@ -308,12 +308,12 @@
     \end{lstlisting}
     
     \item \textbf{Dificuldades} \\
-    A maior dificuldade nesta fase foi com o tratamento de vari\'aveis de diferentes tipos. Como a especifica\c c\~ao n\~ao era muito clara, focamos em entregar um produto que possui as funcionalidades pedidas. Em especial, lidar com a struct OPERANDO foi um jogo de acertos e erros at\'e encontrar a implementa\c c\~ao que mais fizesse sentido e que gerasse o menor n\'umero de bugs. 
+    A maior dificuldade nesta fase foi com o tratamento de vari\'aveis de diferentes tipos. Como a especificação não era muito clara, focamos em entregar um produto que possui as funcionalidades pedidas. Em especial, lidar com a struct OPERANDO foi um jogo de acertos e erros até encontrar a implementação que mais fizesse sentido e que gerasse o menor número de bugs. 
     
     \item \textbf{Makefile e Testes} \\
-    Este \'e o c\'odigo do nosso \textbf{Makefile}:
+    Este é o código do nosso \textbf{Makefile}:
     \begin{lstlisting}
-            # VariÃ¡veis #################################################
+            # Variáveis #################################################
         CC = gcc
         CFLAGS = -std=c99
         EXECS = testAttackMachine testAtualiza testDepositCrystal testGetPosition testGrabCrystal testHasCrystal testInicializaGrid testInsereExercito testRemoveExercito testRemoveMortos testSysCall testTapaBuraco testMove
@@ -352,12 +352,12 @@
         	rm -f $(EXECS) *.o
     \end{lstlisting}
     
-    Este file ajuda o monitor a compilar todos os testes com apenas um comando. Dessa forma, pode apenas testar cada um deles. Cada teste possui um modo de testar suas sa\'idas que, em sua maioria, est\~ao especificadas no file de teste. 
-    Caso o monitor queira gerar um programa para testar nosso c\'odigo, basta gerar o c\'odigo com o aux\'ilio do programa \textit{montador.py} que gera o c\'odigo em C a ser executado.
+    Este file ajuda o monitor a compilar todos os testes com apenas um comando. Dessa forma, pode apenas testar cada um deles. Cada teste possui um modo de testar suas saídas que, em sua maioria, estão especificadas no file de teste. 
+    Caso o monitor queira gerar um programa para testar nosso código, basta gerar o código com o auxílio do programa \textit{montador.py} que gera o código em C a ser executado.
     
-    \item \textbf{Conclus\~oes} \\
-    Embora hajam funcionalidades que poderiam ser melhor lapidadas, como a introdu\c c\~ao de um ex\'ercito de um determinado time na arena, optamos por simplificar a implementa\c c\~ao para poder lidar melhor com detalhes nas fases seguintes. Assim, todas as funcionalidades pedidas operam de acordo e podem ser reutilizadas e ampliadas a medida que o projeto se desenvolve. \\
-    Em suma, temos um esqueleto bem estruturado, por\'em feito de ossos, n\~ao de diamantes.
+    \item \textbf{Conclusão} \\
+    Embora hajam funcionalidades que poderiam ser melhor lapidadas, como a introdução de um exército de um determinado time na arena, optamos por simplificar a implementação para poder lidar melhor com detalhes nas fases seguintes. Assim, todas as funcionalidades pedidas operam de acordo e podem ser reutilizadas e ampliadas a medida que o projeto se desenvolve. \\
+    Em suma, temos um esqueleto bem estruturado, porém feito de ossos, não de diamantes.
 
 \end{itemize}
 \end{document}

@@ -47,7 +47,11 @@ int main(){
       battlefield->exercitos[i]->alive = False;
   
   for(int i = 0; i < 20; i++) {
-    printf("%d", (int)battlefield->exercitos[i]->alive);
+    if(battlefield->exercitos[i]->alive)
+      printf("1");
+    else
+      printf("0");
+
   }
 
   printf("\n");
@@ -56,7 +60,6 @@ int main(){
   RemoveMortos(battlefield, RED);
   
 
-  printf("\n");
   for(int i = 0; i < 20; i++) {
 
       if(battlefield->exercitos[i] != NULL)
