@@ -126,7 +126,7 @@ void RemoveMortos(Arena *arena, Time t) {
 	Remove, dado um time t, do vetor de máquinas da arena, apenas aqueles que
 	estão mortos. Ou seja, sua variável alive == true.*/
 	
-	for(int i = 99; i >=0; i--) {
+	for(int i = 0; i < arena->firstFree; i++) {
 		if(arena->exercitos[i] != NULL && !arena->exercitos[i]->alive) {
 			arena->exercitos[i] = NULL;
 		}
