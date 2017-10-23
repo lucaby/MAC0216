@@ -41,12 +41,9 @@ char *CODES[] = {
 #endif
 
 #define ip (m->ip)
-#define pil (&m->pil)
 #define exec (&m->exec)
 #define prg (m->prog)
 #define rbp (m->rbp)
-#define x (m->x)
-#define y (m->y)
 
 static void Erro(char *msg) {
   fprintf(stderr, "%s\n", msg);
@@ -59,102 +56,173 @@ static void Fatal(char *msg, int cod) {
 
 Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
+
   if (!m) Fatal("Memória insuficiente",4);
+  m->pil = *cria_pilha();
   ip = 0;
   prg = p;
   rbp = 0;
-  x = 0;
-  y = 0;
+  // Detalhe importante: x é coluna e y é linha
+  m->x = 1;
+  m->y = 0;
   m->crystals = 0;
+  m->alive = True;
   return m;
 }
 
-void destroi_maquina(Maquina *m, Arena *A) {
+#define pil (&m->pil)
+
+void destroi_maquina(Maquina *m, Arena *arena) {
   free(m);
-  free(A);
+  free(arena);
 }
 
 /* Novas funções para as chamadas de sistema */
 
-void directionsSwitch(Maquina *m, Direction d, int *i, int *j) {
+void getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols) {
+	/* (maquina, direção, i, j) -> null
+	Dada uma Maquina m na posição (x,y), inserimos em i e j a 
+	posição correspondente a direção que o usuário chamou o sistema
+	para efetuar a ação. Para controlar as posições inválidas nas bordas
+	da arena, atribuímos um valor à i e j antes de começar e testamos as seguintes
+	condĩções: */
 	switch(d) {
 		case WEST:
-			*i = x - 2;
-			*j = y;
+			if(m->x > 1){
+				*j = m->x - 2;
+				*i = m->y;
+			}
 			break;
 		case NWEST:
-			*i = x - 1;
-			*j = y - 1;
+			if(m->x > 0 && m->y > 0){
+				*j = m->x - 1;
+				*i = m->y - 1;
+			}
 			break;
 		case NEAST:
-			*i = x + 1;
-			*j = y - 1;
+			if(m->x < cols - 1 && m->y > 0){
+				*j = m->x + 1;
+				*i = m->y - 1;
+			}
 			break;
 		case EAST:
-			*i = x + 2;
-			*j = y;
+			if(m->x < cols - 2){
+				*j = m->x + 2;
+				*i = m->y;
+			}
 			break;
 		case SEAST:
-			*i = x + 1;
-			*j = y + 1;
+			if(m->x < cols - 1 && m->y < rows - 1){
+				*j = m->x + 1;
+				*i = m->y + 1;
+			}
 			break;
 		case SWEST:
-			*i = x - 1;
-			*j = y + 1;
+			if(m->x > 0 && m->y < rows - 1){
+				*j = m->x - 1;
+				*i = m->y + 1;
+			}
 			break;
 	}
 }
 
-void moveMachine(Arena *A, Maquina *m, Direction d){
-	int i, j;
-	directionsSwitch(m, d, &i, &j);
-	if(notOcupied(A->grid, i, j)){
-		x += i;
-		y += j;
+OPERANDO moveMachine(Arena *arena, Maquina *m, Direction d){
+	/*(arena, maquina, direção) -> operando (true or false)
+	Quando o usuário chama o sistema para efetuar um movimento
+	esta função verifica se a posição requerida está livre para a ação
+	e muda a posição do robô em caso afirmativo. Devolve um operando 
+	tal qual sua parte inteira indica se a ação conseguiu ser realizada ou não.*/
+	int i = -1, j = -1;
+	OPERANDO result;
+	result.n = False;
+	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+	if(i != -1 && !occupied(arena->grid, i, j)) {
+		arena->grid[i][j].o.ocupado = True;	
+		m->x = j;
+		m->y = i;
+		result.n = True;
 	}
+	return result;
 }
 
-void grabCrystal(Arena *A, Maquina *m, Direction d){
-	int i, j;
-	directionsSwitch(m, d, &i, &j);
-	if(hasCrystal(A->grid, i, j)) {
-		A->grid[i][j].c--;
+OPERANDO grabCrystal(Arena *arena, Maquina *m, Direction d){
+	/*(arena, maquina, direção) -> operando (true or false)
+	Quando o usuário chama o sistema para pegar um cristal que está na
+	posição referente a direção d, esta função verifica se há cristais
+	na posição e atualiza a quantidade de cristais do robô e do local caso
+	afirmativo. Devolve um operando que tem a  parte inteira indicando
+	se a ação conseguiu ser realizada ou não.*/
+	int i = -1, j = -1;
+	OPERANDO result;
+	result.n = False;
+	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+	if(i != -1 && hasCrystal(arena->grid, i, j)) {
+		arena->grid[i][j].c--;
 		(m->crystals)++;
+		result.n = True;
 	}
+	return result;
 }
 
-void depositCrystal(Arena *A, Maquina *m, Direction d) {
-	int i, j;
-	directionsSwitch(m, d, &i, &j);
-	A->grid[i][j].c++;
+OPERANDO depositCrystal(Arena *arena, Maquina *m, Direction d) {
+	/*(arena, maquina, direção) -> operando (true or false)
+	Neste caso, dada a chamada de sistema para depositar um cristal numa 
+	direção d, é verificado se o robô possui algum cristal. Caso tenha, atualizamos
+	a quantidade de cristais do robô e da posição do grid onde foi depositado.
+	Devolvemos um OPERANDO indicando se a operação foi bem sucedida.*/
+	int i = -1, j = -1;
+	OPERANDO result;
+	result.n = False;
+	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+	if(i != -1 && m->crystals > 0){
+		arena->grid[i][j].c++;
+		m->crystals--;
+		result.n = True;
+	}
+	return result;
 }
 
-void attackMachine(Arena *A, Maquina *m, Direction d) {
-	int i, j;
-	directionsSwitch(m, d, &i, &j);
-	if(hasEnemy)
-		printf("EXTERMINATE!");
+OPERANDO attackMachine(Arena *arena, Maquina *m, Direction d) {
+	/*(arena, maquina, direção) -> operando (true or false)
+	Por simplicidade quanto ao sistema de hit points dos robôs, seus respectivos
+	pontos de ataque e defesa, apenas imprimimos uma mensagem na saída padrão
+	indicando que o ataque foi realizado. Devolvemos também a indicação desse resultado.*/
+	int i = -1, j = -1;
+	OPERANDO result;
+	result.n = False;
+	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+	if(i != -1 && hasEnemy(arena->grid, i, j,m->t)){
+		printf("EXTERMINATE!\n");
+		result.n = True;
+	}
+	return result;
+
 }
 
 
-void sysCall(Arena *A, Maquina *m, OpCode t, Direction op){
+OPERANDO sysCall(Arena *arena, Maquina *m, OpCode t, Direction op){
+	/*(arena, maquina, ação, direção) -> operando (true or false)
+	Apenas delega, dependendo da ação (OpCode t) qual das funções
+	devem ser chamadas e retorna o resultado.*/
+	OPERANDO result;
 	switch(t) {
 		case MOVE:
-			moveMachine(A, m, op);
+			result = moveMachine(arena, m, op);
 			break;
 		case GRAB:
-			grabCrystal(A, m, op);
+			result = grabCrystal(arena, m, op);
 			break;
 		case DEPO:
-			depositCrystal(A, m, op);
+			result = depositCrystal(arena, m, op);
 			break;
 		case ATTK:
-			attackMachine(A, m, op);
+			result = attackMachine(arena, m, op);
 			break;
 	}
+	return result;
 }
 
-void exec_maquina(Arena *A, Maquina *m, int n) {
+void exec_maquina(Arena *arena, Maquina *m, int n) {
   int i;
   exec->topo = 0;
   pil->topo = 0;
@@ -163,13 +231,15 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
   	/* printf("i: %d\n opc: %d\n arg: %u\n", i, opc, arg); */
-
+	//printf("topo %d\n", pil->topo);
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg.n));
 		switch(tipo) {
 
 			case NUM:
+
 				switch (opc) {
-					  OPERANDO tmp;
+
+					OPERANDO tmp;
 					case PUSH:
 					  empilha(pil, arg);
 					  break;
@@ -315,23 +385,59 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
 				      empilha(exec, arg);
 					  break;
 					case FRE:
-					// Test implementation
 					  exec->topo -= desempilha(exec).n;
 					  break;
 
-					// A partir daqui implementamos as coisas para a Fase II
+					// arena partir daqui implementamos as coisas para a Fase II
 					case ATR:
+						/*Pega o OPERANDO do topo da pilha e empilha um OPERANDO com
+						o atributo de número arg desse OPERANDO.*/
 						tmp = desempilha(pil);
-						empilha(pil, tmp);
+						int i = -1, j = -1;
+						getPosition(m, tmp.d, &i, &j, arena->rows, arena->cols);
+						if(i != -1){
+							switch(arg.n){
+								case 0:
+									tmp.n = (int)(arena->grid[i][j].t);
+									empilha(pil, tmp);
+									break;
+								case 1:
+									tmp.n = (int)(arena->grid[i][j].b.isBase);
+									empilha(pil, tmp);
+									break;
+								case 2:
+									tmp.n = (int)(arena->grid[i][j].c);
+									empilha(pil, tmp);
+
+									break;
+								case 3:
+									tmp.n = (int)(arena->grid[i][j].o.ocupado);
+									empilha(pil, tmp);
+									break;
+							}
+						}
+						else
+							printf("Celula invalida.\n");
+
+						// Dependendo do argumento (0, 1, 2, 3) devemos empilhar operandos
+						// de maneiras diferentes. Da mesma forma, o PRN deve mudar
+						// para se adequar ao print de operandos.
+							
 						break;
 				}
 				break;
 			case ACAO:
-
-				sysCall(A, m, opc, arg.d);
+				/*Chama a função sysCall, que delega uma determinada ação opc,
+				e empilha o resultado desta ação (se foi realizada ou não).*/
+				empilha(pil,sysCall(arena, m, opc, arg.d));
 				break;
+
 			
-			case VAR:
+			case INTER:
+				switch(opc) {
+					case PUSH:
+						empilha(pil, arg);
+				}
 
 				break;
 				
@@ -343,87 +449,19 @@ void exec_maquina(Arena *A, Maquina *m, int n) {
   }
 }
 
-  void InsereExercito(Arena *arena, int size, INSTR *p, int time) {
-	
-	for(int i = arena->lastFree; i < 100; i++){
-		Maquina *robo;
-		robo = cria_maquina(p);
-		robo->t = time;
-		arena->exercitos[i] = robo;
-	}
-
-	if(size > 100-arena->lastFree) printf("The Arena is full.\n"); 
-}
 
 
-//Implement quicksort partition. Assim nao precisamos nos preocupar em retirar os robos
-void RemoveExercito(Arena *arena,Time t) {
-	for(int i = 99; i >=0; i--) {
-		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
-			arena->exercitos[i] = NULL;
-		}
-	}
-
-	
-}	
-
-void Atualiza(Arena *arena, int ciclos) {
-   for(int i = 0; i < 100; ++i) {
-      exec_maquina(arena, arena->exercitos[i], ciclos);
-   }
-   arena->tempo += 1;
-}
-
-void RemoveMortos(Arena *arena, Time t) {
-	for(int i = 99; i >=0; i--) {
-		if(arena->exercitos[i] != NULL && arena->exercitos[i]->isDead) {
-			arena->exercitos[i] = NULL;
-		}
-	}
-}
-
-Bool hasCrystal(Grid g, int i, int j) {
-	return (g[i][j].c > 0);
-}
-
-Bool hasEnemy(Grid g, int i, int j, Time friendly) {
-	if(g[i][j].o.ocupado && g[i][j].o.time != friendly)
-		return True;
-	return False;
-}
 
 
-Bool notOcupied(Grid g, int i, int j) {
-	return !g[i][j].o.ocupado;
-}
 
-void inicializaGrid(Arena *arena, int nrows, int ncols) {
-	arena->grid = malloc(nrows * sizeof(Grid *));
-	for(int i = 0; i < nrows; i++) {
-	    arena->grid[i] = malloc(ncols * sizeof(Grid));
-	    if(arena->exercitos[i] == NULL) {
-	        fprintf(stderr, "out of memory\n");
-	        return;
-	    }
-	}
-	for(int j = 0; j < nrows; j++) {
-		if (j % 2 == 0) {
-			for(int i = 1; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = False;
-			}			
-		}
 
-		
-		else {
-			for(int i = 0; i < ncols; i += 2) {
-				arena->grid[i][j].o.ocupado = False;
-				
-				//TODO: inicializar as outras coisas
-				//arena->exercitos[i][j].base
-				//arena->exercitos[i][j].
 
-			}
-		}
-	}
-}
+
+
+
+
+
+
+
+
 

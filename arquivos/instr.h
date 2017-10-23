@@ -3,6 +3,7 @@
 #define INSTR_H
 //#include "structures.h"
 //#include "maq.h"
+#define MAXMEM 100
 
 typedef enum {
   PUSH = 0,
@@ -44,8 +45,12 @@ typedef enum {
 typedef enum {
   NUM = 0,
   ACAO,
-  VAR
+  INTER
 } Tipo;
+
+// Tipos de direções permitidas num grid hexagonal da maneira que implementamos
+// Dada uma posição i,j o robô apenas tem como vizinhos as posições laterais e
+// duas posições ao norte e ao sul
 
 typedef enum {
   WEST = 0, // WEST
@@ -56,13 +61,20 @@ typedef enum {
   SWEST //SOUTH WEST
 } Direction;
 
-typedef union {
+
+// Até o momento, toda instrução que o usuário faz se resume a dois tipos:
+// um inteiro ou uma direção onde a ação será realizada.
+// Nesse sentido, optamos por declarar o OPERANDO dessa maneira:
+typedef struct {
   int n;
   Direction d;
 }OPERANDO;
 
 
 /* Instrução */
+
+// Para que o usuário pudesse explicitar o tipo quando quiser realizar a operação, i.e.
+// código da forma NUM PUSH 10 ou ACAO MOVE WEST optamos pode definir uma instrução assim:
 typedef struct {
   Tipo t;
   OpCode instr;

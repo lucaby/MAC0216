@@ -36,7 +36,11 @@ while l:
     if len(keys) > 0:
         op = keys.pop(0)
     if len(keys) > 0:
-        arg = keys.pop(0)
+        if(tipo == "NUM"):
+            arg = "{{ {}, {} }}".format(keys.pop(0), "WEST")
+        else:
+            arg = "{{ {}, {} }}".format("0", keys.pop(0))
+
         if arg in tabsim:
             arg = tabsim[arg]
     if op != "":
@@ -54,7 +58,7 @@ n = 10000
 
 #Criacao da main
 print("int main(int ac, char **av) {")
-print("  Arena *a;")
+print("  Arena *a = malloc(sizeof(Arena));")
 print("  Maquina *maq = cria_maquina(prog);")
 print("  exec_maquina(a, maq, {});".format(n))
 print("  destroi_maquina(maq, a);")
