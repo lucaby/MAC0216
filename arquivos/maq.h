@@ -1,18 +1,13 @@
-#include "pilha.h"
 
-#define MAXMEM 100
 
-typedef struct {
-  Pilha pil;
-  Pilha exec;
-  OPERANDO Mem[MAXMEM];
-  INSTR *prog;
-  int ip;
-  int rbp;
-} Maquina;
+#ifndef MAQ_H
+#define MAQ_H
+//Due to circular dependencies, we initialized all maq function in arena.h.
 
-Maquina *cria_maquina(INSTR *p);
 
-void destroi_maquina(Maquina *m);
+#include "arena.h"
 
-void exec_maquina(Maquina *m, int n);
+
+
+
+#endif

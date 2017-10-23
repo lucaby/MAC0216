@@ -1,6 +1,12 @@
 /* Códigos das instruções */
+#ifndef INSTR_H
+#define INSTR_H
+//#include "structures.h"
+//#include "maq.h"
+#define MAXMEM 100
+
 typedef enum {
-  PUSH,
+  PUSH = 0,
   POP,
   DUP,
   ADD,
@@ -27,30 +33,52 @@ typedef enum {
   STL,
   RCE,
   ALC,
-  FRE
+  FRE,
+  SYS,
+  ATR,
+  MOVE,
+  GRAB,
+  DEPO,
+  ATTK
 } OpCode;
 
-/* Tipos dos operandos */
-/* no momento, são todos inteiros */
 typedef enum {
-  NUM,
+  NUM = 0,
   ACAO,
-  VAR
+  INTER
 } Tipo;
 
-/* Operando */
-/* typedef struct { */
-/*   Tipo t; */
-/*   union { */
-/* 	int n; */
-/* 	int ac; */
-/* 	int v; */
-/*   }; */
-/* } OPERANDO; */
-typedef int OPERANDO;
+// Tipos de direções permitidas num grid hexagonal da maneira que implementamos
+// Dada uma posição i,j o robô apenas tem como vizinhos as posições laterais e
+// duas posições ao norte e ao sul
+
+typedef enum {
+  WEST = 0, // WEST
+  NWEST, //NORTH WEST
+  NEAST, //NORTH EAST
+  EAST, // EAST
+  SEAST, //SOUTH EAST
+  SWEST //SOUTH WEST
+} Direction;
+
+
+// Até o momento, toda instrução que o usuário faz se resume a dois tipos:
+// um inteiro ou uma direção onde a ação será realizada.
+// Nesse sentido, optamos por declarar o OPERANDO dessa maneira:
+typedef struct {
+  int n;
+  Direction d;
+}OPERANDO;
+
 
 /* Instrução */
+
+// Para que o usuário pudesse explicitar o tipo quando quiser realizar a operação, i.e.
+// código da forma NUM PUSH 10 ou ACAO MOVE WEST optamos pode definir uma instrução assim:
 typedef struct {
+  Tipo t;
   OpCode instr;
   OPERANDO op;
 } INSTR;
+
+#endif
