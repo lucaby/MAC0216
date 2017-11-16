@@ -6,8 +6,8 @@
 #define PILMAX 99
 
 typedef struct {
-  int topo;
-  OPERANDO val[PILMAX+1];
+	int topo;
+	OPERANDO val[PILMAX+1];
 } Pilha;
 
 Pilha *cria_pilha();

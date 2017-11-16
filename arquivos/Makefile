@@ -1,8 +1,8 @@
 # Variáveis #################################################
 CC = gcc
 CFLAGS = -std=c99
-EXECS = testAttackMachine testAtualiza testDepositCrystal testGetPosition testGrabCrystal testHasCrystal testInicializaGrid testInsereExercito testRemoveExercito testRemoveMortos testSysCall testTapaBuraco testMove
-OBJ = testAttackMachine.o testAtualiza.o testDepositCrystal.o testGetPosition.o testGrabCrystal.o testHasCrystal.o testInicializaGrid.o testInsereExercito.o testRemoveExercito.o testRemoveMortos.o testSysCall.o testTapaBuraco.o testMove.o
+EXECS = testAttackMachine testAtualiza testDepositCrystal testGetPosition testGrabCrystal testHasCrystal testInicializaGrid testInsereExercito testRemoveExercito testRemoveMortos testSysCall testTapaBuraco testMove controle
+OBJ = testAttackMachine.o testAtualiza.o testDepositCrystal.o testGetPosition.o testGrabCrystal.o testHasCrystal.o testInicializaGrid.o testInsereExercito.o testRemoveExercito.o testRemoveMortos.o testSysCall.o testTapaBuraco.o testMove.o controle.o
 HEADERS = maq.h arena.h structures.h instr.h pilha.h
 DEPENDS = maq.c arena.c pilha.c
 
@@ -28,6 +28,7 @@ all: $(OBJ)
 	gcc $(CFLAGS) -o testRemoveExercito testRemoveExercito.o $(DEPENDS)
 	gcc $(CFLAGS) -o testRemoveMortos testRemoveMortos.o $(DEPENDS)
 	gcc $(CFLAGS) -o testSysCall testSysCall.o $(DEPENDS)
+	gcc $(CFLAGS) -o controle controle.o $(DEPENDS)
 	gcc $(CFLAGS) -o testTapaBuraco testTapaBuraco.o $(DEPENDS)
 
 

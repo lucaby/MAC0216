@@ -9,26 +9,30 @@
 //#include "maq.h"
 
 typedef struct {  
-  Pilha pil;
-  Pilha exec;
-  OPERANDO Mem[MAXMEM];
-  INSTR *prog;
-  int ip;
-  int rbp;
-  int x;
-  int y;
-  Cristais crystals;
-  Bool alive;
-  Time t;
+	Pilha pil;
+	Pilha exec;
+	OPERANDO Mem[MAXMEM];
+	INSTR *prog;
+	int ip;
+	int rbp;
+	int x;
+	int y;
+	int oldX;
+	int oldY;
+	int hp;
+	Cristais crystals;
+	Bool alive;
+	Time t;
+	int time;
 } Maquina;
 
 typedef struct {
-  Grid grid;
-  int rows;
-  int cols;
-  int tempo;
-  Maquina* exercitos[MAXMEM];
-  int firstFree;
+	Grid grid;
+	int rows;
+	int cols;
+	int tempo;
+	Maquina* exercitos[MAXMEM];
+	int firstFree;
 } Arena;
 
 //TEST DONE
@@ -60,7 +64,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols);
 
 // Funções da struct Maquina
 
-Maquina *cria_maquina(INSTR *p);
+Maquina *cria_maquina(INSTR *p, int x, int y);
 
 void destroi_maquina(Maquina *m, Arena *A);
 
@@ -81,7 +85,7 @@ OPERANDO depositCrystal(Arena *A, Maquina *m, Direction d);
 //TEST DONE
 OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
 
-//TEST IN PROCESS
+//TEST IN PROGRESS
 void  getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols);
 
 #endif
