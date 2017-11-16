@@ -7,7 +7,7 @@ from math import *
 pg.init()                                 # inicialização do sistema
 
 # altura e largura da arena, em células
-H, W = 15,15
+H, W = 15, 15
 
 # largura da célula
 l = 30
@@ -92,9 +92,9 @@ class cell:
 
 # Construção da matriz que representa a arena
 arena = []
-for i in range(15):
+for i in range(H):
     arena.append([])
-    for j in range(15):
+    for j in range(W):
         arena[i].append(cell(i,j))
         arena[i][j].draw()
 

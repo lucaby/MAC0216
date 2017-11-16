@@ -73,28 +73,30 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
   	
 	for(int i = arena->firstFree; i < size + arena->firstFree; i++){
 		if(team == BLUE) 
-		fprintf(display, "rob robo1.png\n");
-	else 
-		fprintf(display, "rob robo2.png\n");
+			fprintf(display, "rob robo1.png\n");
+		else 
+			fprintf(display, "rob robo2.png\n");
 
 		Maquina *robo;
 		robo = cria_maquina(p, 0, 1);
 		
 		robo->t = team;
-		arena->exercitos[i] = robo;
 		robo->crystals = 0;
 		robo->alive = True;
 		robo->x = robo->oldX = rand() % arena->cols;
 		robo->y = robo->oldY = rand() % arena->rows;
+		printf("%d, %d \n", robo->x, robo->y);
 		fprintf(display, "%d %d %d %d %d\n",
-						i, robo->oldY, robo->oldX, robo->y, robo->x);
+						i, 0, 0, robo->y, robo->x);
 		fflush(display);
+		arena->exercitos[i] = robo;
 	}
 	arena->firstFree += size;
-	pclose(display);
 }
 
-
+void closeArena(Arena *arena){
+	pclose(display);
+}
 
 
 void Atualiza(Arena *arena, int ciclos) {

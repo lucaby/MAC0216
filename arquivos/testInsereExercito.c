@@ -34,23 +34,23 @@ int main(){
     Arena* battlefield = malloc(sizeof(Arena));
     printf("Arena feita.\n");
 
-    inicializaArena(battlefield, 50, 50); 
+    inicializaArena(battlefield, 15, 15); 
     printf("Grid Inicializado.\n");
 
-    InsereExercito(battlefield, 10, prog, BLUE);
+    InsereExercito(battlefield, 5, prog, BLUE);
     printf("Blue team off to work.\n");
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 5; i++){
         if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i]->t == BLUE 
            && battlefield->exercitos[i]->crystals == 0 && battlefield->exercitos[i]->alive == True)
           printf("Sucesso, bixo.\n");
         else printf("Po, bixo.");
         }
 
-    InsereExercito(battlefield, 10, prog, RED);
+    InsereExercito(battlefield, 5, prog, RED);
     printf("Red team off to work.\n");
 
-    for(int i = 10; i < 20; i++){
+    for(int i = 5; i < 10; i++){
         if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i]->t == RED 
            && battlefield->exercitos[i]->crystals == 0 && battlefield->exercitos[i]->alive == True)
           printf("Sucesso, bixo.\n");
@@ -58,6 +58,6 @@ int main(){
 
     }
 
-
+  closeArena(battlefield);
   return 0;
 }

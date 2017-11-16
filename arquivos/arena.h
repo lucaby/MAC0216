@@ -88,4 +88,6 @@ OPERANDO attackMachine(Arena *A, Maquina *m, Direction d);
 //TEST IN PROGRESS
 void  getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols);
 
+void closeArena(Arena *arena);
+
 #endif
