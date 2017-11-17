@@ -24,6 +24,7 @@ typedef struct {
 	Bool alive;
 	Time t;
 	int time;
+	int id;
 } Maquina;
 
 typedef struct {
@@ -35,6 +36,7 @@ typedef struct {
 	int firstFree;
 } Arena;
 
+void printRobot(Maquina* maq);
 //TEST DONE
 void Atualiza(Arena *arena, int ciclos);
 

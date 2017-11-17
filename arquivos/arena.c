@@ -1,10 +1,10 @@
 #include "arena.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 
 FILE *display;
-
+//nrows = 2 * ncols
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	/*(arena, #linhas, #coluna) -> void
 	Aloca dinamicamente uma matrix de células de tamanho nrowsxncols.
@@ -12,6 +12,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	células com cristais. Além disso, colocamos bases dos times, além de
 	indicar que as células estão desocupadas. Esta função deve sempre ser
 	chamada no início do jogo.*/
+	
 	display = popen("python3 apres", "w");
 
 	arena->rows = nrows;
@@ -19,6 +20,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->tempo = 0;
 	arena->firstFree = 0;
 	srand(time(NULL));
+
 	arena->grid = (Celula **) malloc(sizeof(Celula *) * ncols);
 	int i;
 	for(i = 0; i < ncols; i++) {
@@ -27,7 +29,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 
 
 	for(int j = 0; j < nrows; j++) {
-		if (j % 2 == 0) {
+		if (j % 2 == 1) {
 			for(int i = 1; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = False;
 				//Gera o terreno da case (i,j). Implementacao bem simples sem agrupamento
@@ -35,9 +37,9 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
 				//Sets the bases
-				
-			}			
-		}
+				fprintf(display, "terr %d %d %d\n", j, i / 2 , (int)arena->grid[i][j].t);
+			}
+		}	
 		else {
 			for(int i = 0; i < ncols; i += 2) {
 				arena->grid[i][j].o.ocupado = False;
@@ -45,53 +47,97 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
+				fprintf(display, "terr %d %d %d\n", j, i / 2, (int)arena->grid[i][j].t);
 				//Sets the bases
 
 			}
 		}
-	arena->grid[1][0].b.isBase = True;
-	arena->grid[1][0].b.team = RED;
+	}
 
-	arena->grid[nrows-1][ncols-2].b.isBase = True;
-	arena->grid[nrows-1][ncols-2].b.team = BLUE;	
+
+	arena->grid[0][0].b.isBase = True;
+	arena->grid[0][0].b.team = RED;
+
+	arena->grid[nrows-1][ncols-1].b.isBase = True;
+	arena->grid[nrows-1][ncols-1].b.team = BLUE;	
+	fprintf(display, "init\n");
+	fprintf(display, "crys ./sprites/crystal.png %d %d\n", 1 , 1);
+
+	for(int i = 0; i <= ncols / 2;) {
+		
+		int r1 = rand() % nrows;
+		int r2 = (rand() % ncols);
+		if((r1 % 2 == 0 && (r2/2) % 2 == 0) || (r1 % 2 == 1 && (r2/2) % 2 == 1) && arena->grid[r1][r2].o.ocupado == False) {
+			arena->grid[r1][r2].c = True;
+			arena->grid[r1][r2].o.ocupado = True;
+			fprintf(display, "crys ./sprites/crystal.png %d %d\n", r1 , r2 / 2);
+
+			i++;
+		}
 	}
-	for(int i = 0; i <= ncols; i++) {
-		arena->grid[rand() % ncols ][rand() % (nrows)].c = True;
-	}
+	
 }
 
 
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
   	/*(arena, size, instruções, time) -> void
   	Insere no vetor de máquinas da Arena uma quantidade size de robôs de um time team*/
-  	srand(time(NULL));
-	
+  	
+
+	int x = 1;
+	int k;
   	if(size > 100-arena->firstFree) {
   		printf("The Arena is full.\n");
   		return;
   	}
-  	
-	for(int i = arena->firstFree; i < size + arena->firstFree; i++){
-		if(team == BLUE) 
-			fprintf(display, "rob robo1.png\n");
-		else 
-			fprintf(display, "rob robo2.png\n");
 
+  	if(team == BLUE) {
+  		k = 1;
+  	}
+  	else {
+  		k = arena->rows - 2;
+  	}
+  	if(k % 2 == 0) {
+  		x = 2;
+  	}
+ 
+	for(int i = arena->firstFree; i < size + arena->firstFree; i++){
+				
+		if(team == BLUE) {
+			fprintf(display, "rob ./sprites/roboBlue.png\n");
+		}
+		else {
+			fprintf(display, "rob ./sprites/roboRed.png\n");
+		}
 		Maquina *robo;
-		robo = cria_maquina(p, 0, 1);
-		
+		robo = cria_maquina(p, 0, 0);
+		robo->id = i;
 		robo->t = team;
 		robo->crystals = 0;
 		robo->alive = True;
-		robo->x = robo->oldX = rand() % arena->cols;
-		robo->y = robo->oldY = rand() % arena->rows;
-		printf("%d, %d \n", robo->x, robo->y);
-		fprintf(display, "%d %d %d %d %d\n",
-						i, 0, 0, robo->y, robo->x);
-		fflush(display);
+		robo->x = robo->oldX = x;
+		robo->y = robo->oldY = k;
+		x += 2;
+		
+		printRobot(robo);
+		
 		arena->exercitos[i] = robo;
 	}
+
 	arena->firstFree += size;
+}
+
+void printRobot(Maquina* maq) {
+	int i, j;
+	i = maq->y;
+	j = maq->x / 2;
+	
+	fprintf(display, "%d %d %d %d %d\n",
+						maq->id, maq->oldY, maq->oldX / 2, i, j);
+	fflush(display);
+	printf("old i, j = (%d, %d)\n", maq->oldY, maq->oldX);
+	printf("new i, j = (%d, %d) \n", maq->y, maq->x);
+	sleep(2);
 }
 
 void closeArena(Arena *arena){
@@ -137,6 +183,7 @@ void RemoveMortos(Arena *arena, Time t) {
 	
 	for(int i = 0; i < arena->firstFree; i++) {
 		if(arena->exercitos[i] != NULL && !arena->exercitos[i]->alive) {
+			
 			arena->exercitos[i] = NULL;
 		}
 	}
@@ -162,7 +209,7 @@ void removeExercito(Arena *arena, Time t) {
 // Em especial as chamadas de sistema
 
 Bool hasCrystal(Grid g, int i, int j) {
-	return (g[i][j].c > 0);
+	return (g[i][j].c == True);
 }
 
 Bool hasEnemy(Grid g, int i, int j, Time friendly) {
@@ -216,7 +263,8 @@ void getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols) {
 			}
 			break;
 		case SWEST:
-			if(m->x > 0 && m->y < rows - 1){
+			if(m->x > 0 && m->y < rows - 1) {
+				printf("entrei no SWEST!\n");
 				*j = m->x - 1;
 				*i = m->y + 1;
 			}
@@ -233,27 +281,35 @@ OPERANDO moveMachine(Arena *arena, Maquina *m, Direction d){
 	int i = -1, j = -1;
 	OPERANDO result;
 	result.n = False;
+	m->oldY = m->y;
+	m->oldX = m->x;
+	arena->grid[m->oldY][m->oldX].o.ocupado = False;
 	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+	
 	if(i != -1 && !occupied(arena->grid, i, j)) {
-		arena->grid[i][j].o.ocupado = True;	
+		arena->grid[i][j].o.ocupado = True;
+		arena->grid[i][j].o.team = m->t;
 		m->x = j;
 		m->y = i;
 		result.n = True;
+		printRobot(m);
 	}
+	
+
 	switch(arena->grid[i][j].t) {
 		case ESTRADA:
 			break;
 		case RIO:
-			m->time += 5;
+			m->time += 2;
 			break;		
 		case MONTANHA:
-			m->time += 15;
+			m->time += 5;
 			break;
 		case LAMA:
 			m->time += 4;
 			break;
 		case CAMPO: 
-			m->time += 2;
+			m->time += 1;
 			break;
 	}
 
@@ -271,10 +327,13 @@ OPERANDO grabCrystal(Arena *arena, Maquina *m, Direction d){
 	OPERANDO result;
 	result.n = False;
 	getPosition(m, d, &i, &j, arena->rows, arena->cols);
+
 	if(i != -1 && hasCrystal(arena->grid, i, j)) {
+		printf("quase peguei cristal\n");
 		arena->grid[i][j].c--;
 		(m->crystals)++;
 		result.n = True;
+		fprintf(display, "remCrys %d %d \n", i, j / 2);
 	}
 	m->time++;
 	return result;
@@ -320,19 +379,23 @@ OPERANDO sysCall(Arena *arena, Maquina *m, OpCode t, Direction op){
 	Apenas delega, dependendo da ação (OpCode t) qual das funções
 	devem ser chamadas e retorna o resultado.*/
 	OPERANDO result;
-	switch(t) {
-		case MOVE:
-			result = moveMachine(arena, m, op);
-			break;
-		case GRAB:
-			result = grabCrystal(arena, m, op);
-			break;
-		case DEPO:
-			result = depositCrystal(arena, m, op);
-			break;
-		case ATTK:
-			result = attackMachine(arena, m, op);
-			break;
+	//if(m->time == 0) 
+		switch(t) {
+			case MOVE:
+				result = moveMachine(arena, m, op);
+				break;
+			case GRAB:
+				result = grabCrystal(arena, m, op);
+				break;
+			case DEPO:
+				result = depositCrystal(arena, m, op);
+				break;
+			case ATTK:
+				result = attackMachine(arena, m, op);
+				break;
+
 	}
+	//else m->time--;
+
 	return result;
 }

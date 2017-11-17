@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <unistd.h>
 typedef struct {
   int pi, pj;
   int i, j;
@@ -7,7 +7,7 @@ typedef struct {
 } Robot;
 
 FILE *display;
-Robot rb[2];
+Robot rb[1];
 
 
 void anda(int ri) {
@@ -43,15 +43,10 @@ int main() {
   int t; 						/* tempo */
   display = popen("python3 apres", "w");
 
-  rb[0].pi =  6;
-  rb[0].pj = 14;
-  rb[0].vi = -1;
+  rb[0].pi =  0;
+  rb[0].pj = 0;
+  rb[0].vi = 1;
   rb[0].vj =  1;
-  
-  rb[1].pi = 10;
-  rb[1].pj = 11;
-  rb[1].vi =  1;
-  rb[1].vj = -1;
 
   if (display == NULL) {
 	fprintf(stderr,"Não encontrei o programa de exibição\n");
@@ -59,15 +54,16 @@ int main() {
   }
   
   /* cria dois robôs */
-  fprintf(display, "rob GILEAD_A.png\nrob GILEAD_B.png\n");
+  fprintf(display, "rob roboBlue.png\n");
 
 
   for (t=0; t < 100; t++) {
 	anda(0);
-	anda(1);
+	
 	mostra(0);
-	mostra(1);
+	
 	fflush(display);
+  sleep(2);
   }
 
   pclose(display);

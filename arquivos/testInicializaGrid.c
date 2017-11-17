@@ -12,7 +12,7 @@ int main() {
 
 	printf("Cristal positions: \n");
 	for(int j = 0; j < nrows; j++) {
-			if (j % 2 == 0) {
+			if (j % 2 == 1) {
 				for(int i = 0; i < ncols; i += 1) {
 					if((i % 2 == 0))
 						printf("X ");
@@ -36,7 +36,7 @@ int main() {
 	printf("Bases: \n");
 
 		for(int j = 0; j < nrows; j++) {
-			if (j % 2 == 0) {
+			if (j % 2 == 1) {
 				for(int i = 0; i < ncols; i += 1) {
 					if((i % 2 == 0))
 						printf("X ");
@@ -66,7 +66,7 @@ int main() {
 			if (j % 2 == 0) {
 			
 				for(int i = 0; i < ncols; i += 1) {
-					if((i % 2 == 0))
+					if((i % 2 == 1))
 						printf("X ");
 					else {
 						//printf("%d", (int)a->grid[i][j].t);
@@ -93,7 +93,7 @@ int main() {
 			}
 			else {
 				for(int i = 0; i < ncols; i += 1) {
-					if((i % 2 == 1))
+					if((i % 2 == 0))
 						printf("X ");
 					else {
 						//printf("%d", (int)a->grid[i][j].t);
