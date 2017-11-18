@@ -176,8 +176,14 @@ for line in fileinput.input():
 
     if r[0] == 'remCrys':
         i = int(r[1])
-        print("entrou")
         j = int(r[2])
+        arena[i][j].draw()
+        continue
+
+    if r[0] == 'die':
+        i = int(r[1])
+        j = int(r[2])
+        print("(i, j) = ({}, {})".format(r[1], r[2]))
         arena[i][j].draw()
         continue
 

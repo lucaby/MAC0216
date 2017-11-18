@@ -6,6 +6,7 @@
 #include "instr.h"
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 //#include "maq.h"
 
 typedef struct {  
@@ -20,10 +21,14 @@ typedef struct {
 	int oldX;
 	int oldY;
 	int hp;
+	int damage;
+	int defense;
 	Cristais crystals;
 	Bool alive;
 	Time t;
 	int time;
+	//Adicionar o id para que, ao atacar, basta fazer uma busca no vetor de exércitos
+	//para ver qual robô atacaremos
 	int id;
 } Maquina;
 
@@ -35,6 +40,10 @@ typedef struct {
 	Maquina* exercitos[MAXMEM];
 	int firstFree;
 } Arena;
+
+int getDamage(Maquina *m);
+
+int getEnemy(Arena *arena, int lin, int col);
 
 void printRobot(Maquina* maq);
 //TEST DONE

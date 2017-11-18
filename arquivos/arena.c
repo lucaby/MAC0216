@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 
 FILE *display;
 //nrows = 2 * ncols
@@ -61,13 +62,12 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	arena->grid[nrows-1][ncols-1].b.isBase = True;
 	arena->grid[nrows-1][ncols-1].b.team = BLUE;	
 	fprintf(display, "init\n");
-	fprintf(display, "crys ./sprites/crystal.png %d %d\n", 1 , 1);
 
 	for(int i = 0; i <= ncols / 2;) {
 		
 		int r1 = rand() % nrows;
 		int r2 = (rand() % ncols);
-		if((r1 % 2 == 0 && (r2/2) % 2 == 0) || (r1 % 2 == 1 && (r2/2) % 2 == 1) && arena->grid[r1][r2].o.ocupado == False) {
+		if((r1 % 2 == 0 && r2 % 2 == 0) || (r1 % 2 == 1 && r2 % 2 == 1) && arena->grid[r1][r2].o.ocupado == False) {
 			arena->grid[r1][r2].c = True;
 			arena->grid[r1][r2].o.ocupado = True;
 			fprintf(display, "crys ./sprites/crystal.png %d %d\n", r1 , r2 / 2);
@@ -111,17 +111,27 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 		}
 		Maquina *robo;
 		robo = cria_maquina(p, 0, 0);
-		robo->id = i;
 		robo->t = team;
 		robo->crystals = 0;
 		robo->alive = True;
 		robo->x = robo->oldX = x;
 		robo->y = robo->oldY = k;
+		robo->hp = 100;
+		robo->damage = 10;
+		robo->defense = 2;
 		x += 2;
+		if(i == 0)
+			robo->id = 0;
+		else
+			robo->id = (arena->exercitos[i-1]->id)++;
 		
 		printRobot(robo);
 		
 		arena->exercitos[i] = robo;
+		arena->grid[k][x].o.ocupado = True;
+		arena->grid[k][x].o.team = team;
+		arena->grid[k][x].o.id = robo->id;
+
 	}
 
 	arena->firstFree += size;
@@ -135,8 +145,6 @@ void printRobot(Maquina* maq) {
 	fprintf(display, "%d %d %d %d %d\n",
 						maq->id, maq->oldY, maq->oldX / 2, i, j);
 	fflush(display);
-	printf("old i, j = (%d, %d)\n", maq->oldY, maq->oldX);
-	printf("new i, j = (%d, %d) \n", maq->y, maq->x);
 	sleep(2);
 }
 
@@ -281,16 +289,18 @@ OPERANDO moveMachine(Arena *arena, Maquina *m, Direction d){
 	int i = -1, j = -1;
 	OPERANDO result;
 	result.n = False;
-	m->oldY = m->y;
-	m->oldX = m->x;
-	arena->grid[m->oldY][m->oldX].o.ocupado = False;
 	getPosition(m, d, &i, &j, arena->rows, arena->cols);
 	
 	if(i != -1 && !occupied(arena->grid, i, j)) {
+		m->oldY = m->y;
+		m->oldX = m->x;
+		arena->grid[m->oldY][m->oldX].o.ocupado = False;
+		arena->grid[m->oldY][m->oldX].o.id = -1;
 		arena->grid[i][j].o.ocupado = True;
 		arena->grid[i][j].o.team = m->t;
 		m->x = j;
 		m->y = i;
+		arena->grid[i][j].o.id = m->id;
 		result.n = True;
 		printRobot(m);
 	}
@@ -333,6 +343,7 @@ OPERANDO grabCrystal(Arena *arena, Maquina *m, Direction d){
 		arena->grid[i][j].c--;
 		(m->crystals)++;
 		result.n = True;
+		arena->grid[i][j].o.ocupado = False;
 		fprintf(display, "remCrys %d %d \n", i, j / 2);
 	}
 	m->time++;
@@ -353,6 +364,8 @@ OPERANDO depositCrystal(Arena *arena, Maquina *m, Direction d) {
 		arena->grid[i][j].c++;
 		m->crystals--;
 		result.n = True;
+		arena->grid[i][j].o.ocupado = True;
+		fprintf(display, "crys ./sprites/crystal.png %d %d\n", i , j / 2);
 	}
 	m->time++;
 	return result;
@@ -367,8 +380,19 @@ OPERANDO attackMachine(Arena *arena, Maquina *m, Direction d) {
 	OPERANDO result;
 	result.n = False;
 	getPosition(m, d, &i, &j, arena->rows, arena->cols);
-	if(i != -1 && hasEnemy(arena->grid, i, j,m->t)){
+	if(i != -1 && hasEnemy(arena->grid, i, j, m->t)){
+		int enemy = getEnemy(arena, i, j);
+		int damage = getDamage(m);
 		printf("EXTERMINATE!\n");
+		arena->exercitos[enemy]->hp -= damage - arena->exercitos[enemy]->defense;
+		
+		if(arena->exercitos[enemy]->hp < 0){
+			fprintf(display, "die %d %d\n", i, (j/2));
+			arena->grid[i][j].o.ocupado = False;
+			arena->grid[i][j].o.id = -1;
+		}
+
+		printf("hp after: %d\n", arena->exercitos[enemy]->hp);
 		result.n = True;
 	}
 	return result;
@@ -398,4 +422,24 @@ OPERANDO sysCall(Arena *arena, Maquina *m, OpCode t, Direction op){
 	//else m->time--;
 
 	return result;
+}
+
+int getEnemy(Arena *arena, int lin, int col){
+	int i = 0;
+	int id = arena->grid[lin][col].o.id;
+
+	while(i < arena->firstFree && arena->exercitos[i]->id != id)
+		i++;
+
+	return i;
+}
+
+int getDamage(Maquina *m){
+	srand(time(NULL));
+	int damage = m->damage + rand()%10;
+	if(m->hp < 50 && m->hp > 20)
+		damage = damage/2;
+	else if(m->hp< 20)
+		damage = damage/3;
+	return damage;
 }

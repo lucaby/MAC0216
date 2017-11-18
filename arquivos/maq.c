@@ -288,7 +288,6 @@ void exec_maquina(Arena *arena, Maquina *m, int n) {
 				case ACAO:
 					/*Chama a função sysCall, que delega uma determinada ação opc,
 					e empilha o resultado desta ação (se foi realizada ou não).*/
-					printf("IP: %d\n", ip);
 					empilha(pil,sysCall(arena, m, opc, arg.d));
 					break;
 

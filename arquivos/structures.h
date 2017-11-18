@@ -32,6 +32,7 @@ typedef struct  {
 typedef struct {
 	Bool ocupado;
 	Time team;
+	int id;
 } Ocupacao;
 
 
