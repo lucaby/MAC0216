@@ -123,7 +123,7 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 		if(i == 0)
 			robo->id = 0;
 		else
-			robo->id = (arena->exercitos[i-1]->id)++;
+			robo->id = ++(arena->exercitos[i-1]->id);
 		
 		printRobot(robo);
 		

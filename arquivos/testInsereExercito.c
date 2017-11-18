@@ -44,7 +44,7 @@ printf("sdhfjksd");
         if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i]->t == BLUE 
            && battlefield->exercitos[i]->crystals == 0 && battlefield->exercitos[i]->alive == True)
           printf("Sucesso, bixo.\n");
-        else printf("Po, bixo.");
+        else printf("Po, bixo.\n");
         }
 
     InsereExercito(battlefield, 5, prog, RED);
@@ -54,7 +54,7 @@ printf("sdhfjksd");
         if(battlefield->exercitos[i] != NULL && battlefield->exercitos[i]->t == RED 
            && battlefield->exercitos[i]->crystals == 0 && battlefield->exercitos[i]->alive == True)
           printf("Sucesso, bixo.\n");
-        else printf("Po, bixo.");
+        else printf("Po, bixo.\n");
 
     }
   

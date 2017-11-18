@@ -90,7 +90,13 @@ INSTR prog[] = {
 };
 
 INSTR prog2[] = {
-    {NUM, END, {0, WEST}}
+    {NUM, END, {0, WEST}},
+    {ACAO, MOVE,  {0, EAST}},
+    {ACAO, MOVE,  {0, EAST}},
+    {ACAO, MOVE,  {0, EAST}},
+    {ACAO, MOVE,  {0, EAST}},
+    {ACAO, MOVE,  {0, EAST}},
+    {ACAO, MOVE,  {0, EAST}}
 };
 
 int main() {
@@ -100,17 +106,17 @@ int main() {
   inicializaArena(battlefield, 7, 14); 
 
   printf("Grid Inicializado.\n");
-  InsereExercito(battlefield, 1, prog, BLUE);
+  //InsereExercito(battlefield, 1, prog, BLUE);
   InsereExercito(battlefield, 1, prog2, RED);
   printf("Blue team off to work.\n");
 
   //Attacking
-  battlefield->exercitos[1]->x = 3;
-  battlefield->exercitos[1]->y = 1;
-  printRobot(battlefield->exercitos[1]);
+  battlefield->exercitos[0]->x = 3;
+  battlefield->exercitos[0]->y = 1;
+  //printRobot(battlefield->exercitos[1]);
   battlefield->grid[1][3].o.ocupado = True;
   battlefield->grid[1][3].o.team = RED;
-  battlefield->grid[1][3].o.id = battlefield->exercitos[1]->id;
+  battlefield->grid[1][3].o.id = battlefield->exercitos[0]->id;
 
   /*//Grabing Crystals
   if(battlefield->grid[0][3].c == 0)
