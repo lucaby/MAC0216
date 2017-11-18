@@ -57,11 +57,13 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 
 	fprintf(display, "init\n");
 	arena->grid[0][0].b.isBase = True;
-	arena->grid[0][0].b.team = RED;
-	fprintf(display, "home ./sprites/homeRed.png %d %d \n", 0, 0);
+	arena->grid[0][0].b.team = BLUE;
+	arena->grid[0][0].o.ocupado = True;
+	fprintf(display, "home ./sprites/homeBlue.png %d %d \n", 0, 0);
 	arena->grid[nrows-1][ncols-1].b.isBase = True;
-	arena->grid[nrows-1][ncols-1].b.team = BLUE;
-	fprintf(display, "home ./sprites/homeRed.png %d %d \n", nrows-1, ncols-1 / 2);	
+	arena->grid[nrows-1][ncols-1].b.team = RED;
+	arena->grid[nrows-1][ncols-1].o.ocupado = True;
+	fprintf(display, "home ./sprites/homeRed.png %d %d \n", nrows-1, (ncols-1 )/ 2);	
 	
 
 	for(int i = 0; i <= ncols / 2;) {
