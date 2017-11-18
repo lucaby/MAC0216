@@ -167,6 +167,12 @@ for line in fileinput.input():
         robs.append(Robô(r[1]))
         continue
 
+    if r[0] == 'home':
+        i = int(r[2])
+        j = int(r[3])
+        Crystal(r[1], i, j).draw()
+        continue
+
     if r[0] == 'crys':
         i = int(r[2])
         j = int(r[3])
