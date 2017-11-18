@@ -33,7 +33,6 @@ INSTR prog[] = {
 int main(){
     Arena* battlefield = malloc(sizeof(Arena));
     printf("Arena feita.\n");
-printf("sdhfjksd");
     inicializaArena(battlefield, 7, 14); 
     printf("Grid Inicializado.\n");
 
