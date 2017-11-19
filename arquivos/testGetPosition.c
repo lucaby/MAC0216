@@ -13,10 +13,10 @@ int main() {
   printf("Arena feita.\n");
   int n = 50;
 
-  inicializaArena(battlefield, n, n); 
+  inicializaArena(battlefield, 7, 14); 
   printf("Grid Inicializado.\n");
 
-  InsereExercito(battlefield, n, prog, BLUE);
+  InsereExercito(battlefield, 5, prog, BLUE);
   //The machine battlefield->exercitos[0] has x = 1, y = 0
   for(int i = 0; i < n; i++){
     if (i % 2 == 0) {

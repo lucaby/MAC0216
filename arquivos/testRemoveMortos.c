@@ -32,13 +32,13 @@ int main(){
   Arena* battlefield = malloc(sizeof(Arena));
   printf("Arena feita.\n");
 
-  inicializaArena(battlefield, 50, 50); 
+  inicializaArena(battlefield, 7, 14); 
   printf("Grid Inicializado.\n");
 
-  InsereExercito(battlefield, 10, prog, BLUE);
+  InsereExercito(battlefield, 5, prog, BLUE);
   printf("Blue team off to work.\n");
 
-  InsereExercito(battlefield, 10, prog, RED);
+  InsereExercito(battlefield, 5, prog, RED);
   printf("Red team off to work.\n");
   
   Atualiza(battlefield, 1000);

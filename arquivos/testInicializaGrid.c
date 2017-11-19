@@ -6,9 +6,9 @@
 int main() {
 
 	Arena *a = malloc(sizeof(Arena));
-	inicializaArena(a, 10, 10);
-	int nrows = 10;
-	int ncols = 10;
+	inicializaArena(a, 7, 14);
+	int nrows = 7;
+	int ncols = 14;
 
 	printf("Cristal positions: \n");
 	for(int j = 0; j < nrows; j++) {

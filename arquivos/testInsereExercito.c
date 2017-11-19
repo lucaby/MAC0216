@@ -56,7 +56,6 @@ int main(){
         else printf("Po, bixo.\n");
 
     }
-  
   closeArena(battlefield);
   return 0;
 }

@@ -70,7 +70,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 		
 		int r1 = rand() % nrows;
 		int r2 = (rand() % ncols);
-		if((r1 % 2 == 0 && r2 % 2 == 0) || (r1 % 2 == 1 && r2 % 2 == 1) && arena->grid[r1][r2].o.ocupado == False) {
+		if(arena->grid[r1][r2].o.ocupado == False && (r1 % 2 == 0 && r2 % 2 == 0) || (r1 % 2 == 1 && r2 % 2 == 1)) {
 			arena->grid[r1][r2].c = True;
 			arena->grid[r1][r2].o.ocupado = True;
 			fprintf(display, "crys ./sprites/crystal.png %d %d\n", r1 , r2 / 2);
@@ -126,7 +126,7 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 		if(i == 0)
 			robo->id = 0;
 		else
-			robo->id = ++(arena->exercitos[i-1]->id);
+			robo->id = arena->exercitos[i-1]->id + 1;
 		
 		printRobot(robo);
 		
@@ -141,6 +141,12 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 }
 
 void printRobot(Maquina* maq) {
+	/* (maquina) -> void
+	Faz a conecção entre o código em python e o código em C, imprimindo para o apres
+	que ele deve inserir um robô nas posições i, j e deletar o robô que estava nas posições
+	oldY, oldX. Caso deseje ver mais lentamente os robôs, basta inserir a função sleep(n)
+	ao final deste código.
+	*/
 	int i, j;
 	i = maq->y;
 	j = maq->x / 2;
@@ -148,7 +154,6 @@ void printRobot(Maquina* maq) {
 	fprintf(display, "%d %d %d %d %d\n",
 						maq->id, maq->oldY, maq->oldX / 2, i, j);
 	fflush(display);
-	sleep(2);
 }
 
 void closeArena(Arena *arena){
@@ -159,7 +164,8 @@ void closeArena(Arena *arena){
 void Atualiza(Arena *arena, int ciclos) {
 	/*(arena, ciclos) -> 
 	Executa, dado um time t, um número ciclos de vezes o vetor de instruções dos
-	robôs daquele time.*/
+	robôs daquele time. Agora ela vê se o robô em questão está livre para ser
+	executado antes de executá-lo; Caso contrário, retira uma unidade de tempo de espera.*/
     
     for(int i = 0; i < arena->firstFree; ++i) {
     	if (arena->exercitos[i]->time == 0) {
@@ -275,7 +281,6 @@ void getPosition(Maquina *m, Direction d, int *i, int *j, int rows, int cols) {
 			break;
 		case SWEST:
 			if(m->x > 0 && m->y < rows - 1) {
-				printf("entrei no SWEST!\n");
 				*j = m->x - 1;
 				*i = m->y + 1;
 			}
@@ -342,7 +347,6 @@ OPERANDO grabCrystal(Arena *arena, Maquina *m, Direction d){
 	getPosition(m, d, &i, &j, arena->rows, arena->cols);
 
 	if(i != -1 && hasCrystal(arena->grid, i, j)) {
-		printf("quase peguei cristal\n");
 		arena->grid[i][j].c--;
 		(m->crystals)++;
 		result.n = True;
@@ -395,7 +399,6 @@ OPERANDO attackMachine(Arena *arena, Maquina *m, Direction d) {
 			arena->grid[i][j].o.id = -1;
 		}
 
-		printf("hp after: %d\n", arena->exercitos[enemy]->hp);
 		result.n = True;
 	}
 	return result;
@@ -428,6 +431,11 @@ OPERANDO sysCall(Arena *arena, Maquina *m, OpCode t, Direction op){
 }
 
 int getEnemy(Arena *arena, int lin, int col){
+	/* (arena, int, int) -> int
+	Recebe a arena e uma linha e uma coluna. A partir do id contido nessa linha e coluna,
+	procura seu índice na lista de robôs e o retorna para que seu hp e defesa
+	possam ser acessados.
+	*/
 	int i = 0;
 	int id = arena->grid[lin][col].o.id;
 
@@ -438,6 +446,10 @@ int getEnemy(Arena *arena, int lin, int col){
 }
 
 int getDamage(Maquina *m){
+	/* (maquina) -> int
+	A partir do damage base da máquina m, calcula quanto damage é possível dar
+	dado seu hp. Retornando esse damage.
+	*/
 	srand(time(NULL));
 	int damage = m->damage + rand()%10;
 	if(m->hp < 50 && m->hp > 20)
