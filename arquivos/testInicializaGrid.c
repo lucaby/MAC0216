@@ -1,7 +1,6 @@
 #include "maq.h"
 #include <stdio.h>
-//meio terminado
-//TODO: OCUPACAO.
+//DONE
 
 int main() {
 

@@ -41,6 +41,8 @@ typedef struct {
 	int firstFree;
 } Arena;
 
+void removeMorto(Arena *arena, int i);
+
 int getDamage(Maquina *m);
 
 int getEnemy(Arena *arena, int lin, int col);

@@ -124,93 +124,100 @@ crys = []
 atu()
 
 # Leitura dos comandos pela entrada padrão ou de um arquivo
-for line in fileinput.input():
-    r = line.split()
-    
-    # linha começando com 'fim', termina o programa
-    if r[0] == 'fim':
-        break
+while True:
+    for line in fileinput.input():
+        r = line.split()
+        #print("r[0]: " + r[0])
+        # linha começando com 'fim', termina o programa
+        if r[0] == 'fim':
+            break
 
-    if r[0] == 'terr':
-        i = int(r[1])
-        j = int(r[2])
-        terrain = r[3]
+        if r[0] == 'terr':
+            i = int(r[1])
+            j = int(r[2])
+            terrain = r[3]
+            
+            #print("(i, j) = ({}, {})".format(i, j))
+            if terrain == '0':
+                
+                arena[i].append(cell(i, j, (128, 128, 128)))
+            elif terrain == '1':
+                
+                arena[i].append(cell(i, j, (51, 153, 204)))
+            elif terrain == '2':
+                
+                arena[i].append(cell(i, j, (255, 255, 255)))
+            elif terrain == '3':
+                
+                arena[i].append(cell(i, j, (102, 51, 0)))
+            elif terrain == '4':
+                
+                arena[i].append(cell(i, j, (51, 204, 0)))
+            continue
+
+        if r[0] == 'init':
+
+            for i in range(H):
+                arena.append([])
+                for j in range(W):
+                    arena[i][j].draw()
+            continue
+        # linha começando com 'rob', inclui um robô,
+        # o segundo argumento na linha é a imagem   
+        if r[0] == 'rob':
+            robs.append(Robô(r[1]))
+            continue
+
+        if r[0] == 'home':
+            i = int(r[2])
+            j = int(r[3])
+            Crystal(r[1], i, j).draw()
+            continue
+
+        if r[0] == 'crys':
+            i = int(r[2])
+            j = int(r[3])
+            crys.append(Crystal(r[1], i, j))
+            crys[-1].draw()
+            continue
+
+        if r[0] == 'remCrys':
+            i = int(r[1])
+            j = int(r[2])
+            arena[i][j].draw()
+            continue
+
+        if r[0] == 'die':
+            i = int(r[1])
+            j = int(r[2])
+            print("i, j = {}, {}".format(i, j))
+            arena[i][j].draw()
+            pg.time.delay(1000)
+            continue
+
+        # linha de movimentação:
+        # robô, corrdenadas originais, coordenadas finais
         
-        #print("(i, j) = ({}, {})".format(i, j))
-        if terrain == '0':
-            
-            arena[i].append(cell(i, j, (128, 128, 128)))
-        elif terrain == '1':
-            
-            arena[i].append(cell(i, j, (51, 153, 204)))
-        elif terrain == '2':
-            
-            arena[i].append(cell(i, j, (255, 255, 255)))
-        elif terrain == '3':
-            
-            arena[i].append(cell(i, j, (102, 51, 0)))
-        elif terrain == '4':
-            
-            arena[i].append(cell(i, j, (51, 204, 0)))
-        continue
+        ri, oi, oj, di, dj = list(map(int, r))
+        for evt in pg.event.get():
+            if evt.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+        # redesenha a célula original (apaga o robô)
+        if 0 <= oi  < W and 0 <= oj < H:
+            arena[oi][oj].draw()
+        # desenha o robô na célula de destino
+        if 0 <= di  < W and 0 <= dj < H and ri < len(robs):
+            robs[ri].draw(di,dj)
+        # tempo de espera para atualização, apenas para testes
+        #pg.time.wait(10)
 
-    if r[0] == 'init':
-
-        for i in range(H):
-            arena.append([])
-            for j in range(W):
-                arena[i][j].draw()
-        continue
-    # linha começando com 'rob', inclui um robô,
-    # o segundo argumento na linha é a imagem   
-    if r[0] == 'rob':
-        robs.append(Robô(r[1]))
-        continue
-
-    if r[0] == 'home':
-        i = int(r[2])
-        j = int(r[3])
-        Crystal(r[1], i, j).draw()
-        continue
-
-    if r[0] == 'crys':
-        i = int(r[2])
-        j = int(r[3])
-        crys.append(Crystal(r[1], i, j))
-        crys[-1].draw()
-        continue
-
-    if r[0] == 'remCrys':
-        i = int(r[1])
-        j = int(r[2])
-        arena[i][j].draw()
-        continue
-
-    if r[0] == 'die':
-        i = int(r[1])
-        j = int(r[2])
-        print("(i, j) = ({}, {})".format(r[1], r[2]))
-        arena[i][j].draw()
-        continue
-
-    # linha de movimentação:
-    # robô, corrdenadas originais, coordenadas finais
-    
-    ri, oi, oj, di, dj = list(map(int, r))
-
-    # redesenha a célula original (apaga o robô)
-    if 0 <= oi  < W and 0 <= oj < H:
-        arena[oi][oj].draw()
-    # desenha o robô na célula de destino
-    if 0 <= di  < W and 0 <= dj < H and ri < len(robs):
-        robs[ri].draw(di,dj)
-    # tempo de espera para atualização, apenas para testes
-    #pg.time.wait(10)
+        atu()
+        pg.time.delay(500)
     for evt in pg.event.get():
         if evt.type == pg.QUIT:
             pg.quit()
             sys.exit()
-    atu()
 # Local variables:
 # mode: python
 # End:

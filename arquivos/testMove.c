@@ -1,9 +1,27 @@
 #include <stdio.h>
 #include "maq.h"
-
-INSTR prog[] = {
+//DONE
+INSTR progB[] = {
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,NWEST}},
+  {ACAO, MOVE,  {0,NWEST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,NEAST}},
+  {ACAO, MOVE,  {0,WEST}},
+  {ACAO, MOVE,  {0,WEST}}
+};
+INSTR progA[] = {
 
   {ACAO, MOVE,  {0,SEAST}},
+  {ACAO, MOVE,  {0,SEAST}},
+  {ACAO, MOVE,  {0,SEAST}},
+  {ACAO, MOVE,  {0,SWEST}},
+  {ACAO, MOVE,  {0,SEAST}},
+  {ACAO, MOVE,  {0,SWEST}},
+  {ACAO, MOVE,  {0,SWEST}},
   {NUM, END, {0, NEAST}},
 
 };
@@ -15,12 +33,11 @@ int main() {
   inicializaArena(battlefield, 7, 14); 
   printf("Grid Inicializado.\n");
 
-  InsereExercito(battlefield, 5, prog, BLUE);
+  InsereExercito(battlefield, 5, progA, BLUE);
   printf("Blue team off to work.\n");
 
-  InsereExercito(battlefield, 5, prog, RED);
+  InsereExercito(battlefield, 5, progB, RED);
   printf("Red team off to work.\n");
-  printf("%d %d ", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
-  exec_maquina(battlefield, battlefield->exercitos[0], 1000);
-  printf("\n%d %d \n", battlefield->exercitos[0]->x, battlefield->exercitos[0]->y);
+  for(int i = 0; i < 11; i++) 
+    Atualiza(battlefield, 1);
 }

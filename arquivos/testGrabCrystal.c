@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include "maq.h"
-
+//TODO
 INSTR prog[] = {
 
   {ACAO, GRAB,  {0,SEAST}},
-  {NUM, PRN, {0, NEAST}},
   {ACAO, GRAB,  {0,SEAST}},
-  {NUM, PRN, {0, NEAST}},
   {NUM, END, {0, NEAST}},
 
 };
@@ -24,15 +22,8 @@ int main() {
   InsereExercito(battlefield, 5, prog, RED);
   printf("Red team off to work.\n");
 
-
-  if(battlefield->grid[1][2].c == 0)
-    battlefield->grid[1][2].c++;
-  else if(battlefield->grid[1][2].c > 1)
-    battlefield->grid[1][2].c = 1;
-
   printf("Crystals  bf: %d\n", battlefield->grid[1][2].c);
-  printf("Resposta do sysCall:\n");
-  exec_maquina(battlefield, battlefield->exercitos[0], 100);
+  for(int i = 0; i < 11; i++) Atualiza(battlefield, 1);
   printf("Crystals after: %d\n", battlefield->grid[1][2].c);
 
 }

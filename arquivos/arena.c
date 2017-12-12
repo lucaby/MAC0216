@@ -6,6 +6,7 @@
 
 FILE *display;
 //nrows = 2 * ncols
+//Visualization done
 void inicializaArena(Arena *arena, int nrows, int ncols) {
 	/*(arena, #linhas, #coluna) -> void
 	Aloca dinamicamente uma matrix de células de tamanho nrowsxncols.
@@ -37,6 +38,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
+				arena->grid[i][j].o.id = -1;
 				//Sets the bases
 				fprintf(display, "terr %d %d %d\n", j, i / 2 , (int)arena->grid[i][j].t);
 			}
@@ -48,6 +50,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 				arena->grid[i][j].t = rand() % 5;
 				arena->grid[i][j].b.isBase = False;
 				arena->grid[i][j].c = False;
+				arena->grid[i][j].o.id = -1;
 				fprintf(display, "terr %d %d %d\n", j, i / 2, (int)arena->grid[i][j].t);
 				//Sets the bases
 
@@ -66,7 +69,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	fprintf(display, "home ./sprites/homeRed.png %d %d \n", nrows-1, (ncols-1 )/ 2);	
 	
 
-	for(int i = 0; i <= ncols / 2;) {
+	for(int i = 0; i <= ncols;) {
 		
 		int r1 = rand() % nrows;
 		int r2 = (rand() % ncols);
@@ -81,7 +84,7 @@ void inicializaArena(Arena *arena, int nrows, int ncols) {
 	
 }
 
-
+//Visualization done
 void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
   	/*(arena, size, instruções, time) -> void
   	Insere no vetor de máquinas da Arena uma quantidade size de robôs de um time team*/
@@ -127,16 +130,14 @@ void InsereExercito(Arena *arena, int size, INSTR *p, Time team) {
 			robo->id = 0;
 		else
 			robo->id = arena->exercitos[i-1]->id + 1;
-		
 		printRobot(robo);
-		
 		arena->exercitos[i] = robo;
 		arena->grid[k][x].o.ocupado = True;
 		arena->grid[k][x].o.team = team;
 		arena->grid[k][x].o.id = robo->id;
 
 	}
-
+	fflush(display);
 	arena->firstFree += size;
 }
 
@@ -163,7 +164,7 @@ void closeArena(Arena *arena){
 
 void Atualiza(Arena *arena, int ciclos) {
 	/*(arena, ciclos) -> 
-	Executa, dado um time t, um número ciclos de vezes o vetor de instruções dos
+	Executa, um número de ciclos de vezes o vetor de instruções dos
 	robôs daquele time. Agora ela vê se o robô em questão está livre para ser
 	executado antes de executá-lo; Caso contrário, retira uma unidade de tempo de espera.*/
     
@@ -200,10 +201,11 @@ void RemoveMortos(Arena *arena, Time t) {
 	
 	for(int i = 0; i < arena->firstFree; i++) {
 		if(arena->exercitos[i] != NULL && !arena->exercitos[i]->alive) {
-			
+			fprintf(display, "die %d %d\n");
 			arena->exercitos[i] = NULL;
 		}
 	}
+
 	arena->firstFree = tapaBuraco(arena->exercitos, arena->firstFree);
 }
 
@@ -214,7 +216,9 @@ void removeExercito(Arena *arena, Time t) {
 
 	for(int i = 0; i < arena->firstFree; i++) {
 		if(arena->exercitos[i] != NULL && arena->exercitos[i]->t == t) {
+			fprintf(display, "die %d %d %d\n", arena->exercitos[i]->y, arena->exercitos[i]->x/2, arena->exercitos[i]->id);
 			arena->exercitos[i] = NULL;
+			fflush(display);
 		}
 	}
 
@@ -378,6 +382,14 @@ OPERANDO depositCrystal(Arena *arena, Maquina *m, Direction d) {
 	return result;
 }
 
+void removeMorto(Arena *arena, int i) {
+	
+	fflush(display);
+	arena->exercitos[i] = NULL;
+	tapaBuraco(arena->exercitos, arena->firstFree);
+
+
+}
 OPERANDO attackMachine(Arena *arena, Maquina *m, Direction d) {
 	/*(arena, maquina, direção) -> operando (true or false)
 	Por simplicidade quanto ao sistema de hit points dos robôs, seus respectivos
@@ -393,10 +405,12 @@ OPERANDO attackMachine(Arena *arena, Maquina *m, Direction d) {
 		printf("EXTERMINATE!\n");
 		arena->exercitos[enemy]->hp -= damage - arena->exercitos[enemy]->defense;
 		
-		if(arena->exercitos[enemy]->hp < 0){
-			fprintf(display, "die %d %d\n", i, (j/2));
+		if(arena->exercitos[enemy]->hp <= 0) {
+			RemoveMortos(arena, BLUE);
+			fprintf(display, "die %d %d", i, j/2);
 			arena->grid[i][j].o.ocupado = False;
 			arena->grid[i][j].o.id = -1;
+			printf("dead: %d %d", i, j/2);
 		}
 
 		result.n = True;

@@ -34,43 +34,7 @@ int main() {
 
   inicializaArena(battlefield, 7, 14); 
   printf("Grid Inicializado.\n");
-
   InsereExercito(battlefield, 5, prog, BLUE);
-  printf("Blue team off to work.\n");
-
-  InsereExercito(battlefield, 5, prog, RED);
-  printf("Red team off to work.\n");
-
-  Atualiza(battlefield, 1000);
-  for(int i = 0; i < battlefield->firstFree; i++) {
-    if(battlefield->exercitos[i]->t == BLUE) printf("B ");
-    else printf("R ");
-  }
-
-  removeExercito(battlefield, BLUE);
-  printf("\n");
-
-  for(int i = 0; i < battlefield->firstFree; i++) {
-    if(battlefield->exercitos[i]== NULL) printf("B ");
-    else printf("R ");
-  }
-  printf("\n");
-  for(int i = 0; i < battlefield->firstFree; i++){
-      if(battlefield->exercitos[i] != NULL)
-        printf("Sucesso, bixo.\n");
-      else
-        printf("Po, bixo\n");
-  }
-  removeExercito(battlefield, RED);
-
-  for(int i = 10; i < battlefield->firstFree; i++){
-      if(battlefield->exercitos[i] != NULL)
-        printf("Sucesso, bixo.\n");
-  }
-  for(int i = 0; i < battlefield->firstFree; i++) {
-    if(battlefield->exercitos[i]== NULL) printf("B ");
-    else printf("R ");
-  }
-  return 0;
+  
   
 }

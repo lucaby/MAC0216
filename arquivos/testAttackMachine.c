@@ -1,13 +1,21 @@
 #include <stdio.h>
 #include "maq.h"
-
-INSTR prog[] = {
-
-  {ACAO, ATTK,  {0,SEAST}},
-  {NUM, PRN, {0, NEAST}},
-  {ACAO, ATTK,  {0,SEAST}},
-  {NUM, PRN, {0, NEAST}},
-  {NUM, END, {0, NEAST}},
+INSTR progR[] = {
+};
+INSTR progB[] = {
+  {ACAO, MOVE, {0,SWEST}},
+  {ACAO, MOVE, {0,SWEST}},
+  {ACAO, MOVE, {0,SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {ACAO, ATTK, {0, SWEST}},
+  {NUM, END, {0, SEAST}}
 
 };
 
@@ -18,18 +26,13 @@ int main() {
   inicializaArena(battlefield, 7, 14); 
   printf("Grid Inicializado.\n");
 
-  InsereExercito(battlefield, 5, prog, BLUE);
+  InsereExercito(battlefield, 5, progB, BLUE);
   printf("Blue team off to work.\n");
 
-  InsereExercito(battlefield, 5, prog, RED);
+  InsereExercito(battlefield, 5, progR, RED);
   printf("Red team off to work.\n");
-
-  battlefield->exercitos[11]->x = 1;
-  battlefield->exercitos[11]->y = 2;
-  battlefield->grid[1][2].o.ocupado = True;
-  battlefield->grid[1][2].o.team = RED;
-
-  printf("Resposta do sysCall:\n");
-  exec_maquina(battlefield, battlefield->exercitos[0], 100);
+  for(int i = 0; i < 20; i++)
+    Atualiza(battlefield, 1);
+  
 
 }
